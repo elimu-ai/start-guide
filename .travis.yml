@@ -16,3 +16,4 @@ android:
 
 #notifications:
 #  slack: literacyapp:HLjtHJdZ7DYJV2DlnDLrG6Gl
+  email: false
