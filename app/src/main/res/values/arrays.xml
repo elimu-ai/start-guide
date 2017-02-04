@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="image_files">
+        <item>@drawable/turtle</item>
+        <item>@drawable/flower</item>
+
+        <item>@drawable/leopard</item>
+        <item>@drawable/bear</item>
+
+        <item>@drawable/tree</item>
+        <item>@drawable/drop</item>
+
+        <item>@drawable/baby_giraffe</item>
+        <item>@drawable/rhinoceros</item>
+
+        <item>@drawable/elephant</item>
+        <item>@drawable/frog</item>
+
+        <item>@drawable/loin</item>
+        <item>@drawable/pear</item>
+
+        <item>@drawable/mushroom</item>
+        <item>@drawable/banana</item>
+
+        <item>@drawable/tiger</item>
+        <item>@drawable/zebra</item>
+    </string-array>
+</resources>
