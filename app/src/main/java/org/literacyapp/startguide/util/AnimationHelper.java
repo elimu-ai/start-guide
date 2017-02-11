@@ -14,9 +14,9 @@ public class AnimationHelper {
         imageView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                //Play hand animation
-                Animation scaleUp = AnimationUtils.loadAnimation(context, idAnimation);
-                imageView.startAnimation(scaleUp);
+                //Play animation
+                Animation animation = AnimationUtils.loadAnimation(context, idAnimation);
+                imageView.startAnimation(animation);
             }
         }, 1000);
     }

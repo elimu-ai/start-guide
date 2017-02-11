@@ -25,4 +25,9 @@
         <item>@drawable/tiger</item>
         <item>@drawable/zebra</item>
     </string-array>
+
+    <array name="pager_colors">
+        <item>@color/cyan</item>
+        <item>@color/light_green</item>
+    </array>
 </resources>

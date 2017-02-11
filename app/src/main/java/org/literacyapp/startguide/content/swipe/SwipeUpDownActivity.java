@@ -1,5 +1,6 @@
 package org.literacyapp.startguide.content.swipe;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -128,7 +129,8 @@ public class SwipeUpDownActivity extends AppCompatActivity implements GestureDet
 
             } else if (isDetectScrollDownActive() && (velocityY > 0)) {
                 //Detected scroll down
-                // TODO: 07/02/2017 go to swipe left right
+                Intent intent = new Intent(this, SwipeRightLeftActivity.class);
+                startActivity(intent);
             }
         }
 
