@@ -18,7 +18,7 @@ import org.literacyapp.startguide.util.AnimationHelper;
 /**
  * Activity that explain swipe right and left
  */
-public class SwipeRightLeftActivity extends AppCompatActivity {
+public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for
@@ -31,6 +31,8 @@ public class SwipeRightLeftActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private View mHandView;
 
+    private boolean detectLeft = true;
+    private boolean detectRight = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class SwipeRightLeftActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.addOnPageChangeListener(this);
 
         //Hand view
         mHandView = findViewById(R.id.hand);
@@ -66,11 +69,47 @@ public class SwipeRightLeftActivity extends AppCompatActivity {
      * Swipe to right explanation with audio and hand animation
      */
     private void showSlideRight() {
-        mHandView.setVisibility(View.VISIBLE);
         //TODO: 04/02/2017 audio file (en, sw) slide right
 //        MediaPlayerHelper.play(this, R.raw.slide_right);
         AnimationHelper.animateView(this, mHandView, R.anim.slide_right);
     }
+
+    private boolean isDetectLeftActive() {
+        return detectLeft;
+    }
+
+    private boolean isDetectRightActive() {
+        return detectRight;
+    }
+
+    private void setDetectLeft(boolean detectLeft) {
+        this.detectLeft = detectLeft;
+    }
+
+    private void setDetectRight(boolean detectRight) {
+        this.detectRight = detectRight;
+    }
+
+    //region ViewPager.OnPageChangeListener
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    }
+
+    @Override
+    public void onPageSelected(int page) {
+        if ((page == 1) && isDetectRightActive()) {
+            setDetectLeft(false);
+            showSlideRight();
+        } else if ((page == 0) && !isDetectLeftActive()) {
+            setDetectRight(false);
+            // TODO: 12/02/2017 go to the 'exit full screen' explanation
+        }
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+    }
+    //endregion
 
     /**
      * A placeholder fragment containing a simple view.
