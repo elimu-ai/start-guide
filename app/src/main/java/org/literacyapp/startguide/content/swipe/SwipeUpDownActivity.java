@@ -50,24 +50,24 @@ public class SwipeUpDownActivity extends AppCompatActivity implements GestureDet
             }
         });
 
-        showScrollUp();
+        showMoveBottom();
     }
 
     /**
-     * Scroll up explanation with audio and hand animation
+     * Move to the bottom explanation with audio and hand animation
      */
-    private void showScrollUp() {
-        //TODO: 04/02/2017 update audio file (en, sw) "Swipe to scroll up"
-        MediaPlayerHelper.play(this, R.raw.scroll_up);
+    private void showMoveBottom() {
+        //TODO: 04/02/2017 update audio file (en, sw) "Move to the bottom of the list"
+        MediaPlayerHelper.play(this, R.raw.move_bottom);
         AnimationHelper.animateView(this, mHandView, R.anim.slide_up);
     }
 
     /**
-     * Scroll down explanation with audio and hand animation
+     * Move to the top explanation with audio and hand animation
      */
-    private void showScrollDown() {
-        //TODO: 05/02/2017 update audio file (en, sw) "Swipe to scroll down"
-        MediaPlayerHelper.play(this, R.raw.scroll_down);
+    private void showMoveTop() {
+        //TODO: 05/02/2017 update audio file (en, sw) "Move to the top of the list"
+        MediaPlayerHelper.play(this, R.raw.move_top);
         AnimationHelper.animateView(this, mHandView, R.anim.slide_down);
     }
 
@@ -122,7 +122,7 @@ public class SwipeUpDownActivity extends AppCompatActivity implements GestureDet
 
             if (isDetectScrollUpActive() && (velocityY < 0)) {
                 //Detected scroll up
-                showScrollDown();
+                showMoveTop();
 
                 setDetectUpActive(false);
                 setDetectDownActive(true);
