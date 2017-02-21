@@ -58,7 +58,7 @@ public class SwipeUpDownActivity extends AppCompatActivity implements GestureDet
      */
     private void showMoveBottom() {
         //TODO: 04/02/2017 update audio file (en, sw) "Move to the bottom of the list"
-        MediaPlayerHelper.play(this, R.raw.move_bottom);
+        MediaPlayerHelper.playWithDelay(this, R.raw.move_bottom);
         AnimationHelper.animateView(this, mHandView, R.anim.slide_up);
     }
 

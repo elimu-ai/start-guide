@@ -10,7 +10,13 @@ import android.view.animation.AnimationUtils;
  */
 public class AnimationHelper {
 
+    public static final long DEFAULT_ANIMATION_DELAY = 1000;
+
     public static void animateView(final Context context, final View imageView, final int idAnimation) {
+        animateView(context, imageView, idAnimation, DEFAULT_ANIMATION_DELAY);
+    }
+
+    public static void animateView(final Context context, final View imageView, final int idAnimation, long delay) {
         imageView.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -18,6 +24,6 @@ public class AnimationHelper {
                 Animation animation = AnimationUtils.loadAnimation(context, idAnimation);
                 imageView.startAnimation(animation);
             }
-        }, 1000);
+        }, delay);
     }
 }
