@@ -50,24 +50,40 @@ public class SwipeUpDownActivity extends AppCompatActivity implements GestureDet
             }
         });
 
-        showMoveBottom();
+        playMoveBottom();
+    }
+
+    private void playMoveBottom() {
+        //TODO: 04/02/2017 update audio file (en, sw) "Move to the bottom of the list"
+        MediaPlayerHelper.playWithDelay(this, R.raw.move_bottom, new MediaPlayerHelper.MediaPlayerListener() {
+            @Override
+            public void onCompletion() {
+                showMoveBottom();
+            }
+        });
+    }
+
+    private void playMoveTop() {
+        //TODO: 04/02/2017 update audio file (en, sw) "Move to the top of the list"
+        MediaPlayerHelper.play(this, R.raw.move_top, new MediaPlayerHelper.MediaPlayerListener() {
+            @Override
+            public void onCompletion() {
+                showMoveTop();
+            }
+        });
     }
 
     /**
-     * Move to the bottom explanation with audio and hand animation
+     * Hand animation to explain scroll to the bottom
      */
     private void showMoveBottom() {
-        //TODO: 04/02/2017 update audio file (en, sw) "Move to the bottom of the list"
-        MediaPlayerHelper.playWithDelay(this, R.raw.move_bottom);
         AnimationHelper.animateView(this, mHandView, R.anim.slide_up);
     }
 
     /**
-     * Move to the top explanation with audio and hand animation
+     * Hand animation to explain scroll to the top
      */
     private void showMoveTop() {
-        //TODO: 05/02/2017 update audio file (en, sw) "Move to the top of the list"
-        MediaPlayerHelper.play(this, R.raw.move_top);
         AnimationHelper.animateView(this, mHandView, R.anim.slide_down);
     }
 
@@ -122,7 +138,7 @@ public class SwipeUpDownActivity extends AppCompatActivity implements GestureDet
 
             if (isDetectScrollUpActive() && (velocityY < 0)) {
                 //Detected scroll up
-                showMoveTop();
+                playMoveTop();
 
                 setDetectUpActive(false);
                 setDetectDownActive(true);
