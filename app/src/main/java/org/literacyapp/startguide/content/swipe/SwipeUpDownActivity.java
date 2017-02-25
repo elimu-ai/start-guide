@@ -14,12 +14,15 @@ import org.literacyapp.startguide.R;
 import org.literacyapp.startguide.util.AnimationHelper;
 import org.literacyapp.startguide.util.MediaPlayerHelper;
 
+import static org.literacyapp.startguide.util.AnimationHelper.DEFAULT_ANIMATION_DELAY;
+
 
 /**
  *
  */
 public class SwipeUpDownActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
 
+    private AnimationHelper mAnimationHelper;
     private GestureDetector mGestureDetector;
     private View mHandView;
     private boolean detectUp = true;
@@ -77,14 +80,19 @@ public class SwipeUpDownActivity extends AppCompatActivity implements GestureDet
      * Hand animation to explain scroll to the bottom
      */
     private void showMoveBottom() {
-        AnimationHelper.animateView(this, mHandView, R.anim.slide_up);
+        mAnimationHelper = new AnimationHelper(this, R.anim.slide_up);
+        mAnimationHelper.setRepeatMode(true);
+        mAnimationHelper.animateView(mHandView, DEFAULT_ANIMATION_DELAY);
     }
 
     /**
      * Hand animation to explain scroll to the top
      */
     private void showMoveTop() {
-        AnimationHelper.animateView(this, mHandView, R.anim.slide_down);
+        mAnimationHelper = new AnimationHelper(this, R.anim.slide_down);
+        mAnimationHelper.setRepeatMode(true);
+        mAnimationHelper.animateView(mHandView, DEFAULT_ANIMATION_DELAY);
+        mHandView.setVisibility(View.VISIBLE);
     }
 
     private boolean isDetectScrollUpActive() {
@@ -106,6 +114,10 @@ public class SwipeUpDownActivity extends AppCompatActivity implements GestureDet
     //region GestureDetector.OnGestureListener
     @Override
     public boolean onDown(MotionEvent e) {
+        if (mAnimationHelper != null) {
+            mAnimationHelper.stopAnimation();
+        }
+        mHandView.setVisibility(View.GONE);
         return false;
     }
 
