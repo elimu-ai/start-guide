@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -21,13 +20,12 @@ import static org.literacyapp.startguide.util.AnimationHelper.DEFAULT_ANIMATION_
 /**
  *
  */
-public class SwipeUpDownActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
+public class SwipeUpDownActivity extends AppCompatActivity implements View.OnTouchListener,
+        SwipeUpDownAdapter.OnScrollListener {
 
     private AnimationHelper mAnimationHelper;
-    private GestureDetector mGestureDetector;
     private View mHandView;
-    private boolean detectUp = true;
-    private boolean detectDown = false;
+    private SwipeUpDownAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,23 +34,15 @@ public class SwipeUpDownActivity extends AppCompatActivity implements GestureDet
 
         //List of images
         TypedArray imagesArray = getResources().obtainTypedArray(R.array.image_files);
-        SwipeUpDownAdapter adapter = new SwipeUpDownAdapter(imagesArray);
+        mAdapter = new SwipeUpDownAdapter(imagesArray, this);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setOnTouchListener(this);
 
         //Hand view
         mHandView = findViewById(R.id.hand);
-
-        //Add gesture detector
-        mGestureDetector = new GestureDetector(this, this);
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return mGestureDetector.onTouchEvent(event);
-            }
-        });
 
         playMoveBottom();
     }
@@ -104,75 +94,28 @@ public class SwipeUpDownActivity extends AppCompatActivity implements GestureDet
         mHandView.setVisibility(View.VISIBLE);
     }
 
-     private boolean isDetectScrollUpActive() {
-        return detectUp;
-    }
-
-    private boolean isDetectScrollDownActive() {
-        return detectDown;
-    }
-
-    private void setDetectUpActive(boolean activeUpDetect) {
-        detectUp = activeUpDetect;
-    }
-
-    private void setDetectDownActive(boolean activeDownDetect) {
-        detectDown = activeDownDetect;
-    }
-
-    //region GestureDetector.OnGestureListener
+    //region View.OnTouchListener
     @Override
-    public boolean onDown(MotionEvent e) {
+    public boolean onTouch(View v, MotionEvent event) {
         if (mAnimationHelper != null) {
             mAnimationHelper.stopAnimation();
         }
         mHandView.setVisibility(View.GONE);
         return false;
     }
+    //endregion
 
+    //region SwipeUpDownAdapter.OnScrollListener
     @Override
-    public void onShowPress(MotionEvent e) {
+    public void onLastItemReached() {
+        resetHandPosition();
+        playMoveTop();
     }
 
     @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent e) {
-    }
-
-    @Override
-    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-
-        float yMov = Math.abs(e1.getY() - e2.getY());
-        float xMov = Math.abs(e1.getX() - e2.getX());
-
-        //Detect vertical scroll
-        if (yMov > xMov) {
-
-            if (isDetectScrollUpActive() && (velocityY < 0)) {
-                //Detected scroll up
-                resetHandPosition();
-                playMoveTop();
-
-                setDetectUpActive(false);
-                setDetectDownActive(true);
-
-            } else if (isDetectScrollDownActive() && (velocityY > 0)) {
-                //Detected scroll down
-                Intent intent = new Intent(this, SwipeRightLeftActivity.class);
-                startActivity(intent);
-            }
-        }
-
-        return true;
+    public void onFirstItemReached() {
+        Intent intent = new Intent(this, SwipeRightLeftActivity.class);
+        startActivity(intent);
     }
     //endregion
 }
