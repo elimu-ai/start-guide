@@ -2,11 +2,13 @@ package org.literacyapp.startguide.content.swipe;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -58,15 +60,33 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
         //Hand view
         mHandView = findViewById(R.id.hand);
 
-        showSlideLeft();
+        playMoveLeft();
+    }
+
+    private void playMoveLeft() {
+        //TODO: 04/02/2017 audio file (en, sw) slide left
+//        MediaPlayerHelper.playWithDelay(this, R.raw.move_left, new MediaPlayerHelper.MediaPlayerListener() {
+//            @Override
+//            public void onCompletion() {
+                showSlideLeft();
+//            }
+//        });
+    }
+
+    private void playMoveRight() {
+        //TODO: 04/02/2017 audio file (en, sw) slide right
+//        MediaPlayerHelper.playWithDelay(this, R.raw.move_right, new MediaPlayerHelper.MediaPlayerListener() {
+//            @Override
+//            public void onCompletion() {
+                showSlideRight();
+//            }
+//        });
     }
 
     /**
      * Swipe to left explanation with audio and hand animation
      */
     private void showSlideLeft() {
-        //TODO: 04/02/2017 audio file (en, sw) slide left
-//        MediaPlayerHelper.play(this, R.raw.slide_left);
         mAnimationHelper = new AnimationHelper(this, R.anim.slide_left);
         mAnimationHelper.setRepeatMode(true);
         mAnimationHelper.animateView(mHandView, DEFAULT_ANIMATION_DELAY);
@@ -76,11 +96,17 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
      * Swipe to right explanation with audio and hand animation
      */
     private void showSlideRight() {
-        //TODO: 04/02/2017 audio file (en, sw) slide right
-//        MediaPlayerHelper.play(this, R.raw.slide_right);
+        resetHandPosition();
         mAnimationHelper = new AnimationHelper(this, R.anim.slide_right);
         mAnimationHelper.setRepeatMode(true);
         mAnimationHelper.animateView(mHandView, DEFAULT_ANIMATION_DELAY);
+    }
+
+    private void resetHandPosition() {
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)mHandView.getLayoutParams();
+        params.anchorGravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
+
+        mHandView.setLayoutParams(params);
         mHandView.setVisibility(View.VISIBLE);
     }
 
@@ -116,11 +142,9 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     public void onPageSelected(int page) {
         if ((page == 1) && isDetectRightActive()) {
             setDetectLeft(false);
-//            stopAnimation();
-            showSlideRight();
+            playMoveRight();
         } else if ((page == 0) && !isDetectLeftActive()) {
             setDetectRight(false);
-//            stopAnimation();
             // TODO: 12/02/2017 go to the 'exit full screen' explanation
         }
     }

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import org.literacyapp.startguide.R;
 import org.literacyapp.startguide.util.AnimationHelper;
@@ -89,13 +90,21 @@ public class SwipeUpDownActivity extends AppCompatActivity implements GestureDet
      * Hand animation to explain scroll to the top
      */
     private void showMoveTop() {
+        resetHandPosition();
         mAnimationHelper = new AnimationHelper(this, R.anim.slide_down);
         mAnimationHelper.setRepeatMode(true);
         mAnimationHelper.animateView(mHandView, DEFAULT_ANIMATION_DELAY);
+    }
+
+    private void resetHandPosition() {
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)mHandView.getLayoutParams();
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+
+        mHandView.setLayoutParams(params);
         mHandView.setVisibility(View.VISIBLE);
     }
 
-    private boolean isDetectScrollUpActive() {
+     private boolean isDetectScrollUpActive() {
         return detectUp;
     }
 
@@ -150,6 +159,7 @@ public class SwipeUpDownActivity extends AppCompatActivity implements GestureDet
 
             if (isDetectScrollUpActive() && (velocityY < 0)) {
                 //Detected scroll up
+                resetHandPosition();
                 playMoveTop();
 
                 setDetectUpActive(false);
