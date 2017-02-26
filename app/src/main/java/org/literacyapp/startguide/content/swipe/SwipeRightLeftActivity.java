@@ -17,6 +17,7 @@ import android.widget.ImageView;
 
 import org.literacyapp.startguide.R;
 import org.literacyapp.startguide.util.AnimationHelper;
+import org.literacyapp.startguide.util.MediaPlayerHelper;
 
 import static org.literacyapp.startguide.util.AnimationHelper.DEFAULT_ANIMATION_DELAY;
 
@@ -64,23 +65,23 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     }
 
     private void playMoveLeft() {
-        //TODO: 04/02/2017 audio file (en, sw) slide left
-//        MediaPlayerHelper.playWithDelay(this, R.raw.move_left, new MediaPlayerHelper.MediaPlayerListener() {
-//            @Override
-//            public void onCompletion() {
+        //TODO: 04/02/2017 audio file (en, sw) "Find the images on the right"
+        MediaPlayerHelper.playWithDelay(this, R.raw.find_right, new MediaPlayerHelper.MediaPlayerListener() {
+            @Override
+            public void onCompletion() {
                 showSlideLeft();
-//            }
-//        });
+            }
+        });
     }
 
     private void playMoveRight() {
-        //TODO: 04/02/2017 audio file (en, sw) slide right
-//        MediaPlayerHelper.playWithDelay(this, R.raw.move_right, new MediaPlayerHelper.MediaPlayerListener() {
-//            @Override
-//            public void onCompletion() {
+        //TODO: 04/02/2017 audio file (en, sw) "Find the images on the left"
+        MediaPlayerHelper.playWithDelay(this, R.raw.find_left, new MediaPlayerHelper.MediaPlayerListener() {
+            @Override
+            public void onCompletion() {
                 showSlideRight();
-//            }
-//        });
+            }
+        });
     }
 
     /**
@@ -96,7 +97,6 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
      * Swipe to right explanation with audio and hand animation
      */
     private void showSlideRight() {
-        resetHandPosition();
         mAnimationHelper = new AnimationHelper(this, R.anim.slide_right);
         mAnimationHelper.setRepeatMode(true);
         mAnimationHelper.animateView(mHandView, DEFAULT_ANIMATION_DELAY);
@@ -142,6 +142,7 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     public void onPageSelected(int page) {
         if ((page == 1) && isDetectRightActive()) {
             setDetectLeft(false);
+            resetHandPosition();
             playMoveRight();
         } else if ((page == 0) && !isDetectLeftActive()) {
             setDetectRight(false);
