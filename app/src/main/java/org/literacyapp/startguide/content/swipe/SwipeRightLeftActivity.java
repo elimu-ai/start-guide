@@ -2,23 +2,30 @@ package org.literacyapp.startguide.content.swipe;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import org.literacyapp.startguide.R;
 import org.literacyapp.startguide.util.AnimationHelper;
+import org.literacyapp.startguide.util.MediaPlayerHelper;
+
+import static org.literacyapp.startguide.util.AnimationHelper.DEFAULT_ANIMATION_DELAY;
 
 /**
  * Activity that explain swipe right and left
  */
-public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,
+        View.OnTouchListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for
@@ -28,6 +35,7 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
+    private AnimationHelper mAnimationHelper;
     private ViewPager mViewPager;
     private View mHandView;
 
@@ -48,30 +56,65 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(this);
+        mViewPager.setOnTouchListener(this);
 
         //Hand view
         mHandView = findViewById(R.id.hand);
 
-        showSlideLeft();
+        playMoveLeft();
+    }
+
+    private void playMoveLeft() {
+        //TODO: 04/02/2017 audio file (en, sw) "Find the images on the right"
+        MediaPlayerHelper.playWithDelay(this, R.raw.find_right, new MediaPlayerHelper.MediaPlayerListener() {
+            @Override
+            public void onCompletion() {
+                showSlideLeft();
+            }
+        });
+    }
+
+    private void playMoveRight() {
+        //TODO: 04/02/2017 audio file (en, sw) "Find the images on the left"
+        MediaPlayerHelper.playWithDelay(this, R.raw.find_left, new MediaPlayerHelper.MediaPlayerListener() {
+            @Override
+            public void onCompletion() {
+                showSlideRight();
+            }
+        });
     }
 
     /**
      * Swipe to left explanation with audio and hand animation
      */
     private void showSlideLeft() {
-        //TODO: 04/02/2017 audio file (en, sw) slide left
-//        MediaPlayerHelper.play(this, R.raw.slide_left);
-        AnimationHelper.animateView(this, mHandView, R.anim.slide_left);
-
+        mAnimationHelper = new AnimationHelper(this, R.anim.slide_left);
+        mAnimationHelper.setRepeatMode(true);
+        mAnimationHelper.animateView(mHandView, DEFAULT_ANIMATION_DELAY);
     }
 
     /**
      * Swipe to right explanation with audio and hand animation
      */
     private void showSlideRight() {
-        //TODO: 04/02/2017 audio file (en, sw) slide right
-//        MediaPlayerHelper.play(this, R.raw.slide_right);
-        AnimationHelper.animateView(this, mHandView, R.anim.slide_right);
+        mAnimationHelper = new AnimationHelper(this, R.anim.slide_right);
+        mAnimationHelper.setRepeatMode(true);
+        mAnimationHelper.animateView(mHandView, DEFAULT_ANIMATION_DELAY);
+    }
+
+    private void resetHandPosition() {
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)mHandView.getLayoutParams();
+        params.anchorGravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
+
+        mHandView.setLayoutParams(params);
+        mHandView.setVisibility(View.VISIBLE);
+    }
+
+    private void stopAnimation() {
+        if (mAnimationHelper != null) {
+            mAnimationHelper.stopAnimation();
+        }
+        mHandView.setVisibility(View.GONE);
     }
 
     private boolean isDetectLeftActive() {
@@ -99,7 +142,8 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     public void onPageSelected(int page) {
         if ((page == 1) && isDetectRightActive()) {
             setDetectLeft(false);
-            showSlideRight();
+            resetHandPosition();
+            playMoveRight();
         } else if ((page == 0) && !isDetectLeftActive()) {
             setDetectRight(false);
             // TODO: 12/02/2017 go to the 'exit full screen' explanation
@@ -108,6 +152,14 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
 
     @Override
     public void onPageScrollStateChanged(int state) {
+    }
+    //endregion
+
+    //region OnTouchListener
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        stopAnimation();
+        return false;
     }
     //endregion
 

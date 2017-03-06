@@ -2,6 +2,7 @@ package org.literacyapp.startguide.util;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.util.Log;
 
 /**
@@ -13,7 +14,9 @@ import android.util.Log;
  */
 public class MediaPlayerHelper {
 
-    public static void play(Context context, int resId) {
+    public static final long DEFAULT_PLAYER_DELAY = 1000;
+
+    public static void play(Context context, int resId, final MediaPlayerListener listener) {
         Log.i(MediaPlayerHelper.class.getName(), "play");
 
         final MediaPlayer mediaPlayer = MediaPlayer.create(context, resId);
@@ -21,8 +24,31 @@ public class MediaPlayerHelper {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 mediaPlayer.release();
+                if (listener != null) {
+                    listener.onCompletion();
+                }
             }
         });
         mediaPlayer.start();
+    }
+
+    /**
+     * Play media player with delay DEFAULT_PLAYER_DELAY
+     */
+    public static void playWithDelay(Context context, int resId, MediaPlayerListener listener) {
+        playWithDelay(context, resId, DEFAULT_PLAYER_DELAY, listener);
+    }
+
+    public static void playWithDelay(final Context context, final int resId, long delay, final MediaPlayerListener listener) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                play(context, resId, listener);
+            }
+        }, delay);
+    }
+
+    public interface MediaPlayerListener {
+        void onCompletion();
     }
 }

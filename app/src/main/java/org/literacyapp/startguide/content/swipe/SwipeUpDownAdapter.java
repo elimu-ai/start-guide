@@ -2,6 +2,7 @@ package org.literacyapp.startguide.content.swipe;
 
 import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,18 @@ import org.literacyapp.startguide.R;
 public class SwipeUpDownAdapter extends RecyclerView.Adapter<SwipeUpDownAdapter.ViewHolder> {
 
     private TypedArray images;
+    private boolean detectUp = true;
+    private boolean detectDown = false;
+    private OnScrollListener listener;
 
-    public SwipeUpDownAdapter(TypedArray images) {
+    public interface OnScrollListener {
+        void onLastItemReached();
+        void onFirstItemReached();
+    }
+
+    public SwipeUpDownAdapter(TypedArray images, OnScrollListener listener) {
         this.images = images;
+        this.listener = listener;
     }
 
     @Override
@@ -31,11 +41,46 @@ public class SwipeUpDownAdapter extends RecyclerView.Adapter<SwipeUpDownAdapter.
     public void onBindViewHolder(SwipeUpDownAdapter.ViewHolder holder, int position) {
         holder.mLeftView.setImageResource(images.getResourceId(position*2, -1));
         holder.mRightView.setImageResource(images.getResourceId(position*2 + 1, -1));
+
+        if (isDetectScrollUpActive() && isLastItemVisible(position)) {
+            Log.d(getClass().getName(), "Last item reached");
+            setDetectUpActive(false);
+            setDetectDownActive(true);
+
+            listener.onLastItemReached();
+        } else if (isDetectScrollDownActive() && isFirstItemVisible(position)) {
+            Log.d(getClass().getName(), "First item reached");
+            listener.onFirstItemReached();
+        }
     }
 
     @Override
     public int getItemCount() {
         return images.length() / 2;
+    }
+
+    private void setDetectUpActive(boolean activeUpDetect) {
+        detectUp = activeUpDetect;
+    }
+
+    private void setDetectDownActive(boolean activeDownDetect) {
+        detectDown = activeDownDetect;
+    }
+
+    private boolean isDetectScrollUpActive() {
+        return detectUp;
+    }
+
+    private boolean isDetectScrollDownActive() {
+        return detectDown;
+    }
+
+    private boolean isLastItemVisible(int position) {
+        return (position == getItemCount() - 1);
+    }
+
+    private boolean isFirstItemVisible(int position) {
+        return (position == 0);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
