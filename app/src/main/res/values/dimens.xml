@@ -1,0 +1,17 @@
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_margin_half">8dp</dimen>
+    <dimen name="gridlayout_text_size">140sp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="swipe_hand_margin_bottom">150dp</dimen>
+
+    <dimen name="swipe_image_width">220dp</dimen>
+    <dimen name="swipe_image_height">220dp</dimen>
+    <dimen name="swipe_image_margin">40dp</dimen>
+    <dimen name="swipe_hand_margin_right">60dp</dimen>
+    <dimen name="swipe_hand_width">300dp</dimen>
+    <dimen name="swipe_hand_height">225dp</dimen>
+</resources>

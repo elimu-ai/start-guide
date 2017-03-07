@@ -1,0 +1,25 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pager_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.literacyapp.startguide.content.swipe.SwipeRightLeftActivity$PlaceholderFragment">
+
+    <ImageView
+        android:id="@+id/left_image"
+        android:layout_width="@dimen/swipe_image_width"
+        android:layout_height="@dimen/swipe_image_height"
+        android:layout_margin="@dimen/swipe_image_margin"
+        tools:src="@drawable/baby_giraffe"/>
+
+    <ImageView
+        android:id="@+id/right_image"
+        android:layout_width="@dimen/swipe_image_width"
+        android:layout_height="@dimen/swipe_image_height"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/swipe_image_margin"
+        tools:src="@drawable/tree"/>
+
+</RelativeLayout>
