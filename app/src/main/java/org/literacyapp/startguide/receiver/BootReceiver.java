@@ -5,16 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 
 import org.literacyapp.startguide.content.swipe.SwipeUpDownActivity;
+import org.literacyapp.startguide.util.StartPrefsHelper;
 
-/**
- * Created by GSC on 13/02/2017.
- */
 
 public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction()) && StartPrefsHelper.startAfterBoot(context)) {
             Intent bootIntent = new Intent(context, SwipeUpDownActivity.class);
             bootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(bootIntent);
