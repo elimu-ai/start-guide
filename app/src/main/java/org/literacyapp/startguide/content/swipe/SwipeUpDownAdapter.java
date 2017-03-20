@@ -41,14 +41,18 @@ public class SwipeUpDownAdapter extends RecyclerView.Adapter<SwipeUpDownAdapter.
     public void onBindViewHolder(SwipeUpDownAdapter.ViewHolder holder, int position) {
         holder.mLeftView.setImageResource(images.getResourceId(position*2, -1));
         holder.mRightView.setImageResource(images.getResourceId(position*2 + 1, -1));
+    }
 
-        if (isDetectScrollUpActive() && isLastItemVisible(position)) {
+    @Override
+    public void onViewAttachedToWindow(ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        if (isDetectScrollUpActive() && isLastItemVisible(holder.getAdapterPosition())) {
             Log.d(getClass().getName(), "Last item reached");
             setDetectUpActive(false);
             setDetectDownActive(true);
 
             listener.onLastItemReached();
-        } else if (isDetectScrollDownActive() && isFirstItemVisible(position)) {
+        } else if (isDetectScrollDownActive() && isFirstItemVisible(holder.getAdapterPosition())) {
             Log.d(getClass().getName(), "First item reached");
             listener.onFirstItemReached();
         }
