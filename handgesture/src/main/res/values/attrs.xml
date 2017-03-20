@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HandView">
+
+        <!-- Hide view when touching screen. Default: true -->
+        <attr name="hideOnTouch" format="boolean" />
+
+        <attr name="animationType" format="enum">
+            <enum name="moveUp" value="0" />
+            <enum name="moveDown" value="1" />
+            <enum name="moveLeft" value="2" />
+            <enum name="moveRight" value="3" />
+        </attr>
+
+        <!-- Repeat animation. Default: true  -->
+        <attr name="repeatAnimation" format="boolean" />
+
+        <!-- Animation delay in seconds. Default: 1s -->
+        <attr name="animationDelay" format="integer" />
+    </declare-styleable>
+</resources>

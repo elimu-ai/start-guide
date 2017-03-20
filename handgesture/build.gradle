@@ -1,24 +1,23 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
+
     defaultConfig {
-        applicationId "org.literacyapp.startguide"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 1000000
-        versionName "1.0.0"
+        versionCode 1
+        versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
             minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-
-    lintOptions {
-        abortOnError false
     }
 }
 
@@ -28,9 +27,5 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
     testCompile 'junit:junit:4.12'
-    compile project(':handgesture')
 }

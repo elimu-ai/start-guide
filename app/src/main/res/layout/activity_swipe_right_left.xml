@@ -15,14 +15,14 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <ImageView
+    <org.literacyapp.handgesture.HandView
         android:id="@+id/hand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|right"
         android:layout_marginRight="@dimen/swipe_hand_margin_right"
-        android:src="@drawable/index_finger"
         app:layout_anchor="@+id/container"
-        app:layout_anchorGravity="center_vertical|right"/>
+        app:layout_anchorGravity="center_vertical|right"
+        app:animationType="moveLeft" />
 
 </android.support.design.widget.CoordinatorLayout>
