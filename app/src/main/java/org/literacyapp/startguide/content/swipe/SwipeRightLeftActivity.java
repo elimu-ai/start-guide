@@ -17,7 +17,6 @@ import android.widget.ImageView;
 
 import org.literacyapp.handgesture.HandView;
 import org.literacyapp.startguide.R;
-import org.literacyapp.startguide.util.AnimationHelper;
 import org.literacyapp.startguide.util.MediaPlayerHelper;
 
 /**
@@ -34,7 +33,6 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    private AnimationHelper mAnimationHelper;
     private ViewPager mViewPager;
     private HandView mHandView;
 
