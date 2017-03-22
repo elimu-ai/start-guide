@@ -14,12 +14,14 @@ public class AnimationHelper implements Animation.AnimationListener {
 
     private boolean repeat;
 
+    private TouchListener mTouchListener;
     private Animation mAnimation;
     private View mView;
 
-    public AnimationHelper(Context context, int idAnim) {
+    public AnimationHelper(Context context, int idAnim, TouchListener touchListener) {
         mAnimation = AnimationUtils.loadAnimation(context, idAnim);
         mAnimation.setAnimationListener(this);
+        mTouchListener = touchListener;
     }
 
     public void setRepeatMode(boolean repeat) {
@@ -52,10 +54,13 @@ public class AnimationHelper implements Animation.AnimationListener {
     //region Animation.AnimationListener
     @Override
     public void onAnimationStart(Animation animation) {
+        mTouchListener.onTouchStart();
     }
 
     @Override
     public void onAnimationEnd(Animation animation) {
+        mTouchListener.onTouchEnd();
+
         if (isRepeatMode()) {
             animateView(mView);
         }
@@ -65,4 +70,9 @@ public class AnimationHelper implements Animation.AnimationListener {
     public void onAnimationRepeat(Animation animation) {
     }
     //endregion
+
+    public interface TouchListener {
+        void onTouchStart();
+        void onTouchEnd();
+    }
 }

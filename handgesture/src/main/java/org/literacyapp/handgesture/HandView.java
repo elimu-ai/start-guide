@@ -6,11 +6,12 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 /**
  */
-public class HandView extends RelativeLayout {
+public class HandView extends RelativeLayout implements AnimationHelper.TouchListener {
 
     public enum HandGesture {
         MOVE_UP(R.anim.slide_up),
@@ -28,6 +29,8 @@ public class HandView extends RelativeLayout {
             return idAnim;
         }
     }
+
+    private View mView;
 
     private AnimationHelper mAnimationHelper;
 
@@ -50,7 +53,7 @@ public class HandView extends RelativeLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        inflate(context, R.layout.hand_layout, this);
+        mView = inflate(context, R.layout.hand_layout, this);
 
         if (attrs != null) {
             // Attribute initialization
@@ -95,8 +98,28 @@ public class HandView extends RelativeLayout {
     }
 
     public void startAnimation(int idAnimResource) {
-        mAnimationHelper = new AnimationHelper(getContext(), idAnimResource);
+        mAnimationHelper = new AnimationHelper(getContext(), idAnimResource, this);
         mAnimationHelper.setRepeatMode(mRepeatAnimation);
         mAnimationHelper.animateView(this, mAnimationDelay*1000);
     }
+
+    public void startTouch() {
+        mView.findViewById(R.id.circles).setVisibility(VISIBLE);
+    }
+
+    public void endTouch() {
+        mView.findViewById(R.id.circles).setVisibility(GONE);
+    }
+
+    //region TouchListener
+    @Override
+    public void onTouchStart() {
+        startTouch();
+    }
+
+    @Override
+    public void onTouchEnd() {
+        endTouch();
+    }
+    //endregion
 }

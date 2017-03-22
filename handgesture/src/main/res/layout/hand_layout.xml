@@ -4,8 +4,16 @@
     android:layout_height="wrap_content">
 
     <ImageView
+        android:id="@+id/circles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/index_finger"
-        />
+        android:layout_marginLeft="57dp"
+        android:src="@drawable/circles"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:src="@drawable/index_finger" />
 </RelativeLayout>
