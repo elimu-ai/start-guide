@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import org.literacyapp.handgesture.Gestures;
 import org.literacyapp.handgesture.HandView;
 import org.literacyapp.startguide.R;
 import org.literacyapp.startguide.util.MediaPlayerHelper;
@@ -68,7 +69,7 @@ public class SwipeUpDownActivity extends AppCompatActivity implements View.OnTou
      * Hand animation to explain scroll to the bottom
      */
     private void showMoveBottom() {
-        mHandView.startAnimation(HandView.HandGesture.MOVE_UP);
+        mHandView.startAnimation(Gestures.MOVE_UP);
     }
 
     /**
@@ -76,7 +77,7 @@ public class SwipeUpDownActivity extends AppCompatActivity implements View.OnTou
      */
     private void showMoveTop() {
         resetHandPosition();
-        mHandView.startAnimation(HandView.HandGesture.MOVE_DOWN);
+        mHandView.startAnimation(Gestures.MOVE_DOWN);
     }
 
     private void resetHandPosition() {

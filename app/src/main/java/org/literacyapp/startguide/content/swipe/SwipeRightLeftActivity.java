@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import org.literacyapp.handgesture.Gestures;
 import org.literacyapp.handgesture.HandView;
 import org.literacyapp.startguide.R;
 import org.literacyapp.startguide.util.MediaPlayerHelper;
@@ -92,7 +93,7 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
      * Swipe to right explanation with audio and hand animation
      */
     private void showSlideRight() {
-        mHandView.startAnimation(HandView.HandGesture.MOVE_RIGHT);
+        mHandView.startAnimation(Gestures.MOVE_RIGHT);
     }
 
     private void resetHandPosition() {

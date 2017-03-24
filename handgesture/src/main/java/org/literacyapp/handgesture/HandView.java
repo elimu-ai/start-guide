@@ -13,23 +13,6 @@ import android.widget.RelativeLayout;
  */
 public class HandView extends RelativeLayout implements AnimationHelper.TouchListener {
 
-    public enum HandGesture {
-        MOVE_UP(R.anim.slide_up),
-        MOVE_DOWN(R.anim.slide_down),
-        MOVE_LEFT(R.anim.slide_left),
-        MOVE_RIGHT(R.anim.slide_right);
-
-        private int idAnim;
-
-        HandGesture(int idAnim) {
-            this.idAnim = idAnim;
-        }
-
-        public int getAnimationResource() {
-            return idAnim;
-        }
-    }
-
     private View mView;
 
     private AnimationHelper mAnimationHelper;
@@ -87,13 +70,13 @@ public class HandView extends RelativeLayout implements AnimationHelper.TouchLis
 
     public void startAnimation() {
         if (mAnimationType >= 0) {
-            startAnimation(HandGesture.values()[mAnimationType].getAnimationResource());
+            startAnimation(Gestures.getAnimationResource(mAnimationType));
         } else {
             Log.d(getClass().getName(), "Animation type is not stablished");
         }
     }
 
-    public void startAnimation(HandGesture handAnimation) {
+    public void startAnimation(Gestures.HandGesture handAnimation) {
         startAnimation(handAnimation.getAnimationResource());
     }
 
