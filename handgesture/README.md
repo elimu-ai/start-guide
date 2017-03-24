@@ -26,10 +26,9 @@
 </RelativeLayout>
 ```
 
-```
+
     HandView mHandView = (HandView) findViewById(R.id.hand_view);
     mHandView.startAnimation();
-```
 
 
 You can use other animations passing the animation to `startAnimation`
@@ -38,4 +37,4 @@ You can use other animations passing the animation to `startAnimation`
 
 or
 
-    mHandView.startAnimation(HandView.HandGesture.MOVE_UP);
+    mHandView.startAnimation(Gestures.MOVE_UP);
