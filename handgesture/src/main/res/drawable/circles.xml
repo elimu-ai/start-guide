@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Larger blue circle in back -->
     <item>
         <shape android:shape="oval">
             <padding
                 android:bottom="10dp"
                 android:left="10dp"
                 android:right="10dp"
-                android:top="10dp"
-                />
+                android:top="10dp" />
             <size
                 android:width="60dp"
                 android:height="60dp"/>
@@ -18,40 +16,14 @@
         </shape>
     </item>
 
-    <item
-        >
-        <shape android:shape="oval"
-            >
+    <item>
+        <shape android:shape="oval">
             <size
                 android:width="25dp"
                 android:height="25dp"/>
             <stroke
-
                 android:width="2dp"
                 android:color="@android:color/darker_gray"/>
-
         </shape>
     </item>
-    <!--<item>
-        <shape android:shape="oval">
-            <stroke
-                android:color="@android:color/darker_gray"
-                android:width="5dp"/>
-            <size
-                android:width="15dp"
-                android:height="15dp"/>
-        </shape>
-    </item>
-    &lt;!&ndash; Smaller red circle in front &ndash;&gt;
-    <item>
-        <shape android:shape="oval">
-            &lt;!&ndash; transparent stroke = larger_circle_size - smaller_circle_size &ndash;&gt;
-            <stroke android:color="@android:color/darker_gray"
-                    android:width="5dp"/>
-
-            <size
-                android:width="10dp"
-                android:height="10dp"/>
-        </shape>
-    </item>-->
 </layer-list>
