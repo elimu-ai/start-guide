@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 
 /**
  * Created by GSC on 04/02/2017.
@@ -11,6 +12,9 @@ import android.view.animation.AnimationUtils;
 public class AnimationHelper implements Animation.AnimationListener {
 
     public static final long DEFAULT_ANIMATION_DELAY = 1000;
+    private static final long SCALE_DURATION = 500;
+
+    private HandAnimationListener mAnimationListener;
 
     private boolean repeat;
 
@@ -22,6 +26,15 @@ public class AnimationHelper implements Animation.AnimationListener {
         mAnimation = AnimationUtils.loadAnimation(context, idAnim);
         mAnimation.setAnimationListener(this);
         mTouchListener = touchListener;
+
+        mAnimationListener = new HandAnimationListener() {
+            @Override
+            public void onMakeSmallerEnd() {
+                mView.setScaleX(.9f);
+                mView.setScaleY(.9f);
+                mView.startAnimation(mAnimation);
+            }
+        };
     }
 
     public void setRepeatMode(boolean repeat) {
@@ -37,7 +50,7 @@ public class AnimationHelper implements Animation.AnimationListener {
         mView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mView.startAnimation(mAnimation);
+                mView.startAnimation(makeSmallerImage());
             }
         }, delay);
     }
@@ -60,6 +73,8 @@ public class AnimationHelper implements Animation.AnimationListener {
     @Override
     public void onAnimationEnd(Animation animation) {
         mTouchListener.onTouchEnd();
+        mView.setScaleX(1);
+        mView.setScaleY(1);
 
         if (isRepeatMode()) {
             animateView(mView);
@@ -74,5 +89,35 @@ public class AnimationHelper implements Animation.AnimationListener {
     public interface TouchListener {
         void onTouchStart();
         void onTouchEnd();
+    }
+
+    public ScaleAnimation makeSmallerImage() {
+        return makeSmallerImage(SCALE_DURATION);
+    }
+
+    public ScaleAnimation makeSmallerImage(long duration) {
+        ScaleAnimation scale = new ScaleAnimation(1f, 0.9f, 1f, 0.9f);
+
+        scale.setFillEnabled(true);
+        scale.setFillAfter(true);
+        scale.setDuration(duration);
+
+        scale.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mAnimationListener.onMakeSmallerEnd();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        return scale;
+    }
+
+    public interface HandAnimationListener {
+        void onMakeSmallerEnd();
     }
 }
