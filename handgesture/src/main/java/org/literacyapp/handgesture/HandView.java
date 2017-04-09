@@ -2,6 +2,7 @@ package org.literacyapp.handgesture;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Animatable;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import org.literacyapp.handgesture.Gestures.HandGesture;
@@ -26,7 +28,7 @@ public class HandView extends RelativeLayout implements AnimationHelper.TouchLis
     private static final long SCALE_DURATION = 500;
 
     private View mView;
-    private View mTouchScreenView;
+    private ImageView mHandView;
 
     private AnimationHelper mAnimationHelper;
     private HandGesture handGesture;
@@ -52,7 +54,7 @@ public class HandView extends RelativeLayout implements AnimationHelper.TouchLis
     private void init(Context context, AttributeSet attrs) {
         mView = inflate(context, R.layout.hand_layout, this);
 
-        mTouchScreenView = mView.findViewById(R.id.circles);
+        mHandView = (ImageView) mView.findViewById(R.id.animated_hand);
 
         if (attrs != null) {
             // Attribute initialization
@@ -119,11 +121,13 @@ public class HandView extends RelativeLayout implements AnimationHelper.TouchLis
     //endregion
 
     private void startTouch() {
-        mTouchScreenView.setVisibility(VISIBLE);
+        mHandView.setImageResource(R.drawable.animation_vector_touch_on);
+        ((Animatable) mHandView.getDrawable()).start();
     }
 
     private void endTouch() {
-        mTouchScreenView.setVisibility(GONE);
+        mHandView.setImageResource(R.drawable.animation_vector_touch_off);
+        ((Animatable) mHandView.getDrawable()).start();
     }
 
     private void startGesture(HandGesture handGesture) {
@@ -162,11 +166,12 @@ public class HandView extends RelativeLayout implements AnimationHelper.TouchLis
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                mTouchScreenView.setVisibility(VISIBLE);
+                startTouch();
+
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mTouchScreenView.setVisibility(GONE);
+                        endTouch();
                     }
                 }, pressTime);
             }

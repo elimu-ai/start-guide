@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/circles"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="59dp"
-        android:src="@drawable/circles"
-        android:visibility="gone"
-        tools:visibility="visible" />
-
-    <ImageView
+        android:id="@+id/animated_hand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:src="@drawable/index_finger" />
+        android:src="@drawable/animation_vector_touch_on" />
 </RelativeLayout>
