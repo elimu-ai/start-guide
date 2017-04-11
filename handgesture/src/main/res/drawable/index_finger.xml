@@ -1,15 +1,17 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-        android:width="@dimen/swipe_hand_width"
-        android:height="@dimen/swipe_hand_height"
-        android:viewportHeight="480.0"
-        android:viewportWidth="640.0">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="@dimen/swipe_hand_width"
+    android:height="@dimen/swipe_hand_height"
+    android:viewportHeight="480.0"
+    android:viewportWidth="640.0">
 
     <path
         android:name="touch_effect"
         android:pathData="M200,64 m-60,0 a60,60 0,1 1,120 0 a60,60 0,1 1,-120 0 M200,64 m-40,0 a40,40 0,1 1,80 0 a40,40 0,1 1,-80 0"
-        android:strokeColor="#aaa"
+        android:strokeColor="#7777"
         android:strokeWidth="8"
-        android:strokeAlpha="0" />
+        android:strokeAlpha="0"
+        tools:strokeAlpha="1" />
 
     <group
         android:pivotX="240.0"
