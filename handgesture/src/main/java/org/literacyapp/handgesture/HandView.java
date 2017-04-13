@@ -38,7 +38,7 @@ public class HandView extends RelativeLayout implements AnimationHelper.TouchLis
     private boolean mRepeatAnimation = true;
     //Delay in seconds
     private int mAnimationDelay;
-
+    private boolean firstAnimation = true;
 
     // used in view creation programmatically
     public HandView(Context context) {
@@ -142,24 +142,34 @@ public class HandView extends RelativeLayout implements AnimationHelper.TouchLis
     }
 
     private void startOneTouchAnimation() {
-        startTouchAnimation(1000, false);
+        startTouchAnimation(600);
     }
 
     private void startDoubleTouchAnimation() {
-        startTouchAnimation(200, true);
+        startTouchAnimation(100, 100);
     }
 
     private void startPressAndHoldAnimation() {
-        startTouchAnimation(2000, false);
+        startTouchAnimation(1400);
     }
 
-    private void startTouchAnimation(final long pressTime, boolean repeat) {
-        AnimationSet animationSet = new AnimationSet(true);
-        animationSet.setFillAfter(true);
+    private void startTouchAnimation(final long pressTime) {
+        startTouchAnimation(pressTime, 0);
+    }
+
+    private void startTouchAnimation(final long pressTime, long secondTouchOffset) {
+        AnimationSet animationSet = new AnimationSet(false);
+        long startOffset = 1000;
+
+        if (secondTouchOffset > 0) {
+            startOffset = firstAnimation ? 1000 : secondTouchOffset;
+            firstAnimation = !firstAnimation;
+        }
 
         ScaleAnimation scale = new ScaleAnimation(1f, 0.9f, 1f, 0.9f);
-        scale.setStartOffset(1000);
+        scale.setStartOffset(startOffset);
         scale.setDuration(SCALE_DURATION);
+        scale.setFillAfter(true);
         scale.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {}
@@ -183,14 +193,12 @@ public class HandView extends RelativeLayout implements AnimationHelper.TouchLis
         animationSet.addAnimation(scale);
 
         ScaleAnimation scale2 = new ScaleAnimation(0.9f, 1f, 0.9f, 1f);
-        scale2.setStartOffset(1000+SCALE_DURATION+pressTime);
+        scale2.setStartOffset(startOffset+SCALE_DURATION+pressTime);
         scale2.setDuration(SCALE_DURATION);
+        scale2.setFillAfter(true);
         animationSet.addAnimation(scale2);
 
         mView.setAnimation(animationSet);
-
-        if (repeat)
-            animationSet.setRepeatCount(2);
 
         animationSet.start();
     }
