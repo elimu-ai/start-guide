@@ -6,32 +6,35 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 
+import static org.literacyapp.handgesture.Constants.DEFAULT_ANIMATION_DELAY;
+import static org.literacyapp.handgesture.Constants.SCALE_DURATION;
+import static org.literacyapp.handgesture.Constants.SCALE_FACTOR;
+
 /**
  * Created by GSC on 04/02/2017.
  */
 public class AnimationHelper implements Animation.AnimationListener {
 
-    public static final long DEFAULT_ANIMATION_DELAY = 1000;
-    private static final long SCALE_DURATION = 500;
-
     private HandAnimationListener mAnimationListener;
 
     private boolean repeat;
 
-    private TouchListener mTouchListener;
+    private HandGestureListener mHandGestureListener;
     private Animation mAnimation;
     private View mView;
 
-    public AnimationHelper(Context context, int idAnim, TouchListener touchListener) {
+    public AnimationHelper(Context context, int idAnim, HandGestureListener handGestureListener) {
         mAnimation = AnimationUtils.loadAnimation(context, idAnim);
         mAnimation.setAnimationListener(this);
-        mTouchListener = touchListener;
+        mHandGestureListener = handGestureListener;
 
         mAnimationListener = new HandAnimationListener() {
             @Override
             public void onMakeSmallerEnd() {
-                mView.setScaleX(.9f);
-                mView.setScaleY(.9f);
+                mView.setPivotX(.5f);
+                mView.setPivotY(.5f);
+                mView.setScaleX(SCALE_FACTOR);
+                mView.setScaleY(SCALE_FACTOR);
                 mView.startAnimation(mAnimation);
             }
         };
@@ -67,14 +70,15 @@ public class AnimationHelper implements Animation.AnimationListener {
     //region Animation.AnimationListener
     @Override
     public void onAnimationStart(Animation animation) {
-        mTouchListener.onTouchStart();
+        mHandGestureListener.onTouchStart();
     }
 
     @Override
     public void onAnimationEnd(Animation animation) {
-        mTouchListener.onTouchEnd();
+        mHandGestureListener.onTouchEnd();
         mView.setScaleX(1);
         mView.setScaleY(1);
+
 
         if (isRepeatMode()) {
             animateView(mView);
@@ -86,17 +90,12 @@ public class AnimationHelper implements Animation.AnimationListener {
     }
     //endregion
 
-    public interface TouchListener {
-        void onTouchStart();
-        void onTouchEnd();
-    }
-
     public ScaleAnimation makeSmallerImage() {
         return makeSmallerImage(SCALE_DURATION);
     }
 
     public ScaleAnimation makeSmallerImage(long duration) {
-        ScaleAnimation scale = new ScaleAnimation(1f, 0.9f, 1f, 0.9f);
+        ScaleAnimation scale = new ScaleAnimation(1f, SCALE_FACTOR, 1f, SCALE_FACTOR);
 
         scale.setFillEnabled(true);
         scale.setFillAfter(true);

@@ -17,20 +17,14 @@ public class Gestures {
         MOVE_DOWN(R.anim.slide_down),
         MOVE_LEFT(R.anim.slide_left),
         MOVE_RIGHT(R.anim.slide_right),
-        SINGLE_TAP(0, false),
-        DOUBLE_TAP(0, false),
-        PRESS_AND_HOLD(0, false);
+        SINGLE_TAP(0),
+        DOUBLE_TAP(0),
+        PRESS_AND_HOLD(0);
 
         private int idAnim;
-        private boolean translation;
 
         HandGesture(int idAnim) {
-            this(idAnim, true);
-        }
-
-        HandGesture(int idAnim, boolean translation) {
             this.idAnim = idAnim;
-            this.translation = translation;
         }
 
         public int getAnimationResource() {
@@ -38,12 +32,8 @@ public class Gestures {
         }
 
         public boolean isTranslation() {
-            return translation;
+            return idAnim > 0;
         }
-    }
-
-    public static int getAnimationResource(int animationType) {
-        return HandGesture.values()[animationType].getAnimationResource();
     }
 
     public int getAnimationResource(HandGesture handGesture) {

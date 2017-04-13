@@ -3,29 +3,24 @@ package org.literacyapp.handgesture;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Animatable;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import org.literacyapp.handgesture.Gestures.HandGesture;
 
+import static org.literacyapp.handgesture.Constants.MILLISECONDS;
 import static org.literacyapp.handgesture.Gestures.DOUBLE_TAP;
 import static org.literacyapp.handgesture.Gestures.PRESS_AND_HOLD;
 import static org.literacyapp.handgesture.Gestures.SINGLE_TAP;
 
 /**
  */
-public class HandView extends RelativeLayout implements AnimationHelper.TouchListener {
-
-    private static final long SCALE_DURATION = 500;
+public class HandView extends RelativeLayout implements HandGestureListener {
 
     private View mView;
     private ImageView mHandView;
@@ -38,7 +33,8 @@ public class HandView extends RelativeLayout implements AnimationHelper.TouchLis
     private boolean mRepeatAnimation = true;
     //Delay in seconds
     private int mAnimationDelay;
-    private boolean firstAnimation = true;
+    //Flag for double touch gesture
+    private boolean firstTouch = true;
 
     // used in view creation programmatically
     public HandView(Context context) {
@@ -77,10 +73,10 @@ public class HandView extends RelativeLayout implements AnimationHelper.TouchLis
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (getVisibility() == VISIBLE && mHideOnTouch) {
-            setVisibility(GONE);
             if (mAnimationHelper != null) {
                 mAnimationHelper.stopAnimation();
             }
+            setVisibility(GONE);
             return true;
         }
         return false;
@@ -90,7 +86,7 @@ public class HandView extends RelativeLayout implements AnimationHelper.TouchLis
         if (mAnimationType >= 0) {
             startAnimation(HandGesture.values()[mAnimationType].getAnimationResource());
         } else {
-            Log.d(getClass().getName(), "Animation type is not stablished");
+            Log.e(getClass().getName(), "Animation type not set");
         }
     }
 
@@ -105,20 +101,8 @@ public class HandView extends RelativeLayout implements AnimationHelper.TouchLis
     public void startAnimation(int idAnimResource) {
         mAnimationHelper = new AnimationHelper(getContext(), idAnimResource, this);
         mAnimationHelper.setRepeatMode(mRepeatAnimation);
-        mAnimationHelper.animateView(this, mAnimationDelay*1000);
+        mAnimationHelper.animateView(this, mAnimationDelay * MILLISECONDS);
     }
-
-    //region TouchListener
-    @Override
-    public void onTouchStart() {
-        startTouch();
-    }
-
-    @Override
-    public void onTouchEnd() {
-        endTouch();
-    }
-    //endregion
 
     private void startTouch() {
         mHandView.setImageResource(R.drawable.animation_vector_touch_on);
@@ -133,74 +117,12 @@ public class HandView extends RelativeLayout implements AnimationHelper.TouchLis
     private void startGesture(HandGesture handGesture) {
         this.handGesture = handGesture;
         if (handGesture.equals(SINGLE_TAP)) {
-            startOneTouchAnimation();
+            new GestureHelper(this, this).startOneTouchAnimation();
         } else if (handGesture.equals(DOUBLE_TAP)) {
-            startDoubleTouchAnimation();
+            firstTouch = new GestureHelper(this, this).startDoubleTouchAnimation(firstTouch);
         } else if (handGesture.equals(PRESS_AND_HOLD)) {
-            startPressAndHoldAnimation();
+            new GestureHelper(this, this).startTouchAndHoldAnimation();
         }
-    }
-
-    private void startOneTouchAnimation() {
-        startTouchAnimation(600);
-    }
-
-    private void startDoubleTouchAnimation() {
-        startTouchAnimation(100, 100);
-    }
-
-    private void startPressAndHoldAnimation() {
-        startTouchAnimation(1400);
-    }
-
-    private void startTouchAnimation(final long pressTime) {
-        startTouchAnimation(pressTime, 0);
-    }
-
-    private void startTouchAnimation(final long pressTime, long secondTouchOffset) {
-        AnimationSet animationSet = new AnimationSet(false);
-        long startOffset = 1000;
-
-        if (secondTouchOffset > 0) {
-            startOffset = firstAnimation ? 1000 : secondTouchOffset;
-            firstAnimation = !firstAnimation;
-        }
-
-        ScaleAnimation scale = new ScaleAnimation(1f, 0.9f, 1f, 0.9f);
-        scale.setStartOffset(startOffset);
-        scale.setDuration(SCALE_DURATION);
-        scale.setFillAfter(true);
-        scale.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                startTouch();
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        endTouch();
-                    }
-                }, pressTime);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
-
-        animationSet.addAnimation(scale);
-
-        ScaleAnimation scale2 = new ScaleAnimation(0.9f, 1f, 0.9f, 1f);
-        scale2.setStartOffset(startOffset+SCALE_DURATION+pressTime);
-        scale2.setDuration(SCALE_DURATION);
-        scale2.setFillAfter(true);
-        animationSet.addAnimation(scale2);
-
-        mView.setAnimation(animationSet);
-
-        animationSet.start();
     }
 
     @Override
@@ -210,4 +132,23 @@ public class HandView extends RelativeLayout implements AnimationHelper.TouchLis
             startGesture(handGesture);
         }
     }
+
+    //region HandGestureListener
+
+    @Override
+    public void onZoomOutEnd() {
+        startTouch();
+    }
+
+    @Override
+    public void onTouchStart() {
+        startTouch();
+    }
+
+    @Override
+    public void onTouchEnd() {
+        endTouch();
+    }
+
+    //endregion
 }
