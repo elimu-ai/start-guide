@@ -2,7 +2,7 @@
 
 ### HandView attributes
 
-**animationType**: `moveUp`, `moveDown`, `moveLeft`, `moveRight`
+**animationType**: `moveUp`, `moveDown`, `moveLeft`, `moveRight`, `singleTouch`, `doubleTouch`, `pressAndHold`
     
 **hideOnTouch**: Hide view when touching screen. Default: `true`
 
