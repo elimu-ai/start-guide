@@ -36,7 +36,11 @@ public class Gestures {
         }
     }
 
-    public int getAnimationResource(HandGesture handGesture) {
-        return handGesture.getAnimationResource();
+    public static int getAnimationResource(int animationType) {
+        return HandGesture.values()[animationType].getAnimationResource();
+    }
+
+    public static HandGesture getHandGesture(int animationType) {
+        return HandGesture.values()[animationType];
     }
 }

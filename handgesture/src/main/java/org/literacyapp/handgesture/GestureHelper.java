@@ -7,6 +7,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 
 import static org.literacyapp.handgesture.Constants.DEFAULT_ANIMATION_DELAY;
+import static org.literacyapp.handgesture.Constants.MILLISECONDS;
 import static org.literacyapp.handgesture.Constants.SCALE_DURATION;
 import static org.literacyapp.handgesture.Constants.SCALE_FACTOR;
 
@@ -32,26 +33,26 @@ public class GestureHelper {
         mGestureListener = listener;
     }
 
-    public void startOneTouchAnimation() {
-        startTouchAnimation(ONE_TOUCH_PRESSURE_TIME);
+    public void startOneTouchAnimation(int animationDelay) {
+        startTouchAnimation(animationDelay, ONE_TOUCH_PRESSURE_TIME);
     }
 
-    public boolean startDoubleTouchAnimation(boolean firstTouch) {
+    public boolean startDoubleTouchAnimation(int animationDelay, boolean firstTouch) {
         mFirstAnimation = firstTouch;
-        startTouchAnimation(DOUBLE_TOUCH_PRESSURE_TIME, SECOND_TOUCH_OFFSET);
+        startTouchAnimation(animationDelay, DOUBLE_TOUCH_PRESSURE_TIME, SECOND_TOUCH_OFFSET);
         return !mFirstAnimation;
     }
 
-    public void startTouchAndHoldAnimation() {
-        startTouchAnimation(TOUCH_AND_HOLD_PRESSURE_TIME);
+    public void startTouchAndHoldAnimation(int animationDelay) {
+        startTouchAnimation(animationDelay, TOUCH_AND_HOLD_PRESSURE_TIME);
     }
 
-    private void startTouchAnimation(final long touchTime) {
-        startTouchAnimation(touchTime, 0);
+    private void startTouchAnimation(int animationDelay, long touchTime) {
+        startTouchAnimation(animationDelay, touchTime, 0);
     }
 
-    private void startTouchAnimation(final long touchTime, long secondTouchOffset) {
-        long startOffset = DEFAULT_ANIMATION_DELAY;
+    private void startTouchAnimation(int animationDelay, final long touchTime, long secondTouchOffset) {
+        long startOffset = (animationDelay > 0) ? animationDelay * MILLISECONDS : DEFAULT_ANIMATION_DELAY;
 
         if (isSecondTouchOfDoubleTouchGesture(secondTouchOffset)) {
             startOffset = secondTouchOffset;

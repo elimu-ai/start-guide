@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 
 import org.literacyapp.handgesture.Gestures.HandGesture;
 
-import static org.literacyapp.handgesture.Constants.MILLISECONDS;
 import static org.literacyapp.handgesture.Gestures.DOUBLE_TAP;
 import static org.literacyapp.handgesture.Gestures.PRESS_AND_HOLD;
 import static org.literacyapp.handgesture.Gestures.SINGLE_TAP;
@@ -84,7 +83,13 @@ public class HandView extends RelativeLayout implements HandGestureListener {
 
     public void startAnimation() {
         if (mAnimationType >= 0) {
-            startAnimation(HandGesture.values()[mAnimationType].getAnimationResource());
+            HandGesture gesture = Gestures.getHandGesture(mAnimationType);
+
+            if (gesture.isTranslation()) {
+                startAnimation(Gestures.getAnimationResource(mAnimationType));
+            } else {
+                startGesture(gesture);
+            }
         } else {
             Log.e(getClass().getName(), "Animation type not set");
         }
@@ -101,7 +106,18 @@ public class HandView extends RelativeLayout implements HandGestureListener {
     public void startAnimation(int idAnimResource) {
         mAnimationHelper = new AnimationHelper(getContext(), idAnimResource, this);
         mAnimationHelper.setRepeatMode(mRepeatAnimation);
-        mAnimationHelper.animateView(this, mAnimationDelay * MILLISECONDS);
+        mAnimationHelper.animateView(this, mAnimationDelay);
+    }
+
+    private void startGesture(HandGesture handGesture) {
+        this.handGesture = handGesture;
+        if (handGesture.equals(SINGLE_TAP)) {
+            new GestureHelper(this, this).startOneTouchAnimation(mAnimationDelay);
+        } else if (handGesture.equals(DOUBLE_TAP)) {
+            firstTouch = new GestureHelper(this, this).startDoubleTouchAnimation(mAnimationDelay, firstTouch);
+        } else if (handGesture.equals(PRESS_AND_HOLD)) {
+            new GestureHelper(this, this).startTouchAndHoldAnimation(mAnimationDelay);
+        }
     }
 
     private void startTouch() {
@@ -114,21 +130,10 @@ public class HandView extends RelativeLayout implements HandGestureListener {
         ((Animatable) mHandView.getDrawable()).start();
     }
 
-    private void startGesture(HandGesture handGesture) {
-        this.handGesture = handGesture;
-        if (handGesture.equals(SINGLE_TAP)) {
-            new GestureHelper(this, this).startOneTouchAnimation();
-        } else if (handGesture.equals(DOUBLE_TAP)) {
-            firstTouch = new GestureHelper(this, this).startDoubleTouchAnimation(firstTouch);
-        } else if (handGesture.equals(PRESS_AND_HOLD)) {
-            new GestureHelper(this, this).startTouchAndHoldAnimation();
-        }
-    }
-
     @Override
     protected void onAnimationEnd() {
         super.onAnimationEnd();
-        if (handGesture != null) {
+        if (handGesture != null && mRepeatAnimation) {
             startGesture(handGesture);
         }
     }

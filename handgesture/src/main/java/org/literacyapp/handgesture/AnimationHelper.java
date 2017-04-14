@@ -7,6 +7,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 
 import static org.literacyapp.handgesture.Constants.DEFAULT_ANIMATION_DELAY;
+import static org.literacyapp.handgesture.Constants.MILLISECONDS;
 import static org.literacyapp.handgesture.Constants.SCALE_DURATION;
 import static org.literacyapp.handgesture.Constants.SCALE_FACTOR;
 
@@ -55,7 +56,7 @@ public class AnimationHelper implements Animation.AnimationListener {
             public void run() {
                 mView.startAnimation(makeSmallerImage());
             }
-        }, delay);
+        }, delay * MILLISECONDS);
     }
 
     public void stopAnimation() {

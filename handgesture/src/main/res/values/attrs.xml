@@ -10,6 +10,9 @@
             <enum name="moveDown" value="1" />
             <enum name="moveLeft" value="2" />
             <enum name="moveRight" value="3" />
+            <enum name="singleTouch" value="4" />
+            <enum name="doubleTouch" value="5" />
+            <enum name="pressAndHold" value="6" />
         </attr>
 
         <!-- Repeat animation. Default: true  -->
