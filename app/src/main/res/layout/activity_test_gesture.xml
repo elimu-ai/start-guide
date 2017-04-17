@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.literacyapp.startguide.TestGestureActivity" >
+
+    <org.literacyapp.handgesture.HandView
+        android:id="@+id/single_tap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp" />
+
+    <org.literacyapp.handgesture.HandView
+        android:id="@+id/double_tap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:layout_alignParentRight="true"/>
+
+    <org.literacyapp.handgesture.HandView
+        android:id="@+id/press_and_hold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:layout_below="@id/single_tap" />
+
+</RelativeLayout>

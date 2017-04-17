@@ -1,0 +1,6 @@
+<resources>
+
+    <dimen name="swipe_hand_width">400dp</dimen>
+    <dimen name="swipe_hand_height">300dp</dimen>
+
+</resources>
