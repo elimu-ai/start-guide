@@ -52,7 +52,7 @@ public class GestureHelper {
     }
 
     private void startTouchAnimation(int animationDelay, final long touchTime, long secondTouchOffset) {
-        long startOffset = (animationDelay > 0) ? animationDelay * MILLISECONDS : DEFAULT_ANIMATION_DELAY;
+        long startOffset = (animationDelay > 0) ? animationDelay * MILLISECONDS : DEFAULT_ANIMATION_DELAY * MILLISECONDS ;
 
         if (isSecondTouchOfDoubleTouchGesture(secondTouchOffset)) {
             startOffset = secondTouchOffset;

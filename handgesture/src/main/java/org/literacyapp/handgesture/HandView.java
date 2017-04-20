@@ -76,7 +76,6 @@ public class HandView extends RelativeLayout implements HandGestureListener {
                 mAnimationHelper.stopAnimation();
             }
             setVisibility(GONE);
-            return true;
         }
         return false;
     }
