@@ -15,13 +15,15 @@ public class StartPrefsHelper {
 
     public static boolean startAfterBoot(Context context) {
         long firstStartupDate = getFirstStartupDate(context);
+        long currentDate = System.currentTimeMillis();
+
         Log.d(StartPrefsHelper.class.getName(),
-                "First start-up less than seven days ago: " + (firstStartupDate < SEVEN_DAYS_IN_MILLISECONDS));
+                "First start-up less than seven days ago: " + ((firstStartupDate + SEVEN_DAYS_IN_MILLISECONDS) > currentDate));
 
         if (firstStartupDate == 0) {
             storeFirstStartupDate(context);
         }
-        return (firstStartupDate < SEVEN_DAYS_IN_MILLISECONDS);
+        return ((firstStartupDate + SEVEN_DAYS_IN_MILLISECONDS) > currentDate);
     }
 
     private static long getFirstStartupDate(Context context) {
