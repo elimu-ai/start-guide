@@ -66,8 +66,7 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     }
 
     private void playMoveLeft() {
-        //TODO: 04/02/2017 audio file (en, sw) "Find the images on the right"
-        MediaPlayerHelper.playWithDelay(this, R.raw.find_right, new MediaPlayerHelper.MediaPlayerListener() {
+        MediaPlayerHelper.playWithDelay(this, R.raw.find_the_images_to_the_right, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showSlideLeft();
@@ -76,8 +75,7 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     }
 
     private void playMoveRight() {
-        //TODO: 04/02/2017 audio file (en, sw) "Find the images on the left"
-        MediaPlayerHelper.playWithDelay(this, R.raw.find_left, new MediaPlayerHelper.MediaPlayerListener() {
+        MediaPlayerHelper.playWithDelay(this, R.raw.find_the_images_to_the_left, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showSlideRight();
