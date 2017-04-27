@@ -133,6 +133,9 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
             playMoveRight();
         } else if ((page == 0) && !isDetectLeftActive()) {
             setDetectRight(false);
+
+            finish();
+
             Intent intent = new Intent(this, FinalActivity.class);
             startActivity(intent);
         }
