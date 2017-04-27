@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="org.literacyapp.startguide">
 
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:allowBackup="true"
@@ -23,6 +23,9 @@
         <activity
             android:name=".content.swipe.SwipeRightLeftActivity"
             android:noHistory="true"/>
+        <activity
+            android:name=".content.FinalActivity"
+            android:noHistory="true"/>
         <activity android:name=".TestGestureActivity">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -33,7 +36,7 @@
 
         <receiver android:name=".receiver.BootReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
     </application>

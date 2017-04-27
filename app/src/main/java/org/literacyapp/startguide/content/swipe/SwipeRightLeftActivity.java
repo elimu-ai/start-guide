@@ -1,5 +1,6 @@
 package org.literacyapp.startguide.content.swipe;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import org.literacyapp.handgesture.Gestures;
 import org.literacyapp.handgesture.HandView;
 import org.literacyapp.startguide.R;
+import org.literacyapp.startguide.content.FinalActivity;
 import org.literacyapp.startguide.util.MediaPlayerHelper;
 
 /**
@@ -63,8 +65,7 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     }
 
     private void playMoveLeft() {
-        //TODO: 04/02/2017 audio file (en, sw) "Find the images on the right"
-        MediaPlayerHelper.playWithDelay(this, R.raw.find_right, new MediaPlayerHelper.MediaPlayerListener() {
+        MediaPlayerHelper.playWithDelay(this, R.raw.find_the_images_to_the_right, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showSlideLeft();
@@ -73,8 +74,7 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     }
 
     private void playMoveRight() {
-        //TODO: 04/02/2017 audio file (en, sw) "Find the images on the left"
-        MediaPlayerHelper.playWithDelay(this, R.raw.find_left, new MediaPlayerHelper.MediaPlayerListener() {
+        MediaPlayerHelper.playWithDelay(this, R.raw.find_the_images_to_the_left, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showSlideRight();
@@ -133,7 +133,8 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
             playMoveRight();
         } else if ((page == 0) && !isDetectLeftActive()) {
             setDetectRight(false);
-            // TODO: 12/02/2017 go to the 'exit full screen' explanation
+            Intent intent = new Intent(this, FinalActivity.class);
+            startActivity(intent);
         }
     }
 

@@ -46,8 +46,7 @@ public class SwipeUpDownActivity extends AppCompatActivity implements View.OnTou
     }
 
     private void playMoveBottom() {
-        //TODO: 04/02/2017 update audio file (en, sw) "Move to the bottom of the list"
-        MediaPlayerHelper.playWithDelay(this, R.raw.move_bottom, new MediaPlayerHelper.MediaPlayerListener() {
+        MediaPlayerHelper.playWithDelay(this, R.raw.move_to_the_bottom_of_the_list, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showMoveBottom();
@@ -56,8 +55,7 @@ public class SwipeUpDownActivity extends AppCompatActivity implements View.OnTou
     }
 
     private void playMoveTop() {
-        //TODO: 04/02/2017 update audio file (en, sw) "Move to the top of the list"
-        MediaPlayerHelper.play(this, R.raw.move_top, new MediaPlayerHelper.MediaPlayerListener() {
+        MediaPlayerHelper.play(this, R.raw.move_to_the_top_of_the_list, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showMoveTop();
