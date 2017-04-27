@@ -10,11 +10,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import org.literacyapp.handgesture.Gestures;
+import org.literacyapp.handgesture.HandView;
 import org.literacyapp.startguide.R;
-import org.literacyapp.startguide.util.AnimationHelper;
 import org.literacyapp.startguide.util.MediaPlayerHelper;
-
-import static org.literacyapp.startguide.util.AnimationHelper.DEFAULT_ANIMATION_DELAY;
 
 
 /**
@@ -23,8 +22,7 @@ import static org.literacyapp.startguide.util.AnimationHelper.DEFAULT_ANIMATION_
 public class SwipeUpDownActivity extends AppCompatActivity implements View.OnTouchListener,
         SwipeUpDownAdapter.OnScrollListener {
 
-    private AnimationHelper mAnimationHelper;
-    private View mHandView;
+    private HandView mHandView;
     private SwipeUpDownAdapter mAdapter;
 
     @Override
@@ -42,14 +40,13 @@ public class SwipeUpDownActivity extends AppCompatActivity implements View.OnTou
         recyclerView.setOnTouchListener(this);
 
         //Hand view
-        mHandView = findViewById(R.id.hand);
+        mHandView = (HandView) findViewById(R.id.hand);
 
         playMoveBottom();
     }
 
     private void playMoveBottom() {
-        //TODO: 04/02/2017 update audio file (en, sw) "Move to the bottom of the list"
-        MediaPlayerHelper.playWithDelay(this, R.raw.move_bottom, new MediaPlayerHelper.MediaPlayerListener() {
+        MediaPlayerHelper.playWithDelay(this, R.raw.move_to_the_bottom_of_the_list, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showMoveBottom();
@@ -58,8 +55,7 @@ public class SwipeUpDownActivity extends AppCompatActivity implements View.OnTou
     }
 
     private void playMoveTop() {
-        //TODO: 04/02/2017 update audio file (en, sw) "Move to the top of the list"
-        MediaPlayerHelper.play(this, R.raw.move_top, new MediaPlayerHelper.MediaPlayerListener() {
+        MediaPlayerHelper.play(this, R.raw.move_to_the_top_of_the_list, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showMoveTop();
@@ -71,9 +67,7 @@ public class SwipeUpDownActivity extends AppCompatActivity implements View.OnTou
      * Hand animation to explain scroll to the bottom
      */
     private void showMoveBottom() {
-        mAnimationHelper = new AnimationHelper(this, R.anim.slide_up);
-        mAnimationHelper.setRepeatMode(true);
-        mAnimationHelper.animateView(mHandView, DEFAULT_ANIMATION_DELAY);
+        mHandView.startAnimation(Gestures.MOVE_UP);
     }
 
     /**
@@ -81,9 +75,7 @@ public class SwipeUpDownActivity extends AppCompatActivity implements View.OnTou
      */
     private void showMoveTop() {
         resetHandPosition();
-        mAnimationHelper = new AnimationHelper(this, R.anim.slide_down);
-        mAnimationHelper.setRepeatMode(true);
-        mAnimationHelper.animateView(mHandView, DEFAULT_ANIMATION_DELAY);
+        mHandView.startAnimation(Gestures.MOVE_DOWN);
     }
 
     private void resetHandPosition() {
@@ -97,10 +89,7 @@ public class SwipeUpDownActivity extends AppCompatActivity implements View.OnTou
     //region View.OnTouchListener
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (mAnimationHelper != null) {
-            mAnimationHelper.stopAnimation();
-        }
-        mHandView.setVisibility(View.GONE);
+        mHandView.onTouchEvent(event);
         return false;
     }
     //endregion

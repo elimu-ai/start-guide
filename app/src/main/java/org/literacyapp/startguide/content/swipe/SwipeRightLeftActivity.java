@@ -1,5 +1,6 @@
 package org.literacyapp.startguide.content.swipe;
 
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -15,11 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import org.literacyapp.handgesture.Gestures;
+import org.literacyapp.handgesture.HandView;
 import org.literacyapp.startguide.R;
-import org.literacyapp.startguide.util.AnimationHelper;
+import org.literacyapp.startguide.content.FinalActivity;
 import org.literacyapp.startguide.util.MediaPlayerHelper;
-
-import static org.literacyapp.startguide.util.AnimationHelper.DEFAULT_ANIMATION_DELAY;
 
 /**
  * Activity that explain swipe right and left
@@ -35,9 +36,8 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    private AnimationHelper mAnimationHelper;
     private ViewPager mViewPager;
-    private View mHandView;
+    private HandView mHandView;
 
     private boolean detectLeft = true;
     private boolean detectRight = true;
@@ -59,14 +59,13 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
         mViewPager.setOnTouchListener(this);
 
         //Hand view
-        mHandView = findViewById(R.id.hand);
+        mHandView = (HandView) findViewById(R.id.hand);
 
         playMoveLeft();
     }
 
     private void playMoveLeft() {
-        //TODO: 04/02/2017 audio file (en, sw) "Find the images on the right"
-        MediaPlayerHelper.playWithDelay(this, R.raw.find_right, new MediaPlayerHelper.MediaPlayerListener() {
+        MediaPlayerHelper.playWithDelay(this, R.raw.find_the_images_to_the_right, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showSlideLeft();
@@ -75,8 +74,7 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     }
 
     private void playMoveRight() {
-        //TODO: 04/02/2017 audio file (en, sw) "Find the images on the left"
-        MediaPlayerHelper.playWithDelay(this, R.raw.find_left, new MediaPlayerHelper.MediaPlayerListener() {
+        MediaPlayerHelper.playWithDelay(this, R.raw.find_the_images_to_the_left, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showSlideRight();
@@ -88,18 +86,14 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
      * Swipe to left explanation with audio and hand animation
      */
     private void showSlideLeft() {
-        mAnimationHelper = new AnimationHelper(this, R.anim.slide_left);
-        mAnimationHelper.setRepeatMode(true);
-        mAnimationHelper.animateView(mHandView, DEFAULT_ANIMATION_DELAY);
+        mHandView.startAnimation();
     }
 
     /**
      * Swipe to right explanation with audio and hand animation
      */
     private void showSlideRight() {
-        mAnimationHelper = new AnimationHelper(this, R.anim.slide_right);
-        mAnimationHelper.setRepeatMode(true);
-        mAnimationHelper.animateView(mHandView, DEFAULT_ANIMATION_DELAY);
+        mHandView.startAnimation(Gestures.MOVE_RIGHT);
     }
 
     private void resetHandPosition() {
@@ -108,13 +102,6 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
 
         mHandView.setLayoutParams(params);
         mHandView.setVisibility(View.VISIBLE);
-    }
-
-    private void stopAnimation() {
-        if (mAnimationHelper != null) {
-            mAnimationHelper.stopAnimation();
-        }
-        mHandView.setVisibility(View.GONE);
     }
 
     private boolean isDetectLeftActive() {
@@ -146,7 +133,8 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
             playMoveRight();
         } else if ((page == 0) && !isDetectLeftActive()) {
             setDetectRight(false);
-            // TODO: 12/02/2017 go to the 'exit full screen' explanation
+            Intent intent = new Intent(this, FinalActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -158,7 +146,7 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     //region OnTouchListener
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        stopAnimation();
+        mHandView.onTouchEvent(event);
         return false;
     }
     //endregion
