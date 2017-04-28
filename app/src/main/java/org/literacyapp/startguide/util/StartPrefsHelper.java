@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.util.Date;
+
 
 public class StartPrefsHelper {
 
@@ -24,6 +26,15 @@ public class StartPrefsHelper {
             storeFirstStartupDate(context);
         }
         return ((firstStartupDate + SEVEN_DAYS_IN_MILLISECONDS) > currentDate);
+    }
+
+    public static boolean inactivateStartGuide(){
+        //UTC Thu May 11 2017 20:59:59
+        long inactivationTime = 1494536399000L;
+        long currentTime = System.currentTimeMillis();
+        boolean inactive = currentTime > inactivationTime;
+        Log.i(StartPrefsHelper.class.getName(), "Start Guide inactive: " + inactive + ", inactivationTime: " + new Date(inactivationTime) + ", currentTime: " + new Date(currentTime));
+        return inactive;
     }
 
     private static long getFirstStartupDate(Context context) {
