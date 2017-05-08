@@ -55,6 +55,7 @@ public class AnimationHelper implements Animation.AnimationListener {
             @Override
             public void run() {
                 mView.startAnimation(makeSmallerImage());
+                mHandGestureListener.onAnimationStarted();
             }
         }, delay * MILLISECONDS);
     }
@@ -79,7 +80,6 @@ public class AnimationHelper implements Animation.AnimationListener {
         mHandGestureListener.onTouchEnd();
         mView.setScaleX(1);
         mView.setScaleY(1);
-
 
         if (isRepeatMode()) {
             animateView(mView);

@@ -34,6 +34,7 @@ public class HandView extends RelativeLayout implements HandGestureListener {
     private int mAnimationDelay;
     //Flag for double touch gesture
     private boolean firstTouch = true;
+    private boolean mDetectTouchEvent;
 
     // used in view creation programmatically
     public HandView(Context context) {
@@ -71,11 +72,11 @@ public class HandView extends RelativeLayout implements HandGestureListener {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (getVisibility() == VISIBLE && mHideOnTouch) {
+        if (mHideOnTouch && mDetectTouchEvent) {
+            setVisibility(GONE);
             if (mAnimationHelper != null) {
                 mAnimationHelper.stopAnimation();
             }
-            setVisibility(GONE);
         }
         return false;
     }
@@ -103,12 +104,14 @@ public class HandView extends RelativeLayout implements HandGestureListener {
     }
 
     public void startAnimation(int idAnimResource) {
+        mDetectTouchEvent = false;
         mAnimationHelper = new AnimationHelper(getContext(), idAnimResource, this);
         mAnimationHelper.setRepeatMode(mRepeatAnimation);
         mAnimationHelper.animateView(this, mAnimationDelay);
     }
 
     private void startGesture(HandGesture handGesture) {
+        mDetectTouchEvent = false;
         this.handGesture = handGesture;
         if (handGesture.equals(SINGLE_TAP)) {
             new GestureHelper(this, this).startOneTouchAnimation(mAnimationDelay);
@@ -138,6 +141,11 @@ public class HandView extends RelativeLayout implements HandGestureListener {
     }
 
     //region HandGestureListener
+
+    @Override
+    public void onAnimationStarted() {
+        mDetectTouchEvent = true;
+    }
 
     @Override
     public void onZoomOutEnd() {
