@@ -11,6 +11,7 @@ import org.literacyapp.handgesture.Gestures;
 import org.literacyapp.handgesture.HandView;
 import org.literacyapp.startguide.R;
 import org.literacyapp.startguide.content.FinalActivity;
+import org.literacyapp.startguide.util.MediaPlayerHelper;
 
 public class ExitFullScreenActivity extends Activity {
 
@@ -73,13 +74,13 @@ public class ExitFullScreenActivity extends Activity {
     }
 
     private void playExitFullScreen() {
-        // TODO: 04/05/2017 audio move bottom to exit full screen
-//        MediaPlayerHelper.playWithDelay(this, R.raw.exit_full_screen, new MediaPlayerHelper.MediaPlayerListener() {
-//            @Override
-//            public void onCompletion() {
+        // TODO: 04/05/2017 audios en/sw Slide down from outside the screen
+        MediaPlayerHelper.playWithDelay(this, R.raw.slide_down_from_outside_the_screen, new MediaPlayerHelper.MediaPlayerListener() {
+            @Override
+            public void onCompletion() {
                 showExitFullScreenAnimation();
-//            }
-//        });
+            }
+        });
     }
 
     /**
