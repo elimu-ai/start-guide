@@ -91,6 +91,10 @@ public class ExitFullScreenActivity extends Activity {
     }
 
     private void onGestureDetected() {
+        mHandView.stopAnimation();
+    }
+
+    private void navigateToFinal() {
         finish();
         Intent intent = new Intent(this, FinalActivity.class);
         startActivity(intent);

@@ -110,6 +110,11 @@ public class HandView extends RelativeLayout implements HandGestureListener {
         mAnimationHelper.animateView(this, mAnimationDelay);
     }
 
+    public void stopAnimation() {
+        mHideOnTouch = true;
+        onTouchEvent(null);
+    }
+
     private void startGesture(HandGesture handGesture) {
         mDetectTouchEvent = false;
         this.handGesture = handGesture;
