@@ -8,17 +8,59 @@
     android:background="@color/light_blue"
     tools:context="org.literacyapp.startguide.content.swipe.ExitFullScreenActivity">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/landscape"
-            android:scaleType="centerCrop"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/landscape"
+        android:scaleType="centerCrop"/>
 
-        <org.literacyapp.handgesture.HandView
-            android:id="@+id/hand_view"
+    <org.literacyapp.handgesture.HandView
+        android:id="@+id/hand_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-70dp"
+        app:hideOnTouch="false"/>
+
+    <RelativeLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        android:background="@color/black_overlay"
+        android:visibility="gone"
+        tools:visibility="visible">
+        <ImageView
+            android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="-70dp"
-            app:hideOnTouch="false"/>
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/ic_back"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/back"
+            android:layout_marginLeft="50dp"
+            android:src="@drawable/ic_home"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ic_recents"/>
     </RelativeLayout>
+
+    <org.literacyapp.handgesture.HandView
+        android:id="@+id/hand_view_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="-60dp"
+        android:layout_marginBottom="-35dp"
+        android:rotation="-100"
+        android:visibility="gone"
+        app:animationType="singleTouch"
+        tools:visibility="visible"/>
+
+</RelativeLayout>

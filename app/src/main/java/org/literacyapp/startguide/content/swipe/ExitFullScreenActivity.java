@@ -16,6 +16,8 @@ import org.literacyapp.startguide.util.MediaPlayerHelper;
 public class ExitFullScreenActivity extends Activity {
 
     private HandView mHandView;
+    private HandView mHandViewBottom;
+    private View mBottomBar;
     private View mDecorView;
 
     @Override
@@ -24,6 +26,9 @@ public class ExitFullScreenActivity extends Activity {
         setContentView(R.layout.activity_exit_full_screen);
 
         mHandView = (HandView) findViewById(R.id.hand_view);
+        mHandViewBottom = (HandView) findViewById(R.id.hand_view_bottom);
+        mBottomBar = findViewById(R.id.bottom_bar);
+
         mDecorView = getWindow().getDecorView();
 
         hideSystemBars();
@@ -92,6 +97,20 @@ public class ExitFullScreenActivity extends Activity {
 
     private void onGestureDetected() {
         mHandView.stopAnimation();
+        mHandView.setVisibility(View.GONE);
+        showBottomAnimation();
+    }
+
+    private void showBottomAnimation() {
+        mBottomBar.setVisibility(View.VISIBLE);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mHandViewBottom.setVisibility(View.VISIBLE);
+                mHandViewBottom.startAnimation();
+            }
+        }, 500);
     }
 
     private void navigateToFinal() {
