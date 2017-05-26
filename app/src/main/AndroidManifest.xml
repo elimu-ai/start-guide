@@ -25,7 +25,6 @@
             android:noHistory="true"/>
         <activity
             android:name=".content.swipe.ExitFullScreenActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".content.FinalActivity"

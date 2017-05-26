@@ -27,6 +27,8 @@ public class HandView extends RelativeLayout implements HandGestureListener {
     private AnimationHelper mAnimationHelper;
     private HandGesture handGesture;
 
+    private HandViewListener mHandViewListener;
+
     private int mAnimationType;
     private boolean mHideOnTouch = true;
     private boolean mRepeatAnimation = true;
@@ -63,6 +65,10 @@ public class HandView extends RelativeLayout implements HandGestureListener {
 
             typedArray.recycle();
         }
+    }
+
+    public void setHandViewListener(HandViewListener listener) {
+        mHandViewListener = listener;
     }
 
     @Override
@@ -140,6 +146,9 @@ public class HandView extends RelativeLayout implements HandGestureListener {
     @Override
     protected void onAnimationEnd() {
         super.onAnimationEnd();
+        if (mHandViewListener != null) {
+            mHandViewListener.onAnimationEnd();
+        }
         if (handGesture != null && mRepeatAnimation) {
             startGesture(handGesture);
         }

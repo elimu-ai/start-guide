@@ -7,18 +7,22 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 
-import org.literacyapp.handgesture.Gestures;
 import org.literacyapp.handgesture.HandView;
+import org.literacyapp.handgesture.HandViewListener;
 import org.literacyapp.startguide.R;
 import org.literacyapp.startguide.content.FinalActivity;
 import org.literacyapp.startguide.util.MediaPlayerHelper;
 
 public class ExitFullScreenActivity extends Activity {
 
+    private static final long SHORT_PLAYER_DELAY = 500;
+
     private HandView mHandView;
     private HandView mHandViewBottom;
     private View mBottomBar;
     private View mDecorView;
+
+    private boolean mAnimationCompleted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,7 @@ public class ExitFullScreenActivity extends Activity {
                         @Override
                         public void run() {
                             hideSystemBars();
-                            onGestureDetected();
+//                            onGestureDetected();
                         }
                     }, 3000);
                 } else {
@@ -62,8 +66,18 @@ public class ExitFullScreenActivity extends Activity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        mHandView.onTouchEvent(event);
+        if (mAnimationCompleted) {
+            mHandView.onTouchEvent(event);
+            mHandViewBottom.onTouchEvent(event);
+            mBottomBar.setVisibility(View.GONE);
+        }
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+//        onGestureDetected();
     }
 
     private void hideSystemBars() {
@@ -92,25 +106,44 @@ public class ExitFullScreenActivity extends Activity {
      * Hand animation to explain exit full screen
      */
     private void showExitFullScreenAnimation() {
-        mHandView.startAnimation(Gestures.MOVE_DOWN);
+        mHandView.setVisibility(View.VISIBLE);
+        mHandView.setHandViewListener(new HandViewListener() {
+            @Override
+            public void onAnimationEnd() {
+                mHandView.stopAnimation();
+                mBottomBar.setVisibility(View.VISIBLE);
+
+                playTouchTheArrow();
+            }
+        });
+        mHandView.startAnimation();
     }
 
-    private void onGestureDetected() {
-        mHandView.stopAnimation();
-        mHandView.setVisibility(View.GONE);
-        showBottomAnimation();
+    private void playTouchTheArrow() {
+        MediaPlayerHelper.playWithDelay(this, R.raw.and_touch_the_arrow_below, SHORT_PLAYER_DELAY,
+                new MediaPlayerHelper.MediaPlayerListener() {
+                    @Override
+                    public void onCompletion() {
+                        showBottomAnimation();
+                }
+        });
     }
 
     private void showBottomAnimation() {
-        mBottomBar.setVisibility(View.VISIBLE);
-
-        new Handler().postDelayed(new Runnable() {
+        mHandViewBottom.setVisibility(View.VISIBLE);
+        mHandViewBottom.startAnimation();
+        mHandViewBottom.setHandViewListener(new HandViewListener() {
             @Override
-            public void run() {
-                mHandViewBottom.setVisibility(View.VISIBLE);
-                mHandViewBottom.startAnimation();
+            public void onAnimationEnd() {
+                mBottomBar.setVisibility(View.GONE);
+                mHandViewBottom.setVisibility(View.GONE);
+
+                mAnimationCompleted = true;
+
+                mHandView.setVisibility(View.VISIBLE);
+                playExitFullScreen();
             }
-        }, 500);
+        });
     }
 
     private void navigateToFinal() {

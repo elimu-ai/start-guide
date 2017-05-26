@@ -20,7 +20,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-70dp"
-        app:hideOnTouch="false"/>
+        app:animationType="moveDown"
+        app:hideOnTouch="false"
+        app:repeatAnimation="false"/>
 
     <RelativeLayout
         android:id="@+id/bottom_bar"
@@ -57,10 +59,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="-60dp"
-        android:layout_marginBottom="-35dp"
+        android:layout_marginBottom="-50dp"
         android:rotation="-100"
         android:visibility="gone"
         app:animationType="singleTouch"
+        app:repeatAnimation="false"
         tools:visibility="visible"/>
 
 </RelativeLayout>
