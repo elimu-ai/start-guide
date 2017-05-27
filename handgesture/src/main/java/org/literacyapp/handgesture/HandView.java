@@ -67,7 +67,7 @@ public class HandView extends RelativeLayout implements HandGestureListener {
             mRepeatAnimation = typedArray.getBoolean(R.styleable.HandView_repeatAnimation, mRepeatAnimation);
             mAnimationDelay = typedArray.getInt(R.styleable.HandView_animationDelay, 1);
 
-            if (Constants.TRANSLATION == mAnimationType) {
+            if (mAnimationType == Gestures.TRANSLATION.ordinal()) {
                 mTranslateX = typedArray.getInt(R.styleable.HandView_translateX, 0);
                 mTranslateY = typedArray.getInt(R.styleable.HandView_translateY, 0);
                 mTranslationDuration = typedArray.getFloat(R.styleable.HandView_duration, 1);
