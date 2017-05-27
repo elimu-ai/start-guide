@@ -35,6 +35,7 @@
         android:layout_below="@id/press_and_hold"
         app:animationType="translation"
         app:translateX="300"
-        app:translateY="-100"/>
+        app:translateY="-100"
+        app:duration="2.5"/>
 
 </RelativeLayout>

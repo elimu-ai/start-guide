@@ -36,6 +36,7 @@ public class HandView extends RelativeLayout implements HandGestureListener {
     private int mAnimationDelay;
     private int mTranslateX;
     private int mTranslateY;
+    private float mTranslationDuration;
 
     //Flag for double touch gesture
     private boolean firstTouch = true;
@@ -69,6 +70,7 @@ public class HandView extends RelativeLayout implements HandGestureListener {
             if (Constants.TRANSLATION == mAnimationType) {
                 mTranslateX = typedArray.getInt(R.styleable.HandView_translateX, 0);
                 mTranslateY = typedArray.getInt(R.styleable.HandView_translateY, 0);
+                mTranslationDuration = typedArray.getFloat(R.styleable.HandView_duration, 1);
             }
 
             typedArray.recycle();
@@ -130,7 +132,7 @@ public class HandView extends RelativeLayout implements HandGestureListener {
 
     private void startCustomAnimation() {
         mDetectTouchEvent = false;
-        mAnimationHelper = new AnimationHelper(mTranslateX, mTranslateY, this);
+        mAnimationHelper = new AnimationHelper(mTranslateX, mTranslateY, mTranslationDuration, this);
         mAnimationHelper.setRepeatMode(mRepeatAnimation);
         mAnimationHelper.animateView(this, mAnimationDelay);
     }

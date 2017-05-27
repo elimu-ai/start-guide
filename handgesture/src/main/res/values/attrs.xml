@@ -22,9 +22,11 @@
         <!-- Animation delay in seconds. Default: 1s -->
         <attr name="animationDelay" format="integer" />
 
-        <!-- Only for animationType=translation -->
+        <!-- Only for animationType="translation" -->
         <attr name="translateX" format="integer" />
         <attr name="translateY" format="integer" />
+        <!-- Duration of translation in seconds. Default: 1s -->
+        <attr name="duration" format="float" />
 
     </declare-styleable>
 </resources>

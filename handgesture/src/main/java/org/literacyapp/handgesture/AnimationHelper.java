@@ -31,9 +31,9 @@ public class AnimationHelper implements Animation.AnimationListener {
         initAnimationListeners(handGestureListener);
     }
 
-    public AnimationHelper(int translateX, int translateY, HandGestureListener handGestureListener) {
+    public AnimationHelper(int translateX, int translateY, float duration, HandGestureListener handGestureListener) {
         mAnimation = new TranslateAnimation(0, translateX, 0, translateY);
-        mAnimation.setDuration(DEFAULT_ANIMATION_DELAY*MILLISECONDS);// TODO: 27/05/2017 custom animation duration
+        mAnimation.setDuration((long) (duration * MILLISECONDS));
 
         initAnimationListeners(handGestureListener);
     }
