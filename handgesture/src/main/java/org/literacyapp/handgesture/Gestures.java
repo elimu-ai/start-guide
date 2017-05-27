@@ -11,6 +11,7 @@ public class Gestures {
     public static HandGesture SINGLE_TAP = HandGesture.SINGLE_TAP;
     public static HandGesture DOUBLE_TAP = HandGesture.DOUBLE_TAP;
     public static HandGesture PRESS_AND_HOLD = HandGesture.PRESS_AND_HOLD;
+    public static HandGesture TRANSLATION = HandGesture.TRANSLATION;
 
     protected enum HandGesture {
         MOVE_UP(R.anim.slide_up),
@@ -19,12 +20,18 @@ public class Gestures {
         MOVE_RIGHT(R.anim.slide_right),
         SINGLE_TAP(0),
         DOUBLE_TAP(0),
-        PRESS_AND_HOLD(0);
+        PRESS_AND_HOLD(0),
+        TRANSLATION(true);
 
         private int idAnim;
+        private boolean customTranslation = false;
 
         HandGesture(int idAnim) {
             this.idAnim = idAnim;
+        }
+
+        HandGesture(boolean translation) {
+            this.customTranslation = translation;
         }
 
         public int getAnimationResource() {
@@ -32,7 +39,11 @@ public class Gestures {
         }
 
         public boolean isTranslation() {
-            return idAnim > 0;
+            return (idAnim > 0) || customTranslation;
+        }
+
+        public boolean isCustomTranslation() {
+            return customTranslation;
         }
     }
 

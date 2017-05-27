@@ -34,6 +34,9 @@ public class HandView extends RelativeLayout implements HandGestureListener {
     private boolean mRepeatAnimation = true;
     //Delay in seconds
     private int mAnimationDelay;
+    private int mTranslateX;
+    private int mTranslateY;
+
     //Flag for double touch gesture
     private boolean firstTouch = true;
     private boolean mDetectTouchEvent;
@@ -63,6 +66,11 @@ public class HandView extends RelativeLayout implements HandGestureListener {
             mRepeatAnimation = typedArray.getBoolean(R.styleable.HandView_repeatAnimation, mRepeatAnimation);
             mAnimationDelay = typedArray.getInt(R.styleable.HandView_animationDelay, 1);
 
+            if (Constants.TRANSLATION == mAnimationType) {
+                mTranslateX = typedArray.getInt(R.styleable.HandView_translateX, 0);
+                mTranslateY = typedArray.getInt(R.styleable.HandView_translateY, 0);
+            }
+
             typedArray.recycle();
         }
     }
@@ -91,10 +99,12 @@ public class HandView extends RelativeLayout implements HandGestureListener {
         if (mAnimationType >= 0) {
             HandGesture gesture = Gestures.getHandGesture(mAnimationType);
 
-            if (gesture.isTranslation()) {
-                startAnimation(Gestures.getAnimationResource(mAnimationType));
-            } else {
+            if (!gesture.isTranslation()) {
                 startGesture(gesture);
+            } else if (gesture.isCustomTranslation()) {
+                startCustomAnimation();
+            } else {
+                startAnimation(Gestures.getAnimationResource(mAnimationType));
             }
         } else {
             Log.e(getClass().getName(), "Animation type not set");
@@ -102,16 +112,25 @@ public class HandView extends RelativeLayout implements HandGestureListener {
     }
 
     public void startAnimation(HandGesture handAnimation) {
-        if (handAnimation.isTranslation()) {
-            startAnimation(handAnimation.getAnimationResource());
-        } else {
+        if (!handAnimation.isTranslation()) {
             startGesture(handAnimation);
+        } else if (handAnimation.isCustomTranslation()) {
+            startCustomAnimation();
+        } else {
+            startAnimation(handAnimation.getAnimationResource());
         }
     }
 
     public void startAnimation(int idAnimResource) {
         mDetectTouchEvent = false;
         mAnimationHelper = new AnimationHelper(getContext(), idAnimResource, this);
+        mAnimationHelper.setRepeatMode(mRepeatAnimation);
+        mAnimationHelper.animateView(this, mAnimationDelay);
+    }
+
+    private void startCustomAnimation() {
+        mDetectTouchEvent = false;
+        mAnimationHelper = new AnimationHelper(mTranslateX, mTranslateY, this);
         mAnimationHelper.setRepeatMode(mRepeatAnimation);
         mAnimationHelper.animateView(this, mAnimationDelay);
     }

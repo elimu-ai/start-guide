@@ -13,6 +13,7 @@
             <enum name="singleTouch" value="4" />
             <enum name="doubleTouch" value="5" />
             <enum name="pressAndHold" value="6" />
+            <enum name="translation" value="7" />
         </attr>
 
         <!-- Repeat animation. Default: true  -->
@@ -20,5 +21,10 @@
 
         <!-- Animation delay in seconds. Default: 1s -->
         <attr name="animationDelay" format="integer" />
+
+        <!-- Only for animationType=translation -->
+        <attr name="translateX" format="integer" />
+        <attr name="translateY" format="integer" />
+
     </declare-styleable>
 </resources>
