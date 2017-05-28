@@ -1,4 +1,4 @@
-package org.literacyapp.startguide.content.swipe;
+package org.literacyapp.startguide.content;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,7 +10,6 @@ import android.view.View;
 import org.literacyapp.handgesture.HandView;
 import org.literacyapp.handgesture.HandViewListener;
 import org.literacyapp.startguide.R;
-import org.literacyapp.startguide.content.FinalActivity;
 import org.literacyapp.startguide.util.MediaPlayerHelper;
 
 public class ExitFullScreenActivity extends Activity {
@@ -77,7 +76,7 @@ public class ExitFullScreenActivity extends Activity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        onGestureDetected();
+        onGestureDetected();
     }
 
     private void hideSystemBars() {
@@ -144,6 +143,17 @@ public class ExitFullScreenActivity extends Activity {
                 playExitFullScreen();
             }
         });
+    }
+
+    private void onGestureDetected() {
+        if (mAnimationCompleted) {
+            mHandView.stopAnimation();
+            mHandView.setVisibility(View.GONE);
+            mHandViewBottom.stopAnimation();
+            mHandViewBottom.setVisibility(View.GONE);
+            mBottomBar.setVisibility(View.GONE);
+            navigateToFinal();
+        }
     }
 
     private void navigateToFinal() {

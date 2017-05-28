@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import org.literacyapp.handgesture.Gestures;
 import org.literacyapp.handgesture.HandView;
 import org.literacyapp.startguide.R;
+import org.literacyapp.startguide.content.ExitFullScreenActivity;
 import org.literacyapp.startguide.util.MediaPlayerHelper;
 
 /**
