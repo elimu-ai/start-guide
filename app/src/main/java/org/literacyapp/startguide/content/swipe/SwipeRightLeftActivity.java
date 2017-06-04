@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,8 +24,7 @@ import org.literacyapp.startguide.util.MediaPlayerHelper;
 /**
  * Activity that explain swipe right and left
  */
-public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,
-        View.OnTouchListener {
+public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for
@@ -56,7 +54,6 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(this);
-        mViewPager.setOnTouchListener(this);
 
         //Hand view
         mHandView = (HandView) findViewById(R.id.hand);
@@ -143,14 +140,6 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
 
     @Override
     public void onPageScrollStateChanged(int state) {
-    }
-    //endregion
-
-    //region OnTouchListener
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        mHandView.onTouchEvent(event);
-        return false;
     }
     //endregion
 

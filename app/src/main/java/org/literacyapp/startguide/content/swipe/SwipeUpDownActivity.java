@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -19,8 +18,7 @@ import org.literacyapp.startguide.util.MediaPlayerHelper;
 /**
  *
  */
-public class SwipeUpDownActivity extends AppCompatActivity implements View.OnTouchListener,
-        SwipeUpDownAdapter.OnScrollListener {
+public class SwipeUpDownActivity extends AppCompatActivity implements SwipeUpDownAdapter.OnScrollListener {
 
     private HandView mHandView;
     private SwipeUpDownAdapter mAdapter;
@@ -37,7 +35,6 @@ public class SwipeUpDownActivity extends AppCompatActivity implements View.OnTou
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
-        recyclerView.setOnTouchListener(this);
 
         //Hand view
         mHandView = (HandView) findViewById(R.id.hand);
@@ -85,14 +82,6 @@ public class SwipeUpDownActivity extends AppCompatActivity implements View.OnTou
         mHandView.setLayoutParams(params);
         mHandView.setVisibility(View.VISIBLE);
     }
-
-    //region View.OnTouchListener
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        mHandView.onTouchEvent(event);
-        return false;
-    }
-    //endregion
 
     //region SwipeUpDownAdapter.OnScrollListener
     @Override

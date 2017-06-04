@@ -23,6 +23,7 @@
         android:layout_marginRight="@dimen/swipe_hand_margin_right"
         app:layout_anchor="@+id/container"
         app:layout_anchorGravity="center_vertical|right"
-        app:animationType="moveLeft" />
+        app:animationType="moveLeft"
+        app:hideOnTouch="false"/>
 
 </android.support.design.widget.CoordinatorLayout>
