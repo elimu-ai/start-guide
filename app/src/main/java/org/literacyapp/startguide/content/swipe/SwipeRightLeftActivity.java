@@ -3,19 +3,16 @@ package org.literacyapp.startguide.content.swipe;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import org.literacyapp.handgesture.Gestures;
 import org.literacyapp.handgesture.HandView;
 import org.literacyapp.startguide.R;
 import org.literacyapp.startguide.content.FinalActivity;
@@ -35,7 +32,8 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
-    private HandView mHandView;
+    private HandView mLeftHandView;
+    private HandView mRightHandView;
 
     private boolean detectLeft = true;
     private boolean detectRight = true;
@@ -56,7 +54,8 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
         mViewPager.addOnPageChangeListener(this);
 
         //Hand view
-        mHandView = (HandView) findViewById(R.id.hand);
+        mLeftHandView = (HandView) findViewById(R.id.left_hand);
+        mRightHandView = (HandView) findViewById(R.id.right_hand);
 
         playMoveLeft();
     }
@@ -83,22 +82,20 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
      * Swipe to left explanation with audio and hand animation
      */
     private void showSlideLeft() {
-        mHandView.startAnimation();
+        mRightHandView.startAnimation();
     }
 
     /**
      * Swipe to right explanation with audio and hand animation
      */
     private void showSlideRight() {
-        mHandView.startAnimation(Gestures.MOVE_RIGHT);
+        mLeftHandView.startAnimation();
     }
 
     private void resetHandPosition() {
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)mHandView.getLayoutParams();
-        params.anchorGravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
-
-        mHandView.setLayoutParams(params);
-        mHandView.setVisibility(View.VISIBLE);
+        mRightHandView.onTouchEvent(null);
+        mRightHandView.setVisibility(View.GONE);
+        mLeftHandView.setVisibility(View.VISIBLE);
     }
 
     private boolean isDetectLeftActive() {
