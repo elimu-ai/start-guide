@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import org.literacyapp.handgesture.Gestures;
 import org.literacyapp.handgesture.HandView;
+import org.literacyapp.handgesture.HandViewListener;
 import org.literacyapp.startguide.R;
 import org.literacyapp.startguide.util.MediaPlayerHelper;
 
@@ -18,10 +19,15 @@ import org.literacyapp.startguide.util.MediaPlayerHelper;
 /**
  *
  */
-public class SwipeUpDownActivity extends AppCompatActivity implements SwipeUpDownAdapter.OnScrollListener {
+public class SwipeUpDownActivity extends AppCompatActivity implements SwipeUpDownAdapter.OnScrollListener,
+        HandViewListener {
+
+    private static final int NUM_ANIMATIONS_FOR_REPEAT_AUDIO = 3;
 
     private HandView mHandView;
     private SwipeUpDownAdapter mAdapter;
+    private int mNumAnimations;
+    private int mAudioResId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +44,15 @@ public class SwipeUpDownActivity extends AppCompatActivity implements SwipeUpDow
 
         //Hand view
         mHandView = (HandView) findViewById(R.id.hand);
+        mHandView.setHandViewListener(this);
 
         playMoveBottom();
     }
 
     private void playMoveBottom() {
-        MediaPlayerHelper.playWithDelay(this, R.raw.move_to_the_bottom_of_the_list, new MediaPlayerHelper.MediaPlayerListener() {
+        mAudioResId = R.raw.move_to_the_bottom_of_the_list;
+        mNumAnimations++;
+        MediaPlayerHelper.playWithDelay(this, mAudioResId, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showMoveBottom();
@@ -52,12 +61,19 @@ public class SwipeUpDownActivity extends AppCompatActivity implements SwipeUpDow
     }
 
     private void playMoveTop() {
-        MediaPlayerHelper.play(this, R.raw.move_to_the_top_of_the_list, new MediaPlayerHelper.MediaPlayerListener() {
+        mAudioResId = R.raw.move_to_the_top_of_the_list;
+        mNumAnimations++;
+        MediaPlayerHelper.play(this, mAudioResId, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showMoveTop();
             }
         });
+    }
+
+    private void playAudio() {
+        resetNumAnimations();
+        MediaPlayerHelper.play(this, mAudioResId);
     }
 
     /**
@@ -72,6 +88,8 @@ public class SwipeUpDownActivity extends AppCompatActivity implements SwipeUpDow
      */
     private void showMoveTop() {
         resetHandPosition();
+        resetNumAnimations();
+
         mHandView.startAnimation(Gestures.MOVE_DOWN);
     }
 
@@ -81,6 +99,10 @@ public class SwipeUpDownActivity extends AppCompatActivity implements SwipeUpDow
 
         mHandView.setLayoutParams(params);
         mHandView.setVisibility(View.VISIBLE);
+    }
+
+    private void resetNumAnimations() {
+        mNumAnimations = 0;
     }
 
     //region SwipeUpDownAdapter.OnScrollListener
@@ -95,5 +117,17 @@ public class SwipeUpDownActivity extends AppCompatActivity implements SwipeUpDow
         Intent intent = new Intent(this, SwipeRightLeftActivity.class);
         startActivity(intent);
     }
+    //endregion
+
+    //region HandViewListener
+
+    @Override
+    public void onHandAnimationEnd() {
+        if (mNumAnimations == NUM_ANIMATIONS_FOR_REPEAT_AUDIO) {
+            playAudio();
+        }
+        mNumAnimations++;
+    }
+
     //endregion
 }

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import org.literacyapp.handgesture.HandView;
+import org.literacyapp.handgesture.HandViewListener;
 import org.literacyapp.startguide.R;
 import org.literacyapp.startguide.content.FinalActivity;
 import org.literacyapp.startguide.util.MediaPlayerHelper;
@@ -21,7 +22,10 @@ import org.literacyapp.startguide.util.MediaPlayerHelper;
 /**
  * Activity that explain swipe right and left
  */
-public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,
+        HandViewListener {
+
+    private static final int NUM_ANIMATIONS_FOR_REPEAT_AUDIO = 3;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for
@@ -37,6 +41,9 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
 
     private boolean detectLeft = true;
     private boolean detectRight = true;
+
+    private int mNumAnimations;
+    private int mAudioResId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +64,16 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
         mLeftHandView = (HandView) findViewById(R.id.left_hand);
         mRightHandView = (HandView) findViewById(R.id.right_hand);
 
+        mLeftHandView.setHandViewListener(this);
+        mRightHandView.setHandViewListener(this);
+
         playMoveLeft();
     }
 
     private void playMoveLeft() {
-        MediaPlayerHelper.playWithDelay(this, R.raw.find_the_images_to_the_right, new MediaPlayerHelper.MediaPlayerListener() {
+        mAudioResId = R.raw.find_the_images_to_the_right;
+        mNumAnimations++;
+        MediaPlayerHelper.playWithDelay(this, mAudioResId, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showSlideLeft();
@@ -70,12 +82,19 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     }
 
     private void playMoveRight() {
-        MediaPlayerHelper.playWithDelay(this, R.raw.find_the_images_to_the_left, new MediaPlayerHelper.MediaPlayerListener() {
+        mAudioResId = R.raw.find_the_images_to_the_left;
+        mNumAnimations++;
+        MediaPlayerHelper.playWithDelay(this, mAudioResId, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showSlideRight();
             }
         });
+    }
+
+    private void playAudio() {
+        resetNumAnimations();
+        MediaPlayerHelper.play(this, mAudioResId);
     }
 
     /**
@@ -90,12 +109,18 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
      */
     private void showSlideRight() {
         mLeftHandView.startAnimation();
+        resetNumAnimations();
     }
 
     private void resetHandPosition() {
+        mRightHandView.setHandViewListener(null);
         mRightHandView.onTouchEvent(null);
         mRightHandView.setVisibility(View.GONE);
         mLeftHandView.setVisibility(View.VISIBLE);
+    }
+
+    private void resetNumAnimations() {
+        mNumAnimations = 0;
     }
 
     private boolean isDetectLeftActive() {
@@ -138,6 +163,18 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     @Override
     public void onPageScrollStateChanged(int state) {
     }
+    //endregion
+
+    //region HandViewListener
+
+    @Override
+    public void onHandAnimationEnd() {
+        if (mNumAnimations == NUM_ANIMATIONS_FOR_REPEAT_AUDIO) {
+            playAudio();
+        }
+        mNumAnimations++;
+    }
+
     //endregion
 
     /**
