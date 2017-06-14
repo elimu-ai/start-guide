@@ -124,6 +124,10 @@ public class HandView extends RelativeLayout implements HandGestureListener {
         }
     }
 
+    public void stopAnimation() {
+        mAnimationHelper.stopAnimation();
+    }
+
     private void startTouch() {
         mHandView.setImageResource(R.drawable.animation_vector_touch_on);
         ((Animatable) mHandView.getDrawable()).start();

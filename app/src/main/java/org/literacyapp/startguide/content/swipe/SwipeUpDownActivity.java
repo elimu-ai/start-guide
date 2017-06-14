@@ -87,7 +87,6 @@ public class SwipeUpDownActivity extends AppCompatActivity implements SwipeUpDow
      * Hand animation to explain scroll to the top
      */
     private void showMoveTop() {
-        resetHandPosition();
         resetNumAnimations();
 
         mHandView.startAnimation(Gestures.MOVE_DOWN);
@@ -109,6 +108,7 @@ public class SwipeUpDownActivity extends AppCompatActivity implements SwipeUpDow
     @Override
     public void onLastItemReached() {
         resetHandPosition();
+        mHandView.stopAnimation();
         playMoveTop();
     }
 
