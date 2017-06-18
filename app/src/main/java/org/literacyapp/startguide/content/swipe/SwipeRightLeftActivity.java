@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import org.literacyapp.handgesture.HandView;
 import org.literacyapp.handgesture.HandViewListener;
 import org.literacyapp.startguide.R;
-import org.literacyapp.startguide.content.FinalActivity;
+import org.literacyapp.startguide.content.ExitFullScreenActivity;
 import org.literacyapp.startguide.util.MediaPlayerHelper;
 
 /**
@@ -155,7 +155,7 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
 
             finish();
 
-            Intent intent = new Intent(this, FinalActivity.class);
+            Intent intent = new Intent(this, ExitFullScreenActivity.class);
             startActivity(intent);
         }
     }

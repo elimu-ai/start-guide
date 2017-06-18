@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 
 import static org.literacyapp.handgesture.Constants.DEFAULT_ANIMATION_DELAY;
 import static org.literacyapp.handgesture.Constants.MILLISECONDS;
@@ -26,6 +27,18 @@ public class AnimationHelper implements Animation.AnimationListener {
 
     public AnimationHelper(Context context, int idAnim, HandGestureListener handGestureListener) {
         mAnimation = AnimationUtils.loadAnimation(context, idAnim);
+
+        initAnimationListeners(handGestureListener);
+    }
+
+    public AnimationHelper(int translateX, int translateY, float duration, HandGestureListener handGestureListener) {
+        mAnimation = new TranslateAnimation(0, translateX, 0, translateY);
+        mAnimation.setDuration((long) (duration * MILLISECONDS));
+
+        initAnimationListeners(handGestureListener);
+    }
+
+    private void initAnimationListeners(HandGestureListener handGestureListener) {
         mAnimation.setAnimationListener(this);
         mHandGestureListener = handGestureListener;
 
@@ -55,6 +68,7 @@ public class AnimationHelper implements Animation.AnimationListener {
             @Override
             public void run() {
                 mView.startAnimation(makeSmallerImage());
+                mHandGestureListener.onAnimationStarted();
             }
         }, delay * MILLISECONDS);
     }
@@ -79,7 +93,6 @@ public class AnimationHelper implements Animation.AnimationListener {
         mHandGestureListener.onTouchEnd();
         mView.setScaleX(1);
         mView.setScaleY(1);
-
 
         if (isRepeatMode()) {
             animateView(mView);
