@@ -17,13 +17,15 @@ public class StartPrefsHelper {
         long firstStartupDate = getFirstStartupDate(context);
         long currentDate = System.currentTimeMillis();
 
-        Log.d(StartPrefsHelper.class.getName(),
-                "First start-up less than seven days ago: " + ((firstStartupDate + SEVEN_DAYS_IN_MILLISECONDS) > currentDate));
-
         if (firstStartupDate == 0) {
+            Log.d(StartPrefsHelper.class.getName(), "First start-up");
             storeFirstStartupDate(context);
+            return true;
+        } else {
+            Log.d(StartPrefsHelper.class.getName(),
+                    "First start-up less than seven days ago: " + ((firstStartupDate + SEVEN_DAYS_IN_MILLISECONDS) > currentDate));
+            return ((firstStartupDate + SEVEN_DAYS_IN_MILLISECONDS) > currentDate);
         }
-        return ((firstStartupDate + SEVEN_DAYS_IN_MILLISECONDS) > currentDate);
     }
 
     private static long getFirstStartupDate(Context context) {

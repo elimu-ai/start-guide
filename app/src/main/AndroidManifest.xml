@@ -24,6 +24,9 @@
             android:name=".content.swipe.SwipeRightLeftActivity"
             android:noHistory="true"/>
         <activity
+            android:name=".content.ExitFullScreenActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity
             android:name=".content.FinalActivity"
             android:noHistory="true"/>
         <activity android:name=".TestGestureActivity">

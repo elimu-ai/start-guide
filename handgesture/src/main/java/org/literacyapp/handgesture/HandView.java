@@ -27,13 +27,20 @@ public class HandView extends RelativeLayout implements HandGestureListener {
     private AnimationHelper mAnimationHelper;
     private HandGesture handGesture;
 
+    private HandViewListener mHandViewListener;
+
     private int mAnimationType;
     private boolean mHideOnTouch = true;
     private boolean mRepeatAnimation = true;
     //Delay in seconds
     private int mAnimationDelay;
+    private int mTranslateX;
+    private int mTranslateY;
+    private float mTranslationDuration;
+
     //Flag for double touch gesture
     private boolean firstTouch = true;
+    private boolean mDetectTouchEvent;
 
     // used in view creation programmatically
     public HandView(Context context) {
@@ -60,8 +67,18 @@ public class HandView extends RelativeLayout implements HandGestureListener {
             mRepeatAnimation = typedArray.getBoolean(R.styleable.HandView_repeatAnimation, mRepeatAnimation);
             mAnimationDelay = typedArray.getInt(R.styleable.HandView_animationDelay, 1);
 
+            if (mAnimationType == Gestures.TRANSLATION.ordinal()) {
+                mTranslateX = typedArray.getInt(R.styleable.HandView_translateX, 0);
+                mTranslateY = typedArray.getInt(R.styleable.HandView_translateY, 0);
+                mTranslationDuration = typedArray.getFloat(R.styleable.HandView_duration, 1);
+            }
+
             typedArray.recycle();
         }
+    }
+
+    public void setHandViewListener(HandViewListener listener) {
+        mHandViewListener = listener;
     }
 
     @Override
@@ -71,11 +88,11 @@ public class HandView extends RelativeLayout implements HandGestureListener {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (getVisibility() == VISIBLE && mHideOnTouch) {
+        if (mHideOnTouch && mDetectTouchEvent) {
+            setVisibility(GONE);
             if (mAnimationHelper != null) {
                 mAnimationHelper.stopAnimation();
             }
-            setVisibility(GONE);
         }
         return false;
     }
@@ -84,10 +101,12 @@ public class HandView extends RelativeLayout implements HandGestureListener {
         if (mAnimationType >= 0) {
             HandGesture gesture = Gestures.getHandGesture(mAnimationType);
 
-            if (gesture.isTranslation()) {
-                startAnimation(Gestures.getAnimationResource(mAnimationType));
-            } else {
+            if (!gesture.isTranslation()) {
                 startGesture(gesture);
+            } else if (gesture.isCustomTranslation()) {
+                startCustomAnimation();
+            } else {
+                startAnimation(Gestures.getAnimationResource(mAnimationType));
             }
         } else {
             Log.e(getClass().getName(), "Animation type not set");
@@ -95,20 +114,36 @@ public class HandView extends RelativeLayout implements HandGestureListener {
     }
 
     public void startAnimation(HandGesture handAnimation) {
-        if (handAnimation.isTranslation()) {
-            startAnimation(handAnimation.getAnimationResource());
-        } else {
+        if (!handAnimation.isTranslation()) {
             startGesture(handAnimation);
+        } else if (handAnimation.isCustomTranslation()) {
+            startCustomAnimation();
+        } else {
+            startAnimation(handAnimation.getAnimationResource());
         }
     }
 
     public void startAnimation(int idAnimResource) {
+        mDetectTouchEvent = false;
         mAnimationHelper = new AnimationHelper(getContext(), idAnimResource, this);
         mAnimationHelper.setRepeatMode(mRepeatAnimation);
         mAnimationHelper.animateView(this, mAnimationDelay);
     }
 
+    private void startCustomAnimation() {
+        mDetectTouchEvent = false;
+        mAnimationHelper = new AnimationHelper(mTranslateX, mTranslateY, mTranslationDuration, this);
+        mAnimationHelper.setRepeatMode(mRepeatAnimation);
+        mAnimationHelper.animateView(this, mAnimationDelay);
+    }
+
+    public void stopAnimation() {
+        mHideOnTouch = true;
+        onTouchEvent(null);
+    }
+
     private void startGesture(HandGesture handGesture) {
+        mDetectTouchEvent = false;
         this.handGesture = handGesture;
         if (handGesture.equals(SINGLE_TAP)) {
             new GestureHelper(this, this).startOneTouchAnimation(mAnimationDelay);
@@ -132,12 +167,20 @@ public class HandView extends RelativeLayout implements HandGestureListener {
     @Override
     protected void onAnimationEnd() {
         super.onAnimationEnd();
+        if (mHandViewListener != null) {
+            mHandViewListener.onAnimationEnd();
+        }
         if (handGesture != null && mRepeatAnimation) {
             startGesture(handGesture);
         }
     }
 
     //region HandGestureListener
+
+    @Override
+    public void onAnimationStarted() {
+        mDetectTouchEvent = true;
+    }
 
     @Override
     public void onZoomOutEnd() {
