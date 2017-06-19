@@ -18,7 +18,7 @@ Then, add the following dependency:
 ```
 dependencies {
    ...
-   compile 'org.literacyapp.startguide:1.0.3'
+   compile 'org.literacyapp.startguide:1.0.0'
 }
 ``` 
 
