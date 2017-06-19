@@ -1,21 +1,28 @@
 # HandView
 
-### HandView attributes
+## Gradle Import
 
-**animationType**: `moveUp`, `moveDown`, `moveLeft`, `moveRight`, `singleTouch`, `doubleTouch`, `pressAndHold`, `translation`
-    
-**hideOnTouch**: Hide view when touching screen. Default: `true`
+To import the library, you first need to add our repository in app/build.gradle:
 
-**repeatAnimation**: Repeat animation indefinitely. Default: `true` 
+```
+repositories {
+    mavenLocal()
+    maven {
+        url "http://archiva.educativo.eu:8081/repository/internal/"
+    }
+}
+```
 
-**animationDelay**: Animation delay in seconds. Default: 1 second
+Then, add the following dependency:
 
-**translateX** (only for ```animationType="translation"```): Translation in X coordinate from initial hand position.
+```
+dependencies {
+   ...
+   compile 'org.literacyapp.startguide:1.0.0'
+}
+``` 
 
-**translatey** (only for ```animationType="translation"```): Translation in Y coordinate from initial hand position. 
-
-**duration** (only for ```animationType="translation"```): Duration of hand translation in seconds. Default: 1 second.
-
+You can add the HandView to the Layout
     
 ```
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -27,24 +34,23 @@
         android:id="@+id/hand_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:animationType="moveLeft" />
+        app:animationType="moveLeft"
+        app:hideOnTouch="false"
+        app:repeatAnimation="true"
+        app:animationDelay="2"/>
  
 </RelativeLayout>
 ```
 
+and start the animation
 
     HandView mHandView = (HandView) findViewById(R.id.hand_view);
     mHandView.startAnimation();
 
-
-You can use other animations passing the animation to `startAnimation`
-
-    mHandView.startAnimation(R.anim.my_animation);
-
 or
 
     mHandView.startAnimation(Gestures.MOVE_UP);
-    
+
 ###### Custom translation
 
 ```
@@ -61,3 +67,20 @@ or
 HandView mHandView = (HandView) findViewById(R.id.hand_view);
 mHandView.startAnimation();
 ```
+
+#### HandView attributes
+
+**animationType**: `moveUp`, `moveDown`, `moveLeft`, `moveRight`, `singleTouch`, `doubleTouch`, `pressAndHold`, `translation`
+    
+**hideOnTouch**: Hide view when touching screen. Default: `true`
+
+**repeatAnimation**: Repeat animation indefinitely. Default: `true` 
+
+**animationDelay**: Animation delay in seconds. Default: 1 second
+
+**translateX** (only for ```animationType="translation"```): Translation in X coordinate from initial hand position.
+
+**translatey** (only for ```animationType="translation"```): Translation in Y coordinate from initial hand position. 
+
+**duration** (only for ```animationType="translation"```): Duration of hand translation in seconds. Default: 1 second.
+

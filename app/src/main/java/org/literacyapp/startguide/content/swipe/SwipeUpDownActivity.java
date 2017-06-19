@@ -89,6 +89,7 @@ public class SwipeUpDownActivity extends AppCompatActivity implements SwipeUpDow
     private void showMoveTop() {
         resetNumAnimations();
 
+        mHandView.setHideOnTouch(false);
         mHandView.startAnimation(Gestures.MOVE_DOWN);
     }
 
