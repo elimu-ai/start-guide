@@ -108,7 +108,7 @@ public class ExitFullScreenActivity extends Activity {
         mHandView.setVisibility(View.VISIBLE);
         mHandView.setHandViewListener(new HandViewListener() {
             @Override
-            public void onAnimationEnd() {
+            public void onHandAnimationEnd() {
                 mHandView.stopAnimation();
                 mBottomBar.setVisibility(View.VISIBLE);
 
@@ -133,7 +133,7 @@ public class ExitFullScreenActivity extends Activity {
         mHandViewBottom.startAnimation();
         mHandViewBottom.setHandViewListener(new HandViewListener() {
             @Override
-            public void onAnimationEnd() {
+            public void onHandAnimationEnd() {
                 mBottomBar.setVisibility(View.GONE);
                 mHandViewBottom.setVisibility(View.GONE);
 
