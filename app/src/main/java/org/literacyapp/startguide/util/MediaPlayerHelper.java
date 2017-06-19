@@ -16,6 +16,10 @@ public class MediaPlayerHelper {
 
     public static final long DEFAULT_PLAYER_DELAY = 1000;
 
+    public static void play(Context context, int resId) {
+        play(context, resId, null);
+    }
+
     public static void play(Context context, int resId, final MediaPlayerListener listener) {
         Log.i(MediaPlayerHelper.class.getName(), "play");
 
