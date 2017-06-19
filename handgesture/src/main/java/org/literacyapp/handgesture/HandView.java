@@ -56,6 +56,10 @@ public class HandView extends RelativeLayout implements HandGestureListener {
         mHandViewListener = listener;
     }
 
+    public void setHideOnTouch(boolean hideOnTouch) {
+        mHideOnTouch = hideOnTouch;
+    }
+
     private void init(Context context, AttributeSet attrs) {
         mView = inflate(context, R.layout.hand_layout, this);
 
