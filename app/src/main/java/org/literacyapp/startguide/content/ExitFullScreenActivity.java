@@ -140,6 +140,7 @@ public class ExitFullScreenActivity extends Activity {
                 mAnimationCompleted = true;
 
                 mHandView.setVisibility(View.VISIBLE);
+                mHandView.setHideOnTouch(false);
                 playExitFullScreen();
             }
         });
