@@ -3,30 +3,29 @@ package org.literacyapp.startguide.content.swipe;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import org.literacyapp.handgesture.Gestures;
 import org.literacyapp.handgesture.HandView;
+import org.literacyapp.handgesture.HandViewListener;
 import org.literacyapp.startguide.R;
-import org.literacyapp.startguide.content.FinalActivity;
+import org.literacyapp.startguide.content.ExitFullScreenActivity;
 import org.literacyapp.startguide.util.MediaPlayerHelper;
 
 /**
  * Activity that explain swipe right and left
  */
 public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,
-        View.OnTouchListener {
+        HandViewListener {
+
+    private static final int NUM_ANIMATIONS_FOR_REPEAT_AUDIO = 3;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for
@@ -37,10 +36,14 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
-    private HandView mHandView;
+    private HandView mLeftHandView;
+    private HandView mRightHandView;
 
     private boolean detectLeft = true;
     private boolean detectRight = true;
+
+    private int mNumAnimations;
+    private int mAudioResId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +59,21 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(this);
-        mViewPager.setOnTouchListener(this);
 
         //Hand view
-        mHandView = (HandView) findViewById(R.id.hand);
+        mLeftHandView = (HandView) findViewById(R.id.left_hand);
+        mRightHandView = (HandView) findViewById(R.id.right_hand);
+
+        mLeftHandView.setHandViewListener(this);
+        mRightHandView.setHandViewListener(this);
 
         playMoveLeft();
     }
 
     private void playMoveLeft() {
-        MediaPlayerHelper.playWithDelay(this, R.raw.find_the_images_to_the_right, new MediaPlayerHelper.MediaPlayerListener() {
+        mAudioResId = R.raw.find_the_images_to_the_right;
+        mNumAnimations++;
+        MediaPlayerHelper.playWithDelay(this, mAudioResId, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showSlideLeft();
@@ -74,7 +82,9 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     }
 
     private void playMoveRight() {
-        MediaPlayerHelper.playWithDelay(this, R.raw.find_the_images_to_the_left, new MediaPlayerHelper.MediaPlayerListener() {
+        mAudioResId = R.raw.find_the_images_to_the_left;
+        mNumAnimations++;
+        MediaPlayerHelper.playWithDelay(this, mAudioResId, new MediaPlayerHelper.MediaPlayerListener() {
             @Override
             public void onCompletion() {
                 showSlideRight();
@@ -82,26 +92,35 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
         });
     }
 
+    private void playAudio() {
+        resetNumAnimations();
+        MediaPlayerHelper.play(this, mAudioResId);
+    }
+
     /**
      * Swipe to left explanation with audio and hand animation
      */
     private void showSlideLeft() {
-        mHandView.startAnimation();
+        mRightHandView.startAnimation();
     }
 
     /**
      * Swipe to right explanation with audio and hand animation
      */
     private void showSlideRight() {
-        mHandView.startAnimation(Gestures.MOVE_RIGHT);
+        mLeftHandView.startAnimation();
+        resetNumAnimations();
     }
 
     private void resetHandPosition() {
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)mHandView.getLayoutParams();
-        params.anchorGravity = Gravity.LEFT | Gravity.CENTER_VERTICAL;
+        mRightHandView.setHandViewListener(null);
+        mRightHandView.onTouchEvent(null);
+        mRightHandView.setVisibility(View.GONE);
+        mLeftHandView.setVisibility(View.VISIBLE);
+    }
 
-        mHandView.setLayoutParams(params);
-        mHandView.setVisibility(View.VISIBLE);
+    private void resetNumAnimations() {
+        mNumAnimations = 0;
     }
 
     private boolean isDetectLeftActive() {
@@ -136,7 +155,7 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
 
             finish();
 
-            Intent intent = new Intent(this, FinalActivity.class);
+            Intent intent = new Intent(this, ExitFullScreenActivity.class);
             startActivity(intent);
         }
     }
@@ -146,12 +165,16 @@ public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPag
     }
     //endregion
 
-    //region OnTouchListener
+    //region HandViewListener
+
     @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        mHandView.onTouchEvent(event);
-        return false;
+    public void onHandAnimationEnd() {
+        if (mNumAnimations == NUM_ANIMATIONS_FOR_REPEAT_AUDIO) {
+            playAudio();
+        }
+        mNumAnimations++;
     }
+
     //endregion
 
     /**

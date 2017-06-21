@@ -16,13 +16,25 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <org.literacyapp.handgesture.HandView
-        android:id="@+id/hand"
+        android:id="@+id/right_hand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|right"
         android:layout_marginRight="@dimen/swipe_hand_margin_right"
         app:layout_anchor="@+id/container"
         app:layout_anchorGravity="center_vertical|right"
-        app:animationType="moveLeft" />
+        app:animationType="moveLeft"
+        app:hideOnTouch="false"/>
+
+    <org.literacyapp.handgesture.HandView
+        android:id="@+id/left_hand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left"
+        android:layout_marginLeft="@dimen/swipe_hand_margin_right"
+        app:animationType="moveRight"
+        app:hideOnTouch="false"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -24,5 +24,8 @@ public class TestGestureActivity extends Activity {
 
         HandView mPressAndHold = (HandView) findViewById(R.id.press_and_hold);
         mPressAndHold.startAnimation(PRESS_AND_HOLD);
+
+        HandView mTranslation = (HandView) findViewById(R.id.translation);
+        mTranslation.startAnimation();
     }
 }
