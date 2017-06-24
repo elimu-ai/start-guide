@@ -12,10 +12,10 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction()) && StartPrefsHelper.startAfterBoot(context)) {
-            Intent bootIntent = new Intent(context, SwipeUpDownActivity.class);
-            bootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(bootIntent);
-        }
+//        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction()) && StartPrefsHelper.startAfterBoot(context)) {
+//            Intent bootIntent = new Intent(context, SwipeUpDownActivity.class);
+//            bootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            context.startActivity(bootIntent);
+//        }
     }
 }
