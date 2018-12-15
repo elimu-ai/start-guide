@@ -4,7 +4,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
     defaultConfig {
-        applicationId "org.literacyapp.startguide"
+        applicationId "ai.elimu.startguide"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1000004

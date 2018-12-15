@@ -4,7 +4,7 @@
     android:id="@+id/pager_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.literacyapp.startguide.content.swipe.SwipeRightLeftActivity$PlaceholderFragment">
+    tools:context="ai.elimu.startguide.content.swipe.SwipeRightLeftActivity$PlaceholderFragment">
 
     <ImageView
         android:id="@+id/left_image"

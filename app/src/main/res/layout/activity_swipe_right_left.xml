@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="org.literacyapp.startguide.content.swipe.SwipeRightLeftActivity">
+    tools:context="ai.elimu.startguide.content.swipe.SwipeRightLeftActivity">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <org.literacyapp.handgesture.HandView
+    <ai.elimu.handgesture.HandView
         android:id="@+id/right_hand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
         app:animationType="moveLeft"
         app:hideOnTouch="false"/>
 
-    <org.literacyapp.handgesture.HandView
+    <ai.elimu.handgesture.HandView
         android:id="@+id/left_hand"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
