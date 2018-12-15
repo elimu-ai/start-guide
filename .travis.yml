@@ -15,5 +15,5 @@ android:
     - extra-android-m2repository
 
 notifications:
-#  slack: literacyapp:HLjtHJdZ7DYJV2DlnDLrG6Gl
+  slack: elimu-ai:5hNcmHPFkAETjJZjrkBlNTxr
   email: false
