@@ -18,7 +18,7 @@ Then, add the following dependency:
 ```
 dependencies {
    ...
-   compile 'ai.elimu.startguide:1.0.0'
+   compile 'ai.elimu.startguide:2.0.0'
 }
 ``` 
 
