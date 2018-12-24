@@ -8,7 +8,7 @@ To import the library, you first need to add our repository in app/build.gradle:
 repositories {
     mavenLocal()
     maven {
-        url "http://archiva.educativo.eu:8081/repository/internal/"
+        url "https://dl.bintray.com/elimu-ai/maven/"
     }
 }
 ```
@@ -18,7 +18,7 @@ Then, add the following dependency:
 ```
 dependencies {
    ...
-   compile 'org.literacyapp.startguide:1.0.0'
+   compile 'ai.elimu.startguide:2.0.0'
 }
 ``` 
 
@@ -30,7 +30,7 @@ You can add the HandView to the Layout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     ... >
  
-    <org.literacyapp.handgesture.HandView
+    <ai.elimu.handgesture.HandView
         android:id="@+id/hand_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -54,7 +54,7 @@ or
 ###### Custom translation
 
 ```
-<org.literacyapp.handgesture.HandView
+<ai.elimu.handgesture.HandView
     android:id="@+id/hand_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

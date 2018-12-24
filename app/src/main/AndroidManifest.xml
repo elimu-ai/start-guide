@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.literacyapp.startguide">
+          package="ai.elimu.startguide">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".content.swipe.SwipeUpDownActivity"
+            android:name="ai.elimu.startguide.content.swipe.SwipeUpDownActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:noHistory="true">
             <intent-filter>
@@ -21,15 +21,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".content.swipe.SwipeRightLeftActivity"
+            android:name="ai.elimu.startguide.content.swipe.SwipeRightLeftActivity"
             android:noHistory="true"/>
         <activity
-            android:name=".content.ExitFullScreenActivity"
+            android:name="ai.elimu.startguide.content.ExitFullScreenActivity"
             android:configChanges="orientation|screenSize"/>
         <activity
-            android:name=".content.FinalActivity"
+            android:name="ai.elimu.startguide.content.FinalActivity"
             android:noHistory="true"/>
-        <activity android:name=".TestGestureActivity">
+        <activity android:name="ai.elimu.startguide.TestGestureActivity">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -37,7 +37,7 @@
             </intent-filter>-->
         </activity>
 
-        <receiver android:name=".receiver.BootReceiver">
+        <receiver android:name="ai.elimu.startguide.receiver.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
