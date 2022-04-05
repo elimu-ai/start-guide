@@ -1,4 +1,4 @@
-# Start Guide
+# Start Guide 👆🏽
 
 Android application teaching basic tablet UI navigation
 
