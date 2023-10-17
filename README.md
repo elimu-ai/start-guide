@@ -7,3 +7,10 @@ Android application teaching basic tablet UI navigation
 ![scr_20170619_231313_512](https://user-images.githubusercontent.com/15718174/27304074-34639c1e-553d-11e7-9b0b-cdcae94bb176.gif)
 
 See demo at https://www.youtube.com/watch?v=bBRxW-AFqFo
+
+
+---
+
+elimu.ai - Free personalized learning for every child on Earth 🌍🌏🌎
+
+[Website 🌐](https://elimu.ai) &nbsp; [Wiki 📃](https://github.com/elimu-ai/wiki#readme) &nbsp; [Projects 👩🏽‍💻](https://github.com/elimu-ai/wiki/projects) &nbsp; [Milestones 🎯](https://github.com/elimu-ai/wiki/milestones) &nbsp; [Community 👋🏽](https://github.com/elimu-ai/wiki#open-source-community)
