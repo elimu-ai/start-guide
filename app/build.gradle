@@ -1,12 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdk 35
+    namespace "ai.elimu.startguide"
     defaultConfig {
-        applicationId "ai.elimu.startguide"
         minSdkVersion 21
-        targetSdkVersion 23
+        targetSdkVersion 35
         versionCode 2000001
         versionName "2.0.1-SNAPSHOT"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -23,14 +22,14 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
-    testCompile 'junit:junit:4.12'
-    compile project(':handgesture')
+    implementation 'com.android.support:appcompat-v7:23.4.0'
+    implementation 'com.android.support:support-v4:23.4.0'
+    implementation 'com.android.support:recyclerview-v7:23.4.0'
+    implementation 'com.android.support:design:23.4.0'
+    testImplementation 'junit:junit:4.12'
+    implementation project(':handgesture')
 }
