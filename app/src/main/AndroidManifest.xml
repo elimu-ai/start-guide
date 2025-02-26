@@ -13,6 +13,7 @@
         <activity
             android:name="ai.elimu.startguide.content.swipe.SwipeUpDownActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -37,7 +38,8 @@
             </intent-filter>-->
         </activity>
 
-        <receiver android:name="ai.elimu.startguide.receiver.BootReceiver">
+        <receiver android:name="ai.elimu.startguide.receiver.BootReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
