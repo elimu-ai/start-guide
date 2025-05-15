@@ -1,14 +1,13 @@
-package ai.elimu.handgesture;
+package ai.elimu.handgesture
 
 /**
  */
-public class Constants {
+object Constants {
+    const val MILLISECONDS: Int = 1000
 
-    public static final int MILLISECONDS = 1000;
+    const val DEFAULT_ANIMATION_DELAY: Long = 1 //seconds
 
-    public static final long DEFAULT_ANIMATION_DELAY = 1; //seconds
+    const val SCALE_DURATION: Long = 500 //milliseconds
 
-    public static final long SCALE_DURATION = 500; //milliseconds
-
-    public static final float SCALE_FACTOR = 0.9f;
+    const val SCALE_FACTOR: Float = 0.9f
 }
