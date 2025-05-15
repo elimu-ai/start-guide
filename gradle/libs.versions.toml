@@ -6,6 +6,8 @@ appCompat = "1.7.0"
 recyclerView = "1.4.0"
 androidXEspresso = "3.6.1"
 agp = "8.8.2"
+coreKtx = "1.16.0"
+kotlin = "2.1.21"
 
 [libraries]
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -15,5 +17,7 @@ androidx-espresso = { group = "androidx.test.espresso", name = "espresso-core", 
 agp = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 
 [plugins]
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
