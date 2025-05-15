@@ -3,18 +3,18 @@ package ai.elimu.startguide.content.swipe;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import ai.elimu.handgesture.Gestures;
 import ai.elimu.handgesture.HandView;
 import ai.elimu.handgesture.HandViewListener;
 import ai.elimu.startguide.R;
 import ai.elimu.startguide.util.MediaPlayerHelper;
-
 
 /**
  *

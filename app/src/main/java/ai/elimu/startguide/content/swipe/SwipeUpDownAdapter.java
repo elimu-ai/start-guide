@@ -1,12 +1,13 @@
 package ai.elimu.startguide.content.swipe;
 
 import android.content.res.TypedArray;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import ai.elimu.startguide.R;
 

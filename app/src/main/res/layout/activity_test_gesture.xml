@@ -36,6 +36,6 @@
         app:animationType="translation"
         app:translateX="300"
         app:translateY="-100"
-        app:duration="2.5"/>
+        app:transition_duration="2.5"/>
 
 </RelativeLayout>
