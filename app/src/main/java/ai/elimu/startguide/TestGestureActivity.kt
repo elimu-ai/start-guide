@@ -1,32 +1,26 @@
-package ai.elimu.startguide;
+package ai.elimu.startguide
 
-import android.app.Activity;
-import android.os.Bundle;
+import ai.elimu.handgesture.Gestures
+import ai.elimu.handgesture.HandView
+import android.app.Activity
+import android.os.Bundle
+import android.view.View
 
-import ai.elimu.handgesture.HandView;
-import ai.elimu.startguide.R;
+class TestGestureActivity : Activity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_test_gesture)
 
-import static ai.elimu.handgesture.Gestures.DOUBLE_TAP;
-import static ai.elimu.handgesture.Gestures.PRESS_AND_HOLD;
-import static ai.elimu.handgesture.Gestures.SINGLE_TAP;
+        val mSingleTap = findViewById<View?>(R.id.single_tap) as HandView
+        mSingleTap.startAnimation(Gestures.SINGLE_TAP)
 
-public class TestGestureActivity extends Activity {
+        val mDoubleTap = findViewById<View?>(R.id.double_tap) as HandView
+        mDoubleTap.startAnimation(Gestures.DOUBLE_TAP)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test_gesture);
+        val mPressAndHold = findViewById<View?>(R.id.press_and_hold) as HandView
+        mPressAndHold.startAnimation(Gestures.PRESS_AND_HOLD)
 
-        HandView mSingleTap = (HandView) findViewById(R.id.single_tap);
-        mSingleTap.startAnimation(SINGLE_TAP);
-
-        HandView mDoubleTap = (HandView) findViewById(R.id.double_tap);
-        mDoubleTap.startAnimation(DOUBLE_TAP);
-
-        HandView mPressAndHold = (HandView) findViewById(R.id.press_and_hold);
-        mPressAndHold.startAnimation(PRESS_AND_HOLD);
-
-        HandView mTranslation = (HandView) findViewById(R.id.translation);
-        mTranslation.startAnimation();
+        val mTranslation = findViewById<View?>(R.id.translation) as HandView
+        mTranslation.startAnimation()
     }
 }
