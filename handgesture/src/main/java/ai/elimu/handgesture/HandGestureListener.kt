@@ -1,14 +1,13 @@
-package ai.elimu.handgesture;
+package ai.elimu.handgesture
 
 /**
  */
-public interface HandGestureListener {
+interface HandGestureListener {
+    fun onAnimationStarted()
 
-    void onAnimationStarted();
+    fun onZoomOutEnd()
 
-    void onZoomOutEnd();
+    fun onTouchStart()
 
-    void onTouchStart();
-
-    void onTouchEnd();
+    fun onTouchEnd()
 }
