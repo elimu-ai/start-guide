@@ -1,199 +1,188 @@
-package ai.elimu.handgesture;
+package ai.elimu.handgesture
 
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Animatable;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-
-import androidx.annotation.Nullable;
+import ai.elimu.handgesture.Gestures.HandGesture
+import ai.elimu.handgesture.Gestures.getAnimationResource
+import ai.elimu.handgesture.Gestures.getHandGesture
+import android.content.Context
+import android.graphics.drawable.Animatable
+import android.util.AttributeSet
+import android.util.Log
+import android.view.MotionEvent
+import android.view.View
+import android.widget.ImageView
+import android.widget.RelativeLayout
 
 /**
  */
-public class HandView extends RelativeLayout implements HandGestureListener {
+class HandView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
+    RelativeLayout(context, attrs), HandGestureListener {
+    private var mView: View? = null
+    private var mHandView: ImageView? = null
 
-    private View mView;
-    private ImageView mHandView;
+    private var mAnimationHelper: AnimationHelper? = null
+    private var handGesture: HandGesture? = null
+    private var mHandViewListener: HandViewListener? = null
 
-    private AnimationHelper mAnimationHelper;
-    private Gestures.HandGesture handGesture;
-    private HandViewListener mHandViewListener;
+    private var mAnimationType = 0
+    private var mHideOnTouch = true
+    private var mRepeatAnimation = true
 
-    private int mAnimationType;
-    private boolean mHideOnTouch = true;
-    private boolean mRepeatAnimation = true;
     //Delay in seconds
-    private int mAnimationDelay;
-    private int mTranslateX;
-    private int mTranslateY;
-    private float mTranslationDuration;
+    private var mAnimationDelay = 0
+    private var mTranslateX = 0
+    private var mTranslateY = 0
+    private var mTranslationDuration = 0f
 
     //Flag for double touch gesture
-    private boolean firstTouch = true;
-    private boolean mDetectTouchEvent;
-
-    // used in view creation programmatically
-    public HandView(Context context) {
-        this(context, null);
-    }
+    private var firstTouch = true
+    private var mDetectTouchEvent = false
 
     // used in XML layout file
-    public HandView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init(context, attrs);
+    // used in view creation programmatically
+    init {
+        init(context, attrs)
     }
 
-    public void setHandViewListener(HandViewListener listener) {
-        mHandViewListener = listener;
+    fun setHandViewListener(listener: HandViewListener?) {
+        mHandViewListener = listener
     }
 
-    public void setHideOnTouch(boolean hideOnTouch) {
-        mHideOnTouch = hideOnTouch;
+    fun setHideOnTouch(hideOnTouch: Boolean) {
+        mHideOnTouch = hideOnTouch
     }
 
-    private void init(Context context, AttributeSet attrs) {
-        mView = inflate(context, R.layout.hand_layout, this);
+    private fun init(context: Context, attrs: AttributeSet?) {
+        mView = inflate(context, R.layout.hand_layout, this)
 
-        mHandView = (ImageView) mView.findViewById(R.id.animated_hand);
+        mHandView = mView!!.findViewById<View?>(R.id.animated_hand) as ImageView
 
         if (attrs != null) {
             // Attribute initialization
-            final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.HandView, 0, 0);
+            val typedArray = context.obtainStyledAttributes(attrs, R.styleable.HandView, 0, 0)
 
-            mAnimationType = typedArray.getInt(R.styleable.HandView_animationType, -1);
-            mHideOnTouch = typedArray.getBoolean(R.styleable.HandView_hideOnTouch, mHideOnTouch);
-            mRepeatAnimation = typedArray.getBoolean(R.styleable.HandView_repeatAnimation, mRepeatAnimation);
-            mAnimationDelay = typedArray.getInt(R.styleable.HandView_animationDelay, 1);
+            mAnimationType = typedArray.getInt(R.styleable.HandView_animationType, -1)
+            mHideOnTouch = typedArray.getBoolean(R.styleable.HandView_hideOnTouch, mHideOnTouch)
+            mRepeatAnimation =
+                typedArray.getBoolean(R.styleable.HandView_repeatAnimation, mRepeatAnimation)
+            mAnimationDelay = typedArray.getInt(R.styleable.HandView_animationDelay, 1)
 
-            if (mAnimationType == Gestures.TRANSLATION.ordinal()) {
-                mTranslateX = typedArray.getInt(R.styleable.HandView_translateX, 0);
-                mTranslateY = typedArray.getInt(R.styleable.HandView_translateY, 0);
-                mTranslationDuration = typedArray.getFloat(R.styleable.HandView_transition_duration, 1);
+            if (mAnimationType == Gestures.TRANSLATION.ordinal) {
+                mTranslateX = typedArray.getInt(R.styleable.HandView_translateX, 0)
+                mTranslateY = typedArray.getInt(R.styleable.HandView_translateY, 0)
+                mTranslationDuration =
+                    typedArray.getFloat(R.styleable.HandView_transition_duration, 1f)
             }
 
-            typedArray.recycle();
+            typedArray.recycle()
         }
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return super.onInterceptTouchEvent(ev);
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        return super.onInterceptTouchEvent(ev)
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (mHideOnTouch && mDetectTouchEvent) {
-            setVisibility(GONE);
+            setVisibility(GONE)
             if (mAnimationHelper != null) {
-                mAnimationHelper.stopAnimation();
+                mAnimationHelper!!.stopAnimation()
             }
         }
-        return false;
+        return false
     }
 
-    public void startAnimation() {
+    fun startAnimation() {
         if (mAnimationType >= 0) {
-            Gestures.HandGesture gesture = Gestures.getHandGesture(mAnimationType);
+            val gesture = getHandGesture(mAnimationType)
 
-            if (!gesture.isTranslation()) {
-                startGesture(gesture);
-            } else if (gesture.isCustomTranslation()) {
-                startCustomAnimation();
+            if (!gesture!!.isTranslation) {
+                startGesture(gesture)
+            } else if (gesture.isCustomTranslation) {
+                startCustomAnimation()
             } else {
-                startAnimation(Gestures.getAnimationResource(mAnimationType));
+                startAnimation(getAnimationResource(mAnimationType))
             }
         } else {
-            Log.e(getClass().getName(), "Animation type not set");
+            Log.e(javaClass.getName(), "Animation type not set")
         }
     }
 
-    public void startAnimation(Gestures.HandGesture handAnimation) {
-        if (!handAnimation.isTranslation()) {
-            startGesture(handAnimation);
-        } else if (handAnimation.isCustomTranslation()) {
-            startCustomAnimation();
+    fun startAnimation(handAnimation: HandGesture) {
+        if (!handAnimation.isTranslation) {
+            startGesture(handAnimation)
+        } else if (handAnimation.isCustomTranslation) {
+            startCustomAnimation()
         } else {
-            startAnimation(handAnimation.getAnimationResource());
+            startAnimation(handAnimation.animationResource)
         }
     }
 
-    public void startAnimation(int idAnimResource) {
-        mDetectTouchEvent = false;
-        mAnimationHelper = new AnimationHelper(getContext(), idAnimResource, this);
-        mAnimationHelper.setRepeatMode(mRepeatAnimation);
-        mAnimationHelper.animateView(this, mAnimationDelay);
+    fun startAnimation(idAnimResource: Int) {
+        mDetectTouchEvent = false
+        mAnimationHelper = AnimationHelper(getContext(), idAnimResource, this)
+        mAnimationHelper!!.isRepeatMode = mRepeatAnimation
+        mAnimationHelper!!.animateView(this, mAnimationDelay.toLong())
     }
 
-    private void startCustomAnimation() {
-        mDetectTouchEvent = false;
-        mAnimationHelper = new AnimationHelper(mTranslateX, mTranslateY, mTranslationDuration, this);
-        mAnimationHelper.setRepeatMode(mRepeatAnimation);
-        mAnimationHelper.animateView(this, mAnimationDelay);
+    private fun startCustomAnimation() {
+        mDetectTouchEvent = false
+        mAnimationHelper = AnimationHelper(mTranslateX, mTranslateY, mTranslationDuration, this)
+        mAnimationHelper!!.isRepeatMode = mRepeatAnimation
+        mAnimationHelper!!.animateView(this, mAnimationDelay.toLong())
     }
 
-    public void stopAnimation() {
-        mHideOnTouch = true;
-        onTouchEvent(null);
+    fun stopAnimation() {
+        mHideOnTouch = true
+        onTouchEvent(null)
     }
 
-    private void startGesture(Gestures.HandGesture handGesture) {
-        mDetectTouchEvent = false;
-        this.handGesture = handGesture;
-        if (handGesture.equals(Gestures.SINGLE_TAP)) {
-            new GestureHelper(this, this).startOneTouchAnimation(mAnimationDelay);
-        } else if (handGesture.equals(Gestures.DOUBLE_TAP)) {
-            firstTouch = new GestureHelper(this, this).startDoubleTouchAnimation(mAnimationDelay, firstTouch);
-        } else if (handGesture.equals(Gestures.PRESS_AND_HOLD)) {
-            new GestureHelper(this, this).startTouchAndHoldAnimation(mAnimationDelay);
+    private fun startGesture(handGesture: HandGesture) {
+        mDetectTouchEvent = false
+        this.handGesture = handGesture
+        if (handGesture == Gestures.SINGLE_TAP) {
+            GestureHelper(this, this).startOneTouchAnimation(mAnimationDelay)
+        } else if (handGesture == Gestures.DOUBLE_TAP) {
+            firstTouch =
+                GestureHelper(this, this).startDoubleTouchAnimation(mAnimationDelay, firstTouch)
+        } else if (handGesture == Gestures.PRESS_AND_HOLD) {
+            GestureHelper(this, this).startTouchAndHoldAnimation(mAnimationDelay)
         }
     }
 
-    private void startTouch() {
-        mHandView.setImageResource(R.drawable.animation_vector_touch_on);
-        ((Animatable) mHandView.getDrawable()).start();
+    private fun startTouch() {
+        mHandView!!.setImageResource(R.drawable.animation_vector_touch_on)
+        (mHandView!!.getDrawable() as Animatable).start()
     }
 
-    private void endTouch() {
-        mHandView.setImageResource(R.drawable.animation_vector_touch_off);
-        ((Animatable) mHandView.getDrawable()).start();
+    private fun endTouch() {
+        mHandView!!.setImageResource(R.drawable.animation_vector_touch_off)
+        (mHandView!!.getDrawable() as Animatable).start()
     }
 
-    @Override
-    protected void onAnimationEnd() {
-        super.onAnimationEnd();
+    override fun onAnimationEnd() {
+        super.onAnimationEnd()
         if (mHandViewListener != null) {
-            mHandViewListener.onHandAnimationEnd();
+            mHandViewListener!!.onHandAnimationEnd()
         }
         if (handGesture != null && mRepeatAnimation) {
-            startGesture(handGesture);
+            startGesture(handGesture!!)
         }
     }
 
     //region HandGestureListener
-
-    @Override
-    public void onAnimationStarted() {
-        mDetectTouchEvent = true;
+    override fun onAnimationStarted() {
+        mDetectTouchEvent = true
     }
 
-    @Override
-    public void onZoomOutEnd() {
-        startTouch();
+    override fun onZoomOutEnd() {
+        startTouch()
     }
 
-    @Override
-    public void onTouchStart() {
-        startTouch();
+    override fun onTouchStart() {
+        startTouch()
     }
 
-    @Override
-    public void onTouchEnd() {
-        endTouch();
-    }
-
-    //endregion
+    override fun onTouchEnd() {
+        endTouch()
+    } //endregion
 }
