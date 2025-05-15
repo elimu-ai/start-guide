@@ -1,14 +1,11 @@
-package ai.elimu.startguide.receiver;
+package ai.elimu.startguide.receiver
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 
-
-public class BootReceiver extends BroadcastReceiver {
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
+class BootReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context?, intent: Intent?) {
 //        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction()) && StartPrefsHelper.startAfterBoot(context)) {
 //            Intent bootIntent = new Intent(context, SwipeUpDownActivity.class);
 //            bootIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
