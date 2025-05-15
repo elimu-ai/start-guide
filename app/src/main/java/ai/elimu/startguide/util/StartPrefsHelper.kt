@@ -1,40 +1,40 @@
-package ai.elimu.startguide.util;
+package ai.elimu.startguide.util
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.util.Log;
+import android.content.Context
+import android.preference.PreferenceManager
+import android.util.Log
 
+object StartPrefsHelper {
+    private const val PREF_FIRST_STARTUP_DATE = "first_startup_date"
 
-public class StartPrefsHelper {
-
-    private static final String PREF_FIRST_STARTUP_DATE = "first_startup_date";
-
-    private static final long SEVEN_DAYS_IN_MILLISECONDS = 604_800_000; // 7d*24h*60m*60s*1000;
+    private const val SEVEN_DAYS_IN_MILLISECONDS: Long = 604800000 // 7d*24h*60m*60s*1000;
 
 
-    public static boolean startAfterBoot(Context context) {
-        long firstStartupDate = getFirstStartupDate(context);
-        long currentDate = System.currentTimeMillis();
+    fun startAfterBoot(context: Context?): Boolean {
+        val firstStartupDate = getFirstStartupDate(context)
+        val currentDate = System.currentTimeMillis()
 
-        if (firstStartupDate == 0) {
-            Log.d(StartPrefsHelper.class.getName(), "First start-up");
-            storeFirstStartupDate(context);
-            return true;
+        if (firstStartupDate == 0L) {
+            Log.d(StartPrefsHelper::class.java.getName(), "First start-up")
+            storeFirstStartupDate(context)
+            return true
         } else {
-            Log.d(StartPrefsHelper.class.getName(),
-                    "First start-up less than seven days ago: " + ((firstStartupDate + SEVEN_DAYS_IN_MILLISECONDS) > currentDate));
-            return ((firstStartupDate + SEVEN_DAYS_IN_MILLISECONDS) > currentDate);
+            Log.d(
+                StartPrefsHelper::class.java.getName(),
+                "First start-up less than seven days ago: " + ((firstStartupDate + SEVEN_DAYS_IN_MILLISECONDS) > currentDate)
+            )
+            return ((firstStartupDate + SEVEN_DAYS_IN_MILLISECONDS) > currentDate)
         }
     }
 
-    private static long getFirstStartupDate(Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getLong(PREF_FIRST_STARTUP_DATE, 0);
+    private fun getFirstStartupDate(context: Context?): Long {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return sharedPreferences.getLong(PREF_FIRST_STARTUP_DATE, 0)
     }
 
-    private static boolean storeFirstStartupDate(Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.edit().putLong(PREF_FIRST_STARTUP_DATE, System.currentTimeMillis()).commit();
+    private fun storeFirstStartupDate(context: Context?): Boolean {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return sharedPreferences.edit().putLong(PREF_FIRST_STARTUP_DATE, System.currentTimeMillis())
+            .commit()
     }
 }
