@@ -3,13 +3,14 @@ package ai.elimu.handgesture;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Animatable;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.Nullable;
 
 /**
  */
@@ -71,7 +72,7 @@ public class HandView extends RelativeLayout implements HandGestureListener {
             if (mAnimationType == Gestures.TRANSLATION.ordinal()) {
                 mTranslateX = typedArray.getInt(R.styleable.HandView_translateX, 0);
                 mTranslateY = typedArray.getInt(R.styleable.HandView_translateY, 0);
-                mTranslationDuration = typedArray.getFloat(R.styleable.HandView_duration, 1);
+                mTranslationDuration = typedArray.getFloat(R.styleable.HandView_transition_duration, 1);
             }
 
             typedArray.recycle();

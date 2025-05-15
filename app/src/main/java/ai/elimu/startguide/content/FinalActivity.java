@@ -4,7 +4,6 @@ import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -13,6 +12,7 @@ import ai.elimu.startguide.util.MediaPlayerHelper;
 
 import static ai.elimu.startguide.util.MediaPlayerHelper.DEFAULT_PLAYER_DELAY;
 
+import androidx.appcompat.app.AppCompatActivity;
 
 public class FinalActivity extends AppCompatActivity {
 
