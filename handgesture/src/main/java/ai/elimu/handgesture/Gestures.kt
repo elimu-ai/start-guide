@@ -1,19 +1,32 @@
-package ai.elimu.handgesture;
+package ai.elimu.handgesture
 
 /**
  */
-public class Gestures {
+object Gestures {
+    var MOVE_UP: HandGesture = HandGesture.MOVE_UP
+    var MOVE_DOWN: HandGesture = HandGesture.MOVE_DOWN
+    var MOVE_LEFT: HandGesture = HandGesture.MOVE_LEFT
+    var MOVE_RIGHT: HandGesture = HandGesture.MOVE_RIGHT
+    @JvmField
+    var SINGLE_TAP: HandGesture = HandGesture.SINGLE_TAP
+    @JvmField
+    var DOUBLE_TAP: HandGesture = HandGesture.DOUBLE_TAP
+    @JvmField
+    var PRESS_AND_HOLD: HandGesture = HandGesture.PRESS_AND_HOLD
+    @JvmField
+    var TRANSLATION: HandGesture = HandGesture.TRANSLATION
 
-    public static HandGesture MOVE_UP = HandGesture.MOVE_UP;
-    public static HandGesture MOVE_DOWN = HandGesture.MOVE_DOWN;
-    public static HandGesture MOVE_LEFT = HandGesture.MOVE_LEFT;
-    public static HandGesture MOVE_RIGHT = HandGesture.MOVE_RIGHT;
-    public static HandGesture SINGLE_TAP = HandGesture.SINGLE_TAP;
-    public static HandGesture DOUBLE_TAP = HandGesture.DOUBLE_TAP;
-    public static HandGesture PRESS_AND_HOLD = HandGesture.PRESS_AND_HOLD;
-    public static HandGesture TRANSLATION = HandGesture.TRANSLATION;
+    @JvmStatic
+    fun getAnimationResource(animationType: Int): Int {
+        return HandGesture.entries[animationType].animationResource
+    }
 
-    protected enum HandGesture {
+    @JvmStatic
+    fun getHandGesture(animationType: Int): HandGesture? {
+        return HandGesture.entries[animationType]
+    }
+
+    enum class HandGesture {
         MOVE_UP(R.anim.slide_up),
         MOVE_DOWN(R.anim.slide_down),
         MOVE_LEFT(R.anim.slide_left),
@@ -23,35 +36,20 @@ public class Gestures {
         PRESS_AND_HOLD(0),
         TRANSLATION(true);
 
-        private int idAnim;
-        private boolean customTranslation = false;
+        var animationResource: Int = 0
+            private set
+        var isCustomTranslation: Boolean = false
+            private set
 
-        HandGesture(int idAnim) {
-            this.idAnim = idAnim;
+        constructor(idAnim: Int) {
+            this.animationResource = idAnim
         }
 
-        HandGesture(boolean translation) {
-            this.customTranslation = translation;
+        constructor(translation: Boolean) {
+            this.isCustomTranslation = translation
         }
 
-        public int getAnimationResource() {
-            return idAnim;
-        }
-
-        public boolean isTranslation() {
-            return (idAnim > 0) || customTranslation;
-        }
-
-        public boolean isCustomTranslation() {
-            return customTranslation;
-        }
-    }
-
-    public static int getAnimationResource(int animationType) {
-        return HandGesture.values()[animationType].getAnimationResource();
-    }
-
-    public static HandGesture getHandGesture(int animationType) {
-        return HandGesture.values()[animationType];
+        val isTranslation: Boolean
+            get() = (this.animationResource > 0) || this.isCustomTranslation
     }
 }
