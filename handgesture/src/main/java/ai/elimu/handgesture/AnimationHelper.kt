@@ -1,131 +1,113 @@
-package ai.elimu.handgesture;
+package ai.elimu.handgesture
 
-import android.content.Context;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
+import android.content.Context
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.ScaleAnimation
+import android.view.animation.TranslateAnimation
 
 /**
  * Created by GSC on 04/02/2017.
  */
-public class AnimationHelper implements Animation.AnimationListener {
+class AnimationHelper : Animation.AnimationListener {
+    private var mAnimationListener: HandAnimationListener? = null
 
-    private HandAnimationListener mAnimationListener;
+    var isRepeatMode: Boolean = false
 
-    private boolean repeat;
+    private var mHandGestureListener: HandGestureListener? = null
+    private val mAnimation: Animation
+    private var mView: View? = null
 
-    private HandGestureListener mHandGestureListener;
-    private Animation mAnimation;
-    private View mView;
+    constructor(context: Context?, idAnim: Int, handGestureListener: HandGestureListener) {
+        mAnimation = AnimationUtils.loadAnimation(context, idAnim)
 
-    public AnimationHelper(Context context, int idAnim, HandGestureListener handGestureListener) {
-        mAnimation = AnimationUtils.loadAnimation(context, idAnim);
-
-        initAnimationListeners(handGestureListener);
+        initAnimationListeners(handGestureListener)
     }
 
-    public AnimationHelper(int translateX, int translateY, float duration, HandGestureListener handGestureListener) {
-        mAnimation = new TranslateAnimation(0, translateX, 0, translateY);
-        mAnimation.setDuration((long) (duration * Constants.MILLISECONDS));
+    constructor(
+        translateX: Int,
+        translateY: Int,
+        duration: Float,
+        handGestureListener: HandGestureListener
+    ) {
+        mAnimation = TranslateAnimation(0f, translateX.toFloat(), 0f, translateY.toFloat())
+        mAnimation.setDuration((duration * Constants.MILLISECONDS).toLong())
 
-        initAnimationListeners(handGestureListener);
+        initAnimationListeners(handGestureListener)
     }
 
-    private void initAnimationListeners(HandGestureListener handGestureListener) {
-        mAnimation.setAnimationListener(this);
-        mHandGestureListener = handGestureListener;
+    private fun initAnimationListeners(handGestureListener: HandGestureListener) {
+        mAnimation.setAnimationListener(this)
+        mHandGestureListener = handGestureListener
 
-        mAnimationListener = new HandAnimationListener() {
-            @Override
-            public void onMakeSmallerEnd() {
-                mView.setPivotX(.5f);
-                mView.setPivotY(.5f);
-                mView.setScaleX(Constants.SCALE_FACTOR);
-                mView.setScaleY(Constants.SCALE_FACTOR);
-                mView.startAnimation(mAnimation);
+        mAnimationListener = object : HandAnimationListener {
+            override fun onMakeSmallerEnd() {
+                mView!!.setPivotX(.5f)
+                mView!!.setPivotY(.5f)
+                mView!!.setScaleX(Constants.SCALE_FACTOR)
+                mView!!.setScaleY(Constants.SCALE_FACTOR)
+                mView!!.startAnimation(mAnimation)
             }
-        };
-    }
-
-    public void setRepeatMode(boolean repeat) {
-        this.repeat = repeat;
-    }
-
-    public void animateView(View view) {
-        animateView(view, Constants.DEFAULT_ANIMATION_DELAY);
-    }
-
-    public void animateView(View view, long delay) {
-        this.mView = view;
-        mView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mView.startAnimation(makeSmallerImage());
-                mHandGestureListener.onAnimationStarted();
-            }
-        }, delay * Constants.MILLISECONDS);
-    }
-
-    public void stopAnimation() {
-        repeat = false;
-        mView.clearAnimation();
-    }
-
-    public boolean isRepeatMode() {
-        return repeat;
-    }
-
-    //region Animation.AnimationListener
-    @Override
-    public void onAnimationStart(Animation animation) {
-        mHandGestureListener.onTouchStart();
-    }
-
-    @Override
-    public void onAnimationEnd(Animation animation) {
-        mHandGestureListener.onTouchEnd();
-        mView.setScaleX(1);
-        mView.setScaleY(1);
-
-        if (isRepeatMode()) {
-            animateView(mView);
         }
     }
 
-    @Override
-    public void onAnimationRepeat(Animation animation) {
+    @JvmOverloads
+    fun animateView(view: View, delay: Long = Constants.DEFAULT_ANIMATION_DELAY) {
+        this.mView = view
+        mView!!.postDelayed(object : Runnable {
+            override fun run() {
+                mView!!.startAnimation(makeSmallerImage())
+                mHandGestureListener!!.onAnimationStarted()
+            }
+        }, delay * Constants.MILLISECONDS)
     }
+
+    fun stopAnimation() {
+        this.isRepeatMode = false
+        mView!!.clearAnimation()
+    }
+
+    //region Animation.AnimationListener
+    override fun onAnimationStart(animation: Animation?) {
+        mHandGestureListener!!.onTouchStart()
+    }
+
+    override fun onAnimationEnd(animation: Animation?) {
+        mHandGestureListener!!.onTouchEnd()
+        mView!!.setScaleX(1f)
+        mView!!.setScaleY(1f)
+
+        if (this.isRepeatMode) {
+            animateView(mView!!)
+        }
+    }
+
+    override fun onAnimationRepeat(animation: Animation?) {
+    }
+
     //endregion
+    @JvmOverloads
+    fun makeSmallerImage(duration: Long = Constants.SCALE_DURATION): ScaleAnimation {
+        val scale = ScaleAnimation(1f, Constants.SCALE_FACTOR, 1f, Constants.SCALE_FACTOR)
 
-    public ScaleAnimation makeSmallerImage() {
-        return makeSmallerImage(Constants.SCALE_DURATION);
-    }
+        scale.setFillEnabled(true)
+        scale.setFillAfter(true)
+        scale.setDuration(duration)
 
-    public ScaleAnimation makeSmallerImage(long duration) {
-        ScaleAnimation scale = new ScaleAnimation(1f, Constants.SCALE_FACTOR, 1f, Constants.SCALE_FACTOR);
+        scale.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
 
-        scale.setFillEnabled(true);
-        scale.setFillAfter(true);
-        scale.setDuration(duration);
-
-        scale.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                mAnimationListener.onMakeSmallerEnd();
+            override fun onAnimationEnd(animation: Animation?) {
+                mAnimationListener!!.onMakeSmallerEnd()
             }
 
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-        });
-        return scale;
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
+        return scale
     }
 
-    public interface HandAnimationListener {
-        void onMakeSmallerEnd();
+    interface HandAnimationListener {
+        fun onMakeSmallerEnd()
     }
 }
