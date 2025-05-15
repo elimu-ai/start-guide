@@ -1,6 +1,5 @@
-package ai.elimu.handgesture;
+package ai.elimu.handgesture
 
-public interface HandViewListener {
-
-    void onHandAnimationEnd();
+interface HandViewListener {
+    fun onHandAnimationEnd()
 }
