@@ -1,0 +1,19 @@
+[versions]
+material = "1.12.0"
+junit = "4.13.2"
+
+appCompat = "1.7.0"
+recyclerView = "1.4.0"
+androidXEspresso = "3.6.1"
+agp = "8.8.2"
+
+[libraries]
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appCompat" }
+androidx-recycler-view = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerView" }
+androidx-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidXEspresso" }
+agp = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+
+[plugins]
