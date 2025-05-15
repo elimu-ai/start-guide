@@ -1,59 +1,49 @@
-package ai.elimu.startguide.content;
+package ai.elimu.startguide.content
 
-import android.graphics.drawable.Animatable;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
-import android.widget.ImageView;
+import ai.elimu.startguide.R
+import ai.elimu.startguide.util.MediaPlayerHelper
+import ai.elimu.startguide.util.MediaPlayerHelper.MediaPlayerListener
+import android.graphics.drawable.Animatable
+import android.os.Bundle
+import android.os.Handler
+import android.view.View
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 
-import ai.elimu.startguide.R;
-import ai.elimu.startguide.util.MediaPlayerHelper;
+class FinalActivity : AppCompatActivity() {
+    private var mFinalCheckmarkImageView: ImageView? = null
 
-import static ai.elimu.startguide.util.MediaPlayerHelper.DEFAULT_PLAYER_DELAY;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_final)
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class FinalActivity extends AppCompatActivity {
-
-    private ImageView mFinalCheckmarkImageView;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_final);
-
-        mFinalCheckmarkImageView = (ImageView) findViewById(R.id.final_checkmark);
+        mFinalCheckmarkImageView = findViewById<View?>(R.id.final_checkmark) as ImageView
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    override fun onStart() {
+        super.onStart()
 
         // Animate checkmark
-        mFinalCheckmarkImageView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mFinalCheckmarkImageView.setVisibility(View.VISIBLE);
-                Drawable drawable = mFinalCheckmarkImageView.getDrawable();
-                ((Animatable) drawable).start();
+        mFinalCheckmarkImageView!!.postDelayed(object : Runnable {
+            override fun run() {
+                mFinalCheckmarkImageView!!.setVisibility(View.VISIBLE)
+                val drawable = mFinalCheckmarkImageView!!.getDrawable()
+                (drawable as Animatable).start()
 
-                playGoodJob();
+                playGoodJob()
             }
-        }, DEFAULT_PLAYER_DELAY);
+        }, MediaPlayerHelper.DEFAULT_PLAYER_DELAY)
     }
 
-    private void playGoodJob() {
-        MediaPlayerHelper.play(this, R.raw.good_job, new MediaPlayerHelper.MediaPlayerListener() {
-            @Override
-            public void onCompletion() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        finish();
+    private fun playGoodJob() {
+        MediaPlayerHelper.play(this, R.raw.good_job, object : MediaPlayerListener {
+            override fun onCompletion() {
+                Handler().postDelayed(object : Runnable {
+                    override fun run() {
+                        finish()
                     }
-                }, DEFAULT_PLAYER_DELAY);
+                }, MediaPlayerHelper.DEFAULT_PLAYER_DELAY)
             }
-        });
+        })
     }
 }
