@@ -1,251 +1,225 @@
-package ai.elimu.startguide.content.swipe;
+package ai.elimu.startguide.content.swipe
 
-import android.content.Intent;
-import android.content.res.TypedArray;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
-import ai.elimu.handgesture.HandView;
-import ai.elimu.handgesture.HandViewListener;
-import ai.elimu.startguide.R;
-import ai.elimu.startguide.content.ExitFullScreenActivity;
-import ai.elimu.startguide.util.MediaPlayerHelper;
+import ai.elimu.handgesture.HandView
+import ai.elimu.handgesture.HandViewListener
+import ai.elimu.startguide.R
+import ai.elimu.startguide.content.ExitFullScreenActivity
+import ai.elimu.startguide.util.MediaPlayerHelper
+import ai.elimu.startguide.util.MediaPlayerHelper.MediaPlayerListener
+import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 
 /**
  * Activity that explain swipe right and left
  */
-public class SwipeRightLeftActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener,
-        HandViewListener {
-
-    private static final int NUM_ANIMATIONS_FOR_REPEAT_AUDIO = 3;
-
+class SwipeRightLeftActivity : AppCompatActivity(), OnPageChangeListener, HandViewListener {
     /**
-     * The {@link androidx.viewpager.widget.PagerAdapter} that will provide fragments for
-     * each of the sections. We use a {@link androidx.fragment.app.FragmentPagerAdapter} derivative, which will
+     * The [androidx.viewpager.widget.PagerAdapter] that will provide fragments for
+     * each of the sections. We use a [FragmentPagerAdapter] derivative, which will
      * keep every loaded fragment in memory. If this becomes too memory intensive, it may
-     * be best to switch to a {@link androidx.fragment.app.FragmentStatePagerAdapter}.
+     * be best to switch to a [androidx.fragment.app.FragmentStatePagerAdapter].
      */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
 
-    private ViewPager mViewPager;
-    private HandView mLeftHandView;
-    private HandView mRightHandView;
+    private var mViewPager: ViewPager? = null
+    private var mLeftHandView: HandView? = null
+    private var mRightHandView: HandView? = null
 
-    private boolean detectLeft = true;
-    private boolean detectRight = true;
+    private var isDetectLeftActive = true
+    private var isDetectRightActive = true
 
-    private int mNumAnimations;
-    private int mAudioResId;
+    private var mNumAnimations = 0
+    private var mAudioResId = 0
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_swipe_right_left);
+        setContentView(R.layout.activity_swipe_right_left)
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = SectionsPagerAdapter(getSupportFragmentManager())
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.addOnPageChangeListener(this);
+        mViewPager = findViewById<View?>(R.id.container) as ViewPager
+        mViewPager!!.setAdapter(mSectionsPagerAdapter)
+        mViewPager!!.addOnPageChangeListener(this)
 
         //Hand view
-        mLeftHandView = (HandView) findViewById(R.id.left_hand);
-        mRightHandView = (HandView) findViewById(R.id.right_hand);
+        mLeftHandView = findViewById<View?>(R.id.left_hand) as HandView
+        mRightHandView = findViewById<View?>(R.id.right_hand) as HandView
 
-        mLeftHandView.setHandViewListener(this);
-        mRightHandView.setHandViewListener(this);
+        mLeftHandView!!.setHandViewListener(this)
+        mRightHandView!!.setHandViewListener(this)
 
-        playMoveLeft();
+        playMoveLeft()
     }
 
-    private void playMoveLeft() {
-        mAudioResId = R.raw.find_the_images_to_the_right;
-        mNumAnimations++;
-        MediaPlayerHelper.playWithDelay(this, mAudioResId, new MediaPlayerHelper.MediaPlayerListener() {
-            @Override
-            public void onCompletion() {
-                showSlideLeft();
+    private fun playMoveLeft() {
+        mAudioResId = R.raw.find_the_images_to_the_right
+        mNumAnimations++
+        MediaPlayerHelper.playWithDelay(this, mAudioResId, object : MediaPlayerListener {
+            override fun onCompletion() {
+                showSlideLeft()
             }
-        });
+        })
     }
 
-    private void playMoveRight() {
-        mAudioResId = R.raw.find_the_images_to_the_left;
-        mNumAnimations++;
-        MediaPlayerHelper.playWithDelay(this, mAudioResId, new MediaPlayerHelper.MediaPlayerListener() {
-            @Override
-            public void onCompletion() {
-                showSlideRight();
+    private fun playMoveRight() {
+        mAudioResId = R.raw.find_the_images_to_the_left
+        mNumAnimations++
+        MediaPlayerHelper.playWithDelay(this, mAudioResId, object : MediaPlayerListener {
+            override fun onCompletion() {
+                showSlideRight()
             }
-        });
+        })
     }
 
-    private void playAudio() {
-        resetNumAnimations();
-        MediaPlayerHelper.play(this, mAudioResId);
+    private fun playAudio() {
+        resetNumAnimations()
+        MediaPlayerHelper.play(this, mAudioResId)
     }
 
     /**
      * Swipe to left explanation with audio and hand animation
      */
-    private void showSlideLeft() {
-        mRightHandView.startAnimation();
+    private fun showSlideLeft() {
+        mRightHandView!!.startAnimation()
     }
 
     /**
      * Swipe to right explanation with audio and hand animation
      */
-    private void showSlideRight() {
-        mLeftHandView.startAnimation();
-        resetNumAnimations();
+    private fun showSlideRight() {
+        mLeftHandView!!.startAnimation()
+        resetNumAnimations()
     }
 
-    private void resetHandPosition() {
-        mRightHandView.setHandViewListener(null);
-        mRightHandView.onTouchEvent(null);
-        mRightHandView.setVisibility(View.GONE);
-        mLeftHandView.setVisibility(View.VISIBLE);
+    private fun resetHandPosition() {
+        mRightHandView!!.setHandViewListener(null)
+        mRightHandView!!.onTouchEvent(null)
+        mRightHandView!!.setVisibility(View.GONE)
+        mLeftHandView!!.setVisibility(View.VISIBLE)
     }
 
-    private void resetNumAnimations() {
-        mNumAnimations = 0;
+    private fun resetNumAnimations() {
+        mNumAnimations = 0
     }
 
-    private boolean isDetectLeftActive() {
-        return detectLeft;
+    private fun setDetectLeft(detectLeft: Boolean) {
+        this.isDetectLeftActive = detectLeft
     }
 
-    private boolean isDetectRightActive() {
-        return detectRight;
-    }
-
-    private void setDetectLeft(boolean detectLeft) {
-        this.detectLeft = detectLeft;
-    }
-
-    private void setDetectRight(boolean detectRight) {
-        this.detectRight = detectRight;
+    private fun setDetectRight(detectRight: Boolean) {
+        this.isDetectRightActive = detectRight
     }
 
     //region ViewPager.OnPageChangeListener
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
     }
 
-    @Override
-    public void onPageSelected(int page) {
-        if ((page == 1) && isDetectRightActive()) {
-            setDetectLeft(false);
-            resetHandPosition();
-            playMoveRight();
-        } else if ((page == 0) && !isDetectLeftActive()) {
-            setDetectRight(false);
+    override fun onPageSelected(page: Int) {
+        if ((page == 1) && this.isDetectRightActive) {
+            setDetectLeft(false)
+            resetHandPosition()
+            playMoveRight()
+        } else if ((page == 0) && !this.isDetectLeftActive) {
+            setDetectRight(false)
 
-            finish();
+            finish()
 
-            Intent intent = new Intent(this, ExitFullScreenActivity.class);
-            startActivity(intent);
+            val intent = Intent(this, ExitFullScreenActivity::class.java)
+            startActivity(intent)
         }
     }
 
-    @Override
-    public void onPageScrollStateChanged(int state) {
+    override fun onPageScrollStateChanged(state: Int) {
     }
-    //endregion
 
+    //endregion
     //region HandViewListener
-
-    @Override
-    public void onHandAnimationEnd() {
+    override fun onHandAnimationEnd() {
         if (mNumAnimations == NUM_ANIMATIONS_FOR_REPEAT_AUDIO) {
-            playAudio();
+            playAudio()
         }
-        mNumAnimations++;
+        mNumAnimations++
     }
 
     //endregion
-
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+    class PlaceholderFragment : Fragment() {
+        override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View {
+            val rootView = inflater.inflate(R.layout.fragment_swipe_right_left, container, false)
 
-        public PlaceholderFragment() {
-        }
-
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_swipe_right_left, container, false);
-
-            int sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
+            val sectionNumber = getArguments()!!.getInt(ARG_SECTION_NUMBER)
 
             //Images
-            TypedArray imagesArray = getResources().obtainTypedArray(R.array.image_files);
+            val imagesArray = getResources().obtainTypedArray(R.array.image_files)
 
-            ImageView leftImage = (ImageView) rootView.findViewById(R.id.left_image);
-            ImageView rightImage = (ImageView) rootView.findViewById(R.id.right_image);
+            val leftImage = rootView.findViewById<View?>(R.id.left_image) as ImageView
+            val rightImage = rootView.findViewById<View?>(R.id.right_image) as ImageView
 
-            leftImage.setImageResource(imagesArray.getResourceId(sectionNumber*2, -1));
-            rightImage.setImageResource(imagesArray.getResourceId(sectionNumber*2 + 1, -1));
+            leftImage.setImageResource(imagesArray.getResourceId(sectionNumber * 2, -1))
+            rightImage.setImageResource(imagesArray.getResourceId(sectionNumber * 2 + 1, -1))
 
             //Colors
-            int[] pagerColors = getResources().getIntArray(R.array.pager_colors);
+            val pagerColors = getResources().getIntArray(R.array.pager_colors)
 
-            View pagerContainer = rootView.findViewById(R.id.pager_container);
-            pagerContainer.setBackgroundColor(pagerColors[sectionNumber]);
+            val pagerContainer = rootView.findViewById<View>(R.id.pager_container)
+            pagerContainer.setBackgroundColor(pagerColors[sectionNumber])
 
-            return rootView;
+            return rootView
+        }
+
+        companion object {
+            /**
+             * The fragment argument representing the section number for this fragment.
+             */
+            private const val ARG_SECTION_NUMBER = "section_number"
+
+            fun newInstance(sectionNumber: Int): PlaceholderFragment {
+                val fragment = PlaceholderFragment()
+                val args = Bundle()
+                args.putInt(ARG_SECTION_NUMBER, sectionNumber)
+                fragment.setArguments(args)
+                return fragment
+            }
         }
     }
 
     /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * A [FragmentPagerAdapter] that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        private static final int TOTAL_PAGES = 2;
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
+    inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+        override fun getItem(position: Int): Fragment {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class above).
-            return PlaceholderFragment.newInstance(position);
+            return PlaceholderFragment.Companion.newInstance(position)
         }
 
-        @Override
-        public int getCount() {
-            return TOTAL_PAGES;
+        override fun getCount(): Int {
+            return TOTAL_PAGES
         }
+    }
+
+    companion object {
+        private const val NUM_ANIMATIONS_FOR_REPEAT_AUDIO = 3
+        private const val TOTAL_PAGES = 2
     }
 }
