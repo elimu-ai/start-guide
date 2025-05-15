@@ -1,102 +1,79 @@
-package ai.elimu.startguide.content.swipe;
+package ai.elimu.startguide.content.swipe
 
-import android.content.res.TypedArray;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import androidx.recyclerview.widget.RecyclerView;
-
-import ai.elimu.startguide.R;
+import ai.elimu.startguide.R
+import android.content.res.TypedArray
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Created by GSC on 30/01/2017.
  */
+class SwipeUpDownAdapter(private val images: TypedArray, private val listener: OnScrollListener) :
+    RecyclerView.Adapter<SwipeUpDownAdapter.ViewHolder?>() {
+    private var isDetectScrollUpActive = true
+    private var isDetectScrollDownActive = false
 
-public class SwipeUpDownAdapter extends RecyclerView.Adapter<SwipeUpDownAdapter.ViewHolder> {
-
-    private TypedArray images;
-    private boolean detectUp = true;
-    private boolean detectDown = false;
-    private OnScrollListener listener;
-
-    public interface OnScrollListener {
-        void onLastItemReached();
-        void onFirstItemReached();
+    interface OnScrollListener {
+        fun onLastItemReached()
+        fun onFirstItemReached()
     }
 
-    public SwipeUpDownAdapter(TypedArray images, OnScrollListener listener) {
-        this.images = images;
-        this.listener = listener;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view =
+            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main, parent, false)
+        return ViewHolder(view)
     }
 
-    @Override
-    public SwipeUpDownAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main, parent, false);
-        return new ViewHolder(view);
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.mLeftView.setImageResource(images.getResourceId(position * 2, -1))
+        holder.mRightView.setImageResource(images.getResourceId(position * 2 + 1, -1))
     }
 
-    @Override
-    public void onBindViewHolder(SwipeUpDownAdapter.ViewHolder holder, int position) {
-        holder.mLeftView.setImageResource(images.getResourceId(position*2, -1));
-        holder.mRightView.setImageResource(images.getResourceId(position*2 + 1, -1));
-    }
+    override fun onViewAttachedToWindow(holder: ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        if (this.isDetectScrollUpActive && isLastItemVisible(holder.getAdapterPosition())) {
+            Log.d(javaClass.getName(), "Last item reached")
+            setDetectUpActive(false)
+            setDetectDownActive(true)
 
-    @Override
-    public void onViewAttachedToWindow(ViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-        if (isDetectScrollUpActive() && isLastItemVisible(holder.getAdapterPosition())) {
-            Log.d(getClass().getName(), "Last item reached");
-            setDetectUpActive(false);
-            setDetectDownActive(true);
-
-            listener.onLastItemReached();
-        } else if (isDetectScrollDownActive() && isFirstItemVisible(holder.getAdapterPosition())) {
-            Log.d(getClass().getName(), "First item reached");
-            listener.onFirstItemReached();
+            listener.onLastItemReached()
+        } else if (this.isDetectScrollDownActive && isFirstItemVisible(holder.getAdapterPosition())) {
+            Log.d(javaClass.getName(), "First item reached")
+            listener.onFirstItemReached()
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return images.length() / 2;
+    override fun getItemCount(): Int {
+        return images.length() / 2
     }
 
-    private void setDetectUpActive(boolean activeUpDetect) {
-        detectUp = activeUpDetect;
+    private fun setDetectUpActive(activeUpDetect: Boolean) {
+        this.isDetectScrollUpActive = activeUpDetect
     }
 
-    private void setDetectDownActive(boolean activeDownDetect) {
-        detectDown = activeDownDetect;
+    private fun setDetectDownActive(activeDownDetect: Boolean) {
+        this.isDetectScrollDownActive = activeDownDetect
     }
 
-    private boolean isDetectScrollUpActive() {
-        return detectUp;
+    private fun isLastItemVisible(position: Int): Boolean {
+        return (position == getItemCount() - 1)
     }
 
-    private boolean isDetectScrollDownActive() {
-        return detectDown;
+    private fun isFirstItemVisible(position: Int): Boolean {
+        return (position == 0)
     }
 
-    private boolean isLastItemVisible(int position) {
-        return (position == getItemCount() - 1);
-    }
+    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+        var mLeftView: ImageView
+        var mRightView: ImageView
 
-    private boolean isFirstItemVisible(int position) {
-        return (position == 0);
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        public ImageView mLeftView;
-        public ImageView mRightView;
-
-        public ViewHolder(View v) {
-            super(v);
-            mLeftView = (ImageView) v.findViewById(R.id.left_image);
-            mRightView = (ImageView) v.findViewById(R.id.right_image);
+        init {
+            mLeftView = v.findViewById<View?>(R.id.left_image) as ImageView
+            mRightView = v.findViewById<View?>(R.id.right_image) as ImageView
         }
     }
 }
