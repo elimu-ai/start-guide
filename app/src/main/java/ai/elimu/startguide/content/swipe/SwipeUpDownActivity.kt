@@ -1,134 +1,124 @@
-package ai.elimu.startguide.content.swipe;
+package ai.elimu.startguide.content.swipe
 
-import android.content.Intent;
-import android.content.res.TypedArray;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.RelativeLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import ai.elimu.handgesture.Gestures;
-import ai.elimu.handgesture.HandView;
-import ai.elimu.handgesture.HandViewListener;
-import ai.elimu.startguide.R;
-import ai.elimu.startguide.util.MediaPlayerHelper;
+import ai.elimu.handgesture.Gestures
+import ai.elimu.handgesture.HandView
+import ai.elimu.handgesture.HandViewListener
+import ai.elimu.startguide.R
+import ai.elimu.startguide.util.MediaPlayerHelper
+import ai.elimu.startguide.util.MediaPlayerHelper.MediaPlayerListener
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.widget.RelativeLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  *
  */
-public class SwipeUpDownActivity extends AppCompatActivity implements SwipeUpDownAdapter.OnScrollListener,
-        HandViewListener {
+class SwipeUpDownActivity : AppCompatActivity(), SwipeUpDownAdapter.OnScrollListener,
+    HandViewListener {
+    private var mHandView: HandView? = null
+    private var mAdapter: SwipeUpDownAdapter? = null
+    private var mNumAnimations = 0
+    private var mAudioResId = 0
 
-    private static final int NUM_ANIMATIONS_FOR_REPEAT_AUDIO = 3;
-
-    private HandView mHandView;
-    private SwipeUpDownAdapter mAdapter;
-    private int mNumAnimations;
-    private int mAudioResId;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_swipe_up_down);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_swipe_up_down)
 
         //List of images
-        TypedArray imagesArray = getResources().obtainTypedArray(R.array.image_files);
-        mAdapter = new SwipeUpDownAdapter(imagesArray, this);
+        val imagesArray = getResources().obtainTypedArray(R.array.image_files)
+        mAdapter = SwipeUpDownAdapter(imagesArray, this)
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(mAdapter);
+        val recyclerView = findViewById<View?>(R.id.recyclerView) as RecyclerView
+        recyclerView.setLayoutManager(LinearLayoutManager(this))
+        recyclerView.setAdapter(mAdapter)
 
         //Hand view
-        mHandView = (HandView) findViewById(R.id.hand);
-        mHandView.setHandViewListener(this);
+        mHandView = findViewById<View?>(R.id.hand) as HandView
+        mHandView!!.setHandViewListener(this)
 
-        playMoveBottom();
+        playMoveBottom()
     }
 
-    private void playMoveBottom() {
-        mAudioResId = R.raw.move_to_the_bottom_of_the_list;
-        mNumAnimations++;
-        MediaPlayerHelper.playWithDelay(this, mAudioResId, new MediaPlayerHelper.MediaPlayerListener() {
-            @Override
-            public void onCompletion() {
-                showMoveBottom();
+    private fun playMoveBottom() {
+        mAudioResId = R.raw.move_to_the_bottom_of_the_list
+        mNumAnimations++
+        MediaPlayerHelper.playWithDelay(this, mAudioResId, object : MediaPlayerListener {
+            override fun onCompletion() {
+                showMoveBottom()
             }
-        });
+        })
     }
 
-    private void playMoveTop() {
-        mAudioResId = R.raw.move_to_the_top_of_the_list;
-        mNumAnimations++;
-        MediaPlayerHelper.play(this, mAudioResId, new MediaPlayerHelper.MediaPlayerListener() {
-            @Override
-            public void onCompletion() {
-                showMoveTop();
+    private fun playMoveTop() {
+        mAudioResId = R.raw.move_to_the_top_of_the_list
+        mNumAnimations++
+        MediaPlayerHelper.play(this, mAudioResId, object : MediaPlayerListener {
+            override fun onCompletion() {
+                showMoveTop()
             }
-        });
+        })
     }
 
-    private void playAudio() {
-        resetNumAnimations();
-        MediaPlayerHelper.play(this, mAudioResId);
+    private fun playAudio() {
+        resetNumAnimations()
+        MediaPlayerHelper.play(this, mAudioResId)
     }
 
     /**
      * Hand animation to explain scroll to the bottom
      */
-    private void showMoveBottom() {
-        mHandView.startAnimation(Gestures.MOVE_UP);
+    private fun showMoveBottom() {
+        mHandView!!.startAnimation(Gestures.MOVE_UP)
     }
 
     /**
      * Hand animation to explain scroll to the top
      */
-    private void showMoveTop() {
-        resetNumAnimations();
+    private fun showMoveTop() {
+        resetNumAnimations()
 
-        mHandView.setHideOnTouch(false);
-        mHandView.startAnimation(Gestures.MOVE_DOWN);
+        mHandView!!.setHideOnTouch(false)
+        mHandView!!.startAnimation(Gestures.MOVE_DOWN)
     }
 
-    private void resetHandPosition() {
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)mHandView.getLayoutParams();
-        params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+    private fun resetHandPosition() {
+        val params = mHandView!!.getLayoutParams() as RelativeLayout.LayoutParams
+        params.addRule(RelativeLayout.ALIGN_PARENT_TOP)
 
-        mHandView.setLayoutParams(params);
-        mHandView.setVisibility(View.VISIBLE);
+        mHandView!!.setLayoutParams(params)
+        mHandView!!.setVisibility(View.VISIBLE)
     }
 
-    private void resetNumAnimations() {
-        mNumAnimations = 0;
+    private fun resetNumAnimations() {
+        mNumAnimations = 0
     }
 
     //region SwipeUpDownAdapter.OnScrollListener
-    @Override
-    public void onLastItemReached() {
-        resetHandPosition();
-        mHandView.stopAnimation();
-        playMoveTop();
+    override fun onLastItemReached() {
+        resetHandPosition()
+        mHandView!!.stopAnimation()
+        playMoveTop()
     }
 
-    @Override
-    public void onFirstItemReached() {
-        Intent intent = new Intent(this, SwipeRightLeftActivity.class);
-        startActivity(intent);
+    override fun onFirstItemReached() {
+        val intent = Intent(this, SwipeRightLeftActivity::class.java)
+        startActivity(intent)
     }
+
     //endregion
-
     //region HandViewListener
-
-    @Override
-    public void onHandAnimationEnd() {
+    override fun onHandAnimationEnd() {
         if (mNumAnimations == NUM_ANIMATIONS_FOR_REPEAT_AUDIO) {
-            playAudio();
+            playAudio()
         }
-        mNumAnimations++;
-    }
+        mNumAnimations++
+    } //endregion
 
-    //endregion
+    companion object {
+        private const val NUM_ANIMATIONS_FOR_REPEAT_AUDIO = 3
+    }
 }
