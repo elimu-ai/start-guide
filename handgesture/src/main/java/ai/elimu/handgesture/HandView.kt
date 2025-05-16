@@ -54,7 +54,7 @@ class HandView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     private fun init(context: Context, attrs: AttributeSet?) {
         mView = inflate(context, R.layout.hand_layout, this)
 
-        mHandView = mView!!.findViewById<View?>(R.id.animated_hand) as ImageView
+        mHandView = mView?.findViewById<View?>(R.id.animated_hand) as? ImageView
 
         if (attrs != null) {
             // Attribute initialization
@@ -85,7 +85,7 @@ class HandView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
         if (mHideOnTouch && mDetectTouchEvent) {
             visibility = GONE
             if (mAnimationHelper != null) {
-                mAnimationHelper!!.stopAnimation()
+                mAnimationHelper?.stopAnimation()
             }
         }
         return false
@@ -120,15 +120,15 @@ class HandView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     fun startAnimation(idAnimResource: Int) {
         mDetectTouchEvent = false
         mAnimationHelper = AnimationHelper(context, idAnimResource, this)
-        mAnimationHelper!!.isRepeatMode = mRepeatAnimation
-        mAnimationHelper!!.animateView(this, mAnimationDelay.toLong())
+        mAnimationHelper?.isRepeatMode = mRepeatAnimation
+        mAnimationHelper?.animateView(this, mAnimationDelay.toLong())
     }
 
     private fun startCustomAnimation() {
         mDetectTouchEvent = false
         mAnimationHelper = AnimationHelper(mTranslateX, mTranslateY, mTranslationDuration, this)
-        mAnimationHelper!!.isRepeatMode = mRepeatAnimation
-        mAnimationHelper!!.animateView(this, mAnimationDelay.toLong())
+        mAnimationHelper?.isRepeatMode = mRepeatAnimation
+        mAnimationHelper?.animateView(this, mAnimationDelay.toLong())
     }
 
     fun stopAnimation() {
@@ -150,20 +150,18 @@ class HandView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
     }
 
     private fun startTouch() {
-        mHandView!!.setImageResource(R.drawable.animation_vector_touch_on)
-        (mHandView!!.getDrawable() as Animatable).start()
+        mHandView?.setImageResource(R.drawable.animation_vector_touch_on)
+        (mHandView?.getDrawable() as Animatable).start()
     }
 
     private fun endTouch() {
-        mHandView!!.setImageResource(R.drawable.animation_vector_touch_off)
-        (mHandView!!.getDrawable() as Animatable).start()
+        mHandView?.setImageResource(R.drawable.animation_vector_touch_off)
+        (mHandView?.getDrawable() as? Animatable)?.start()
     }
 
     override fun onAnimationEnd() {
         super.onAnimationEnd()
-        if (mHandViewListener != null) {
-            mHandViewListener!!.onHandAnimationEnd()
-        }
+        mHandViewListener?.onHandAnimationEnd()
         if (handGesture != null && mRepeatAnimation) {
             startGesture(handGesture!!)
         }
