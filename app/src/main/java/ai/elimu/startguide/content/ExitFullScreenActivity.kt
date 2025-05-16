@@ -34,7 +34,7 @@ class ExitFullScreenActivity : Activity() {
 
     override fun onResume() {
         super.onResume()
-        mDecorView!!.setOnSystemUiVisibilityChangeListener(object :
+        mDecorView?.setOnSystemUiVisibilityChangeListener(object :
             OnSystemUiVisibilityChangeListener {
             override fun onSystemUiVisibilityChange(visibility: Int) {
                 // System bars will only be "visible" if none of the
@@ -72,7 +72,7 @@ class ExitFullScreenActivity : Activity() {
     private fun hideSystemBars() {
         // Set the content to appear under the system bars so that the content
         // doesn't resize when the system bars hide and show.
-        mDecorView!!.setSystemUiVisibility(
+        mDecorView?.setSystemUiVisibility(
             (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                     or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
