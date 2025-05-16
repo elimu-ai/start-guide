@@ -18,7 +18,7 @@
         android:layout_width="@dimen/swipe_image_width"
         android:layout_height="@dimen/swipe_image_height"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/swipe_image_margin"
         tools:src="@drawable/tree"/>
 
