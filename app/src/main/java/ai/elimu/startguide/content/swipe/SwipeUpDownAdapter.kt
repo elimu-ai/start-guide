@@ -24,7 +24,7 @@ class SwipeUpDownAdapter(private val images: TypedArray, private val listener: O
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view =
-            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_main, parent, false)
         return ViewHolder(view)
     }
 
@@ -35,13 +35,13 @@ class SwipeUpDownAdapter(private val images: TypedArray, private val listener: O
 
     override fun onViewAttachedToWindow(holder: ViewHolder) {
         super.onViewAttachedToWindow(holder)
-        if (this.isDetectScrollUpActive && isLastItemVisible(holder.getAdapterPosition())) {
+        if (this.isDetectScrollUpActive && isLastItemVisible(holder.adapterPosition)) {
             Log.d(javaClass.getName(), "Last item reached")
             setDetectUpActive(false)
             setDetectDownActive(true)
 
             listener.onLastItemReached()
-        } else if (this.isDetectScrollDownActive && isFirstItemVisible(holder.getAdapterPosition())) {
+        } else if (this.isDetectScrollDownActive && isFirstItemVisible(holder.adapterPosition)) {
             Log.d(javaClass.getName(), "First item reached")
             listener.onFirstItemReached()
         }
@@ -60,7 +60,7 @@ class SwipeUpDownAdapter(private val images: TypedArray, private val listener: O
     }
 
     private fun isLastItemVisible(position: Int): Boolean {
-        return (position == getItemCount() - 1)
+        return (position == itemCount - 1)
     }
 
     private fun isFirstItemVisible(position: Int): Boolean {
