@@ -1,9 +1,9 @@
 package ai.elimu.startguide.content.swipe
 
 import ai.elimu.handgesture.Gestures
-import ai.elimu.handgesture.HandView
 import ai.elimu.handgesture.HandViewListener
 import ai.elimu.startguide.R
+import ai.elimu.startguide.databinding.ActivitySwipeUpDownBinding
 import ai.elimu.startguide.util.MediaPlayerHelper
 import ai.elimu.startguide.util.MediaPlayerHelper.MediaPlayerListener
 import android.content.Intent
@@ -12,33 +12,32 @@ import android.view.View
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 
 /**
  *
  */
 class SwipeUpDownActivity : AppCompatActivity(), SwipeUpDownAdapter.OnScrollListener,
     HandViewListener {
-    private var mHandView: HandView? = null
+
+    private lateinit var binding: ActivitySwipeUpDownBinding
     private var mAdapter: SwipeUpDownAdapter? = null
     private var mNumAnimations = 0
     private var mAudioResId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_swipe_up_down)
+        binding = ActivitySwipeUpDownBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //List of images
         val imagesArray = getResources().obtainTypedArray(R.array.image_files)
         mAdapter = SwipeUpDownAdapter(imagesArray, this)
 
-        val recyclerView = findViewById<View?>(R.id.recyclerView) as RecyclerView
-        recyclerView.setLayoutManager(LinearLayoutManager(this))
-        recyclerView.setAdapter(mAdapter)
+        binding.recyclerView.setLayoutManager(LinearLayoutManager(this))
+        binding.recyclerView.setAdapter(mAdapter)
 
         //Hand view
-        mHandView = findViewById<View?>(R.id.hand) as HandView
-        mHandView!!.setHandViewListener(this)
+        binding.hand.setHandViewListener(this)
 
         playMoveBottom()
     }
@@ -72,7 +71,7 @@ class SwipeUpDownActivity : AppCompatActivity(), SwipeUpDownAdapter.OnScrollList
      * Hand animation to explain scroll to the bottom
      */
     private fun showMoveBottom() {
-        mHandView!!.startAnimation(Gestures.MOVE_UP)
+        binding.hand.startAnimation(Gestures.MOVE_UP)
     }
 
     /**
@@ -81,16 +80,16 @@ class SwipeUpDownActivity : AppCompatActivity(), SwipeUpDownAdapter.OnScrollList
     private fun showMoveTop() {
         resetNumAnimations()
 
-        mHandView!!.setHideOnTouch(false)
-        mHandView!!.startAnimation(Gestures.MOVE_DOWN)
+        binding.hand.setHideOnTouch(false)
+        binding.hand.startAnimation(Gestures.MOVE_DOWN)
     }
 
     private fun resetHandPosition() {
-        val params = mHandView!!.layoutParams as RelativeLayout.LayoutParams
+        val params = binding.hand.layoutParams as RelativeLayout.LayoutParams
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP)
 
-        mHandView!!.setLayoutParams(params)
-        mHandView!!.visibility = View.VISIBLE
+        binding.hand.setLayoutParams(params)
+        binding.hand.visibility = View.VISIBLE
     }
 
     private fun resetNumAnimations() {
@@ -100,7 +99,7 @@ class SwipeUpDownActivity : AppCompatActivity(), SwipeUpDownAdapter.OnScrollList
     //region SwipeUpDownAdapter.OnScrollListener
     override fun onLastItemReached() {
         resetHandPosition()
-        mHandView!!.stopAnimation()
+        binding.hand.stopAnimation()
         playMoveTop()
     }
 
