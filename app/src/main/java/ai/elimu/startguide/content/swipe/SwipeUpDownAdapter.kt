@@ -68,12 +68,7 @@ class SwipeUpDownAdapter(private val images: TypedArray, private val listener: O
     }
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        var mLeftView: ImageView
-        var mRightView: ImageView
-
-        init {
-            mLeftView = v.findViewById<View?>(R.id.left_image) as ImageView
-            mRightView = v.findViewById<View?>(R.id.right_image) as ImageView
-        }
+        var mLeftView: ImageView = v.findViewById<View?>(R.id.left_image) as ImageView
+        var mRightView: ImageView = v.findViewById<View?>(R.id.right_image) as ImageView
     }
 }
