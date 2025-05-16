@@ -86,11 +86,11 @@ class SwipeUpDownActivity : AppCompatActivity(), SwipeUpDownAdapter.OnScrollList
     }
 
     private fun resetHandPosition() {
-        val params = mHandView!!.getLayoutParams() as RelativeLayout.LayoutParams
+        val params = mHandView!!.layoutParams as RelativeLayout.LayoutParams
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP)
 
         mHandView!!.setLayoutParams(params)
-        mHandView!!.setVisibility(View.VISIBLE)
+        mHandView!!.visibility = View.VISIBLE
     }
 
     private fun resetNumAnimations() {
