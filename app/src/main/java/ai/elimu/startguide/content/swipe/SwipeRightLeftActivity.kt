@@ -183,6 +183,8 @@ class SwipeRightLeftActivity : AppCompatActivity(), OnPageChangeListener, HandVi
             val pagerContainer = rootView.findViewById<View>(R.id.pager_container)
             pagerContainer.setBackgroundColor(pagerColors[sectionNumber])
 
+            imagesArray.recycle()
+
             return rootView
         }
 
