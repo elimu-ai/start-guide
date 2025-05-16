@@ -25,9 +25,7 @@ object MediaPlayerHelper {
         mediaPlayer.setOnCompletionListener(object : OnCompletionListener {
             override fun onCompletion(mp: MediaPlayer?) {
                 mediaPlayer.release()
-                if (listener != null) {
-                    listener.onCompletion()
-                }
+                listener?.onCompletion()
             }
         })
         mediaPlayer.start()
