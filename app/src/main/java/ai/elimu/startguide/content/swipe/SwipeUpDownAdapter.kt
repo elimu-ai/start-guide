@@ -1,10 +1,9 @@
 package ai.elimu.startguide.content.swipe
 
-import ai.elimu.startguide.R
+import ai.elimu.startguide.databinding.ItemMainBinding
 import android.content.res.TypedArray
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
@@ -23,9 +22,8 @@ class SwipeUpDownAdapter(private val images: TypedArray, private val listener: O
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_main, parent, false)
-        return ViewHolder(view)
+        val binding = ItemMainBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -67,8 +65,8 @@ class SwipeUpDownAdapter(private val images: TypedArray, private val listener: O
         return (position == 0)
     }
 
-    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        var mLeftView: ImageView = v.findViewById<View?>(R.id.left_image) as ImageView
-        var mRightView: ImageView = v.findViewById<View?>(R.id.right_image) as ImageView
+    class ViewHolder(binding: ItemMainBinding) : RecyclerView.ViewHolder(binding.root) {
+        var mLeftView: ImageView = binding.leftImage
+        var mRightView: ImageView = binding.rightImage
     }
 }
