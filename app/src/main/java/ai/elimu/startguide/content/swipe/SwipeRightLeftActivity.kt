@@ -48,7 +48,7 @@ class SwipeRightLeftActivity : AppCompatActivity(), OnPageChangeListener, HandVi
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = SectionsPagerAdapter(getSupportFragmentManager())
+        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById<View?>(R.id.container) as ViewPager
@@ -108,8 +108,8 @@ class SwipeRightLeftActivity : AppCompatActivity(), OnPageChangeListener, HandVi
     private fun resetHandPosition() {
         mRightHandView!!.setHandViewListener(null)
         mRightHandView!!.onTouchEvent(null)
-        mRightHandView!!.setVisibility(View.GONE)
-        mLeftHandView!!.setVisibility(View.VISIBLE)
+        mRightHandView!!.visibility = View.GONE
+        mLeftHandView!!.visibility = View.VISIBLE
     }
 
     private fun resetNumAnimations() {
@@ -169,7 +169,7 @@ class SwipeRightLeftActivity : AppCompatActivity(), OnPageChangeListener, HandVi
             val sectionNumber = arguments?.getInt(ARG_SECTION_NUMBER) ?: 0
 
             //Images
-            val imagesArray = getResources().obtainTypedArray(R.array.image_files)
+            val imagesArray = resources.obtainTypedArray(R.array.image_files)
 
             val leftImage = rootView.findViewById<View?>(R.id.left_image) as ImageView
             val rightImage = rootView.findViewById<View?>(R.id.right_image) as ImageView
@@ -178,7 +178,7 @@ class SwipeRightLeftActivity : AppCompatActivity(), OnPageChangeListener, HandVi
             rightImage.setImageResource(imagesArray.getResourceId(sectionNumber * 2 + 1, -1))
 
             //Colors
-            val pagerColors = getResources().getIntArray(R.array.pager_colors)
+            val pagerColors = resources.getIntArray(R.array.pager_colors)
 
             val pagerContainer = rootView.findViewById<View>(R.id.pager_container)
             pagerContainer.setBackgroundColor(pagerColors[sectionNumber])
