@@ -52,9 +52,9 @@ class GestureHelper(private val mView: View, private val mGestureListener: HandG
 
     private fun getZoomOutAnimation(startOffset: Long, touchTime: Long): ScaleAnimation {
         val zoomOut = ScaleAnimation(1f, Constants.SCALE_FACTOR, 1f, Constants.SCALE_FACTOR)
-        zoomOut.setStartOffset(startOffset)
+        zoomOut.startOffset = startOffset
         zoomOut.setDuration(Constants.SCALE_DURATION)
-        zoomOut.setFillAfter(true)
+        zoomOut.fillAfter = true
         zoomOut.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
 
@@ -75,9 +75,9 @@ class GestureHelper(private val mView: View, private val mGestureListener: HandG
 
     private fun getZoomInAnimation(startOffset: Long, touchTime: Long): ScaleAnimation {
         val zoomIn = ScaleAnimation(Constants.SCALE_FACTOR, 1f, Constants.SCALE_FACTOR, 1f)
-        zoomIn.setStartOffset(startOffset + Constants.SCALE_DURATION + touchTime)
+        zoomIn.startOffset = startOffset + Constants.SCALE_DURATION + touchTime
         zoomIn.setDuration(Constants.SCALE_DURATION)
-        zoomIn.setFillAfter(true)
+        zoomIn.fillAfter = true
         return zoomIn
     }
 
