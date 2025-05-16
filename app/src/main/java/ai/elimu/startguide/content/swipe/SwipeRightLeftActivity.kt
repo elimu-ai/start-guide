@@ -1,9 +1,10 @@
 package ai.elimu.startguide.content.swipe
 
-import ai.elimu.handgesture.HandView
 import ai.elimu.handgesture.HandViewListener
 import ai.elimu.startguide.R
 import ai.elimu.startguide.content.ExitFullScreenActivity
+import ai.elimu.startguide.databinding.ActivitySwipeRightLeftBinding
+import ai.elimu.startguide.databinding.FragmentSwipeRightLeftBinding
 import ai.elimu.startguide.util.MediaPlayerHelper
 import ai.elimu.startguide.util.MediaPlayerHelper.MediaPlayerListener
 import android.content.Intent
@@ -11,12 +12,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 
 /**
@@ -30,10 +29,8 @@ class SwipeRightLeftActivity : AppCompatActivity(), OnPageChangeListener, HandVi
      * be best to switch to a [androidx.fragment.app.FragmentStatePagerAdapter].
      */
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
-
-    private var mViewPager: ViewPager? = null
-    private var mLeftHandView: HandView? = null
-    private var mRightHandView: HandView? = null
+    
+    private lateinit var binding: ActivitySwipeRightLeftBinding
 
     private var isDetectLeftActive = true
     private var isDetectRightActive = true
@@ -44,23 +41,19 @@ class SwipeRightLeftActivity : AppCompatActivity(), OnPageChangeListener, HandVi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_swipe_right_left)
+        binding = ActivitySwipeRightLeftBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = findViewById<View?>(R.id.container) as ViewPager
-        mViewPager!!.setAdapter(mSectionsPagerAdapter)
-        mViewPager!!.addOnPageChangeListener(this)
+        binding.container.setAdapter(mSectionsPagerAdapter)
+        binding.container.addOnPageChangeListener(this)
 
-        //Hand view
-        mLeftHandView = findViewById<View?>(R.id.left_hand) as HandView
-        mRightHandView = findViewById<View?>(R.id.right_hand) as HandView
-
-        mLeftHandView!!.setHandViewListener(this)
-        mRightHandView!!.setHandViewListener(this)
+        binding.leftHand.setHandViewListener(this)
+        binding.rightHand.setHandViewListener(this)
 
         playMoveLeft()
     }
@@ -94,22 +87,22 @@ class SwipeRightLeftActivity : AppCompatActivity(), OnPageChangeListener, HandVi
      * Swipe to left explanation with audio and hand animation
      */
     private fun showSlideLeft() {
-        mRightHandView!!.startAnimation()
+        binding.rightHand.startAnimation()
     }
 
     /**
      * Swipe to right explanation with audio and hand animation
      */
     private fun showSlideRight() {
-        mLeftHandView!!.startAnimation()
+        binding.leftHand.startAnimation()
         resetNumAnimations()
     }
 
     private fun resetHandPosition() {
-        mRightHandView!!.setHandViewListener(null)
-        mRightHandView!!.onTouchEvent(null)
-        mRightHandView!!.visibility = View.GONE
-        mLeftHandView!!.visibility = View.VISIBLE
+        binding.rightHand.setHandViewListener(null)
+        binding.rightHand.onTouchEvent(null)
+        binding.rightHand.visibility = View.GONE
+        binding.leftHand.visibility = View.VISIBLE
     }
 
     private fun resetNumAnimations() {
@@ -164,28 +157,26 @@ class SwipeRightLeftActivity : AppCompatActivity(), OnPageChangeListener, HandVi
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
         ): View {
-            val rootView = inflater.inflate(R.layout.fragment_swipe_right_left, container, false)
+
+            val binding = FragmentSwipeRightLeftBinding.inflate(layoutInflater, container, false)
 
             val sectionNumber = arguments?.getInt(ARG_SECTION_NUMBER) ?: 0
 
             //Images
             val imagesArray = resources.obtainTypedArray(R.array.image_files)
 
-            val leftImage = rootView.findViewById<View?>(R.id.left_image) as ImageView
-            val rightImage = rootView.findViewById<View?>(R.id.right_image) as ImageView
 
-            leftImage.setImageResource(imagesArray.getResourceId(sectionNumber * 2, -1))
-            rightImage.setImageResource(imagesArray.getResourceId(sectionNumber * 2 + 1, -1))
+            binding.leftImage.setImageResource(imagesArray.getResourceId(sectionNumber * 2, -1))
+            binding.rightImage.setImageResource(imagesArray.getResourceId(sectionNumber * 2 + 1, -1))
 
             //Colors
             val pagerColors = resources.getIntArray(R.array.pager_colors)
 
-            val pagerContainer = rootView.findViewById<View>(R.id.pager_container)
-            pagerContainer.setBackgroundColor(pagerColors[sectionNumber])
+            binding.pagerContainer.setBackgroundColor(pagerColors[sectionNumber])
 
             imagesArray.recycle()
 
-            return rootView
+            return binding.root
         }
 
         companion object {
