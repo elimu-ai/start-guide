@@ -43,10 +43,10 @@ class AnimationHelper : Animation.AnimationListener {
 
         mAnimationListener = object : HandAnimationListener {
             override fun onMakeSmallerEnd() {
-                mView!!.setPivotX(.5f)
-                mView!!.setPivotY(.5f)
-                mView!!.setScaleX(Constants.SCALE_FACTOR)
-                mView!!.setScaleY(Constants.SCALE_FACTOR)
+                mView!!.pivotX = .5f
+                mView!!.pivotY = .5f
+                mView!!.scaleX = Constants.SCALE_FACTOR
+                mView!!.scaleY = Constants.SCALE_FACTOR
                 mView!!.startAnimation(mAnimation)
             }
         }
@@ -75,8 +75,8 @@ class AnimationHelper : Animation.AnimationListener {
 
     override fun onAnimationEnd(animation: Animation?) {
         mHandGestureListener!!.onTouchEnd()
-        mView!!.setScaleX(1f)
-        mView!!.setScaleY(1f)
+        mView!!.scaleX = 1f
+        mView!!.scaleY = 1f
 
         if (this.isRepeatMode) {
             animateView(mView!!)
@@ -91,8 +91,8 @@ class AnimationHelper : Animation.AnimationListener {
     fun makeSmallerImage(duration: Long = Constants.SCALE_DURATION): ScaleAnimation {
         val scale = ScaleAnimation(1f, Constants.SCALE_FACTOR, 1f, Constants.SCALE_FACTOR)
 
-        scale.setFillEnabled(true)
-        scale.setFillAfter(true)
+        scale.isFillEnabled = true
+        scale.fillAfter = true
         scale.setDuration(duration)
 
         scale.setAnimationListener(object : Animation.AnimationListener {
