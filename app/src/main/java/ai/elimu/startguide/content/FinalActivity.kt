@@ -1,33 +1,34 @@
 package ai.elimu.startguide.content
 
 import ai.elimu.startguide.R
+import ai.elimu.startguide.databinding.ActivityFinalBinding
 import ai.elimu.startguide.util.MediaPlayerHelper
 import ai.elimu.startguide.util.MediaPlayerHelper.MediaPlayerListener
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 
 class FinalActivity : AppCompatActivity() {
-    private var mFinalCheckmarkImageView: ImageView? = null
+    
+    private lateinit var binding: ActivityFinalBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_final)
+        binding = ActivityFinalBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        mFinalCheckmarkImageView = findViewById<View?>(R.id.final_checkmark) as ImageView
     }
 
     override fun onStart() {
         super.onStart()
 
         // Animate checkmark
-        mFinalCheckmarkImageView!!.postDelayed(object : Runnable {
+        binding.finalCheckmark.postDelayed(object : Runnable {
             override fun run() {
-                mFinalCheckmarkImageView!!.setVisibility(View.VISIBLE)
-                val drawable = mFinalCheckmarkImageView!!.getDrawable()
+                binding.finalCheckmark.setVisibility(View.VISIBLE)
+                val drawable = binding.finalCheckmark.getDrawable()
                 (drawable as Animatable).start()
 
                 playGoodJob()
