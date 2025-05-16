@@ -83,7 +83,7 @@ class HandView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (mHideOnTouch && mDetectTouchEvent) {
-            setVisibility(GONE)
+            visibility = GONE
             if (mAnimationHelper != null) {
                 mAnimationHelper!!.stopAnimation()
             }
@@ -119,7 +119,7 @@ class HandView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
 
     fun startAnimation(idAnimResource: Int) {
         mDetectTouchEvent = false
-        mAnimationHelper = AnimationHelper(getContext(), idAnimResource, this)
+        mAnimationHelper = AnimationHelper(context, idAnimResource, this)
         mAnimationHelper!!.isRepeatMode = mRepeatAnimation
         mAnimationHelper!!.animateView(this, mAnimationDelay.toLong())
     }
