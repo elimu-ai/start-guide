@@ -1,8 +1,8 @@
 package ai.elimu.startguide.content
 
-import ai.elimu.handgesture.HandView
 import ai.elimu.handgesture.HandViewListener
 import ai.elimu.startguide.R
+import ai.elimu.startguide.databinding.ActivityExitFullScreenBinding
 import ai.elimu.startguide.util.MediaPlayerHelper
 import ai.elimu.startguide.util.MediaPlayerHelper.MediaPlayerListener
 import android.app.Activity
@@ -14,20 +14,17 @@ import android.view.View
 import android.view.View.OnSystemUiVisibilityChangeListener
 
 class ExitFullScreenActivity : Activity() {
-    private var mHandView: HandView? = null
-    private var mHandViewBottom: HandView? = null
-    private var mBottomBar: View? = null
+
+    private lateinit var binding: ActivityExitFullScreenBinding
+
     private var mDecorView: View? = null
 
     private var mAnimationCompleted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_exit_full_screen)
-
-        mHandView = findViewById<View?>(R.id.hand_view) as HandView
-        mHandViewBottom = findViewById<View?>(R.id.hand_view_bottom) as HandView
-        mBottomBar = findViewById<View>(R.id.bottom_bar)
+        binding = ActivityExitFullScreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         mDecorView = window.decorView
 
@@ -60,9 +57,9 @@ class ExitFullScreenActivity : Activity() {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (mAnimationCompleted) {
-            mHandView!!.onTouchEvent(event)
-            mHandViewBottom!!.onTouchEvent(event)
-            mBottomBar!!.visibility = View.GONE
+            binding.handView.onTouchEvent(event)
+            binding.handViewBottom.onTouchEvent(event)
+            binding.bottomBar.visibility = View.GONE
         }
         return false
     }
@@ -101,16 +98,16 @@ class ExitFullScreenActivity : Activity() {
      * Hand animation to explain exit full screen
      */
     private fun showExitFullScreenAnimation() {
-        mHandView!!.visibility = View.VISIBLE
-        mHandView!!.setHandViewListener(object : HandViewListener {
+        binding.handView.visibility = View.VISIBLE
+        binding.handView.setHandViewListener(object : HandViewListener {
             override fun onHandAnimationEnd() {
-                mHandView!!.stopAnimation()
-                mBottomBar!!.visibility = View.VISIBLE
+                binding.handView.stopAnimation()
+                binding.bottomBar.visibility = View.VISIBLE
 
                 playTouchTheArrow()
             }
         })
-        mHandView!!.startAnimation()
+        binding.handView.startAnimation()
     }
 
     private fun playTouchTheArrow() {
@@ -124,17 +121,17 @@ class ExitFullScreenActivity : Activity() {
     }
 
     private fun showBottomAnimation() {
-        mHandViewBottom!!.visibility = View.VISIBLE
-        mHandViewBottom!!.startAnimation()
-        mHandViewBottom!!.setHandViewListener(object : HandViewListener {
+        binding.handViewBottom.visibility = View.VISIBLE
+        binding.handViewBottom.startAnimation()
+        binding.handViewBottom.setHandViewListener(object : HandViewListener {
             override fun onHandAnimationEnd() {
-                mBottomBar!!.visibility = View.GONE
-                mHandViewBottom!!.visibility = View.GONE
+                binding.bottomBar.visibility = View.GONE
+                binding.handViewBottom.visibility = View.GONE
 
                 mAnimationCompleted = true
 
-                mHandView!!.visibility = View.VISIBLE
-                mHandView!!.setHideOnTouch(false)
+                binding.handView.visibility = View.VISIBLE
+                binding.handView.setHideOnTouch(false)
                 playExitFullScreen()
             }
         })
@@ -142,11 +139,11 @@ class ExitFullScreenActivity : Activity() {
 
     private fun onGestureDetected() {
         if (mAnimationCompleted) {
-            mHandView!!.stopAnimation()
-            mHandView!!.visibility = View.GONE
-            mHandViewBottom!!.stopAnimation()
-            mHandViewBottom!!.visibility = View.GONE
-            mBottomBar!!.visibility = View.GONE
+            binding.handView.stopAnimation()
+            binding.handView.visibility = View.GONE
+            binding.handViewBottom.stopAnimation()
+            binding.handViewBottom.visibility = View.GONE
+            binding.bottomBar.visibility = View.GONE
             navigateToFinal()
         }
     }
