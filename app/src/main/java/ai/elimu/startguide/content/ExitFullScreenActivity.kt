@@ -29,7 +29,7 @@ class ExitFullScreenActivity : Activity() {
         mHandViewBottom = findViewById<View?>(R.id.hand_view_bottom) as HandView
         mBottomBar = findViewById<View>(R.id.bottom_bar)
 
-        mDecorView = getWindow().getDecorView()
+        mDecorView = window.decorView
 
         hideSystemBars()
         playExitFullScreen()
@@ -62,7 +62,7 @@ class ExitFullScreenActivity : Activity() {
         if (mAnimationCompleted) {
             mHandView!!.onTouchEvent(event)
             mHandViewBottom!!.onTouchEvent(event)
-            mBottomBar!!.setVisibility(View.GONE)
+            mBottomBar!!.visibility = View.GONE
         }
         return false
     }
@@ -101,11 +101,11 @@ class ExitFullScreenActivity : Activity() {
      * Hand animation to explain exit full screen
      */
     private fun showExitFullScreenAnimation() {
-        mHandView!!.setVisibility(View.VISIBLE)
+        mHandView!!.visibility = View.VISIBLE
         mHandView!!.setHandViewListener(object : HandViewListener {
             override fun onHandAnimationEnd() {
                 mHandView!!.stopAnimation()
-                mBottomBar!!.setVisibility(View.VISIBLE)
+                mBottomBar!!.visibility = View.VISIBLE
 
                 playTouchTheArrow()
             }
@@ -124,16 +124,16 @@ class ExitFullScreenActivity : Activity() {
     }
 
     private fun showBottomAnimation() {
-        mHandViewBottom!!.setVisibility(View.VISIBLE)
+        mHandViewBottom!!.visibility = View.VISIBLE
         mHandViewBottom!!.startAnimation()
         mHandViewBottom!!.setHandViewListener(object : HandViewListener {
             override fun onHandAnimationEnd() {
-                mBottomBar!!.setVisibility(View.GONE)
-                mHandViewBottom!!.setVisibility(View.GONE)
+                mBottomBar!!.visibility = View.GONE
+                mHandViewBottom!!.visibility = View.GONE
 
                 mAnimationCompleted = true
 
-                mHandView!!.setVisibility(View.VISIBLE)
+                mHandView!!.visibility = View.VISIBLE
                 mHandView!!.setHideOnTouch(false)
                 playExitFullScreen()
             }
@@ -143,10 +143,10 @@ class ExitFullScreenActivity : Activity() {
     private fun onGestureDetected() {
         if (mAnimationCompleted) {
             mHandView!!.stopAnimation()
-            mHandView!!.setVisibility(View.GONE)
+            mHandView!!.visibility = View.GONE
             mHandViewBottom!!.stopAnimation()
-            mHandViewBottom!!.setVisibility(View.GONE)
-            mBottomBar!!.setVisibility(View.GONE)
+            mHandViewBottom!!.visibility = View.GONE
+            mBottomBar!!.visibility = View.GONE
             navigateToFinal()
         }
     }
