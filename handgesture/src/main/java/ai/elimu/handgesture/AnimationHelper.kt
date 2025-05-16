@@ -43,11 +43,11 @@ class AnimationHelper : Animation.AnimationListener {
 
         mAnimationListener = object : HandAnimationListener {
             override fun onMakeSmallerEnd() {
-                mView!!.pivotX = .5f
-                mView!!.pivotY = .5f
-                mView!!.scaleX = Constants.SCALE_FACTOR
-                mView!!.scaleY = Constants.SCALE_FACTOR
-                mView!!.startAnimation(mAnimation)
+                mView?.pivotX = .5f
+                mView?.pivotY = .5f
+                mView?.scaleX = Constants.SCALE_FACTOR
+                mView?.scaleY = Constants.SCALE_FACTOR
+                mView?.startAnimation(mAnimation)
             }
         }
     }
@@ -55,31 +55,33 @@ class AnimationHelper : Animation.AnimationListener {
     @JvmOverloads
     fun animateView(view: View, delay: Long = Constants.DEFAULT_ANIMATION_DELAY) {
         this.mView = view
-        mView!!.postDelayed(object : Runnable {
+        mView?.postDelayed(object : Runnable {
             override fun run() {
-                mView!!.startAnimation(makeSmallerImage())
-                mHandGestureListener!!.onAnimationStarted()
+                mView?.startAnimation(makeSmallerImage())
+                mHandGestureListener?.onAnimationStarted()
             }
         }, delay * Constants.MILLISECONDS)
     }
 
     fun stopAnimation() {
         this.isRepeatMode = false
-        mView!!.clearAnimation()
+        mView?.clearAnimation()
     }
 
     //region Animation.AnimationListener
     override fun onAnimationStart(animation: Animation?) {
-        mHandGestureListener!!.onTouchStart()
+        mHandGestureListener?.onTouchStart()
     }
 
     override fun onAnimationEnd(animation: Animation?) {
-        mHandGestureListener!!.onTouchEnd()
-        mView!!.scaleX = 1f
-        mView!!.scaleY = 1f
+        mHandGestureListener?.onTouchEnd()
+        mView?.scaleX = 1f
+        mView?.scaleY = 1f
 
         if (this.isRepeatMode) {
-            animateView(mView!!)
+            mView?.let { view ->
+                animateView(view)
+            }
         }
     }
 
