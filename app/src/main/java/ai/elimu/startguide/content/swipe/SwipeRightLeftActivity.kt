@@ -166,7 +166,7 @@ class SwipeRightLeftActivity : AppCompatActivity(), OnPageChangeListener, HandVi
         ): View {
             val rootView = inflater.inflate(R.layout.fragment_swipe_right_left, container, false)
 
-            val sectionNumber = getArguments()!!.getInt(ARG_SECTION_NUMBER)
+            val sectionNumber = arguments?.getInt(ARG_SECTION_NUMBER) ?: 0
 
             //Images
             val imagesArray = getResources().obtainTypedArray(R.array.image_files)
@@ -214,7 +214,7 @@ class SwipeRightLeftActivity : AppCompatActivity(), OnPageChangeListener, HandVi
         }
 
         override fun getCount(): Int {
-            return TOTAL_PAGES
+            return TOTAL_PAGES 
         }
     }
 
