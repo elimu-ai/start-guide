@@ -132,7 +132,7 @@ jobs:
         id: prepare_apk_file_url
         run: |
           echo "tagName ${{ needs.create_git_tag.outputs.tagName }}"
-          APK_FILE_URL="https://github.com/elimu-ai/startguide/releases/download/${{ needs.create_git_tag.outputs.tagName }}/ai.elimu.startguide-${{ needs.create_git_tag.outputs.tagName }}.apk"
+          APK_FILE_URL="https://github.com/elimu-ai/start-guide/releases/download/${{ needs.create_git_tag.outputs.tagName }}/ai.elimu.startguide-${{ needs.create_git_tag.outputs.tagName }}.apk"
           echo "APK_FILE_URL $APK_FILE_URL"
           echo "apk_file_url=$APK_FILE_URL" >> $GITHUB_OUTPUT
     outputs:
