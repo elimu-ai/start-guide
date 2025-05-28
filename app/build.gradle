@@ -48,6 +48,7 @@ dependencies {
     implementation libs.androidx.appcompat
     implementation libs.androidx.recycler.view
     implementation libs.material
+    implementation libs.elimu.common.utils
     testImplementation libs.junit
     implementation project(':handgesture')
 }
