@@ -1,5 +1,6 @@
 package ai.elimu.startguide.content.swipe
 
+import ai.elimu.common.utils.ui.setLightStatusBar
 import ai.elimu.handgesture.Gestures
 import ai.elimu.handgesture.HandViewListener
 import ai.elimu.startguide.R
@@ -40,6 +41,10 @@ class SwipeUpDownActivity : AppCompatActivity(), SwipeUpDownAdapter.OnScrollList
         binding.hand.setHandViewListener(this)
 
         playMoveBottom()
+
+        window.apply {
+            setLightStatusBar()
+        }
     }
 
     private fun playMoveBottom() {

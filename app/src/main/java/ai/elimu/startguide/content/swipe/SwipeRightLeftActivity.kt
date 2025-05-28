@@ -1,5 +1,6 @@
 package ai.elimu.startguide.content.swipe
 
+import ai.elimu.common.utils.ui.setLightStatusBar
 import ai.elimu.handgesture.HandViewListener
 import ai.elimu.startguide.R
 import ai.elimu.startguide.content.ExitFullScreenActivity
@@ -56,6 +57,10 @@ class SwipeRightLeftActivity : AppCompatActivity(), OnPageChangeListener, HandVi
         binding.rightHand.setHandViewListener(this)
 
         playMoveLeft()
+
+        window.apply {
+            setLightStatusBar()
+        }
     }
 
     private fun playMoveLeft() {

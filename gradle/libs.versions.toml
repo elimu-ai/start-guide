@@ -1,6 +1,7 @@
 [versions]
 material = "1.12.0"
 junit = "4.13.2"
+elimuCommonUtils = "1.0.13"
 
 appCompat = "1.7.0"
 recyclerView = "1.4.0"
@@ -11,6 +12,7 @@ kotlin = "2.1.21"
 
 [libraries]
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+elimu-common-utils = { group = "ai.elimu", name = "common-utils", version.ref = "elimuCommonUtils" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appCompat" }
 androidx-recycler-view = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerView" }
 androidx-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidXEspresso" }
