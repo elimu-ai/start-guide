@@ -43,3 +43,6 @@ captures/
 *.jks
 
 .DS_Store
+
+# Kotlin
+.kotlin
